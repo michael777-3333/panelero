@@ -13,7 +13,7 @@ export const routes = [
                 ]
             },
             { path:"costos", children: [
-                { path:"costoModulos", component:CostosModulos}
+                { path:"costosModulos", component:CostosModulos}
             ]
             }
         ]

@@ -83,7 +83,7 @@
       label: 'Costos',
       separator: false,
       text:'Costos',
-      ruta: "/body/costos/costoEtapa",
+      ruta: "/body/costos/costosModulos",
       // mostrarMas: false
     },
    
