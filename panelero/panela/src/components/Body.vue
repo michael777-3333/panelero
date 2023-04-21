@@ -6,63 +6,78 @@
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
           <q-toolbar-title>Header</q-toolbar-title>
         </q-toolbar>
-      </q-header>contenedor
+      </q-header>
+      <!-- contenedor -->
 
-      <q-drawer class="lugar"
+      <q-drawer 
+      style="background-color: rgba(53, 53, 53, 0.171);"
         v-model="drawer"
         :width="200"
         :breakpoint="500"
         overlay
         bordered
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+
         
         >
         <q-scroll-area class="fit">
           <q-list class="">
 
-            <router-link v-for="(menuItem, index) in menuList" :key="index" :to="menuItem.ruta" >
+            <router-link v-for="(menuItem, index) in menuList" :key="index" :to="menuItem.ruta"  style="text-decoration: none;">
               <q-item class="botones" clickable :active="menuItem.label === 'Outbox'" v-ripple>
                 <q-item-section avatar>
-                  <q-icon class="" :name="menuItem.icon" />
-                  <p></p>
+                  <q-row>
+                    <q-col>
+                      <q-icon class="icon"  size="30px" style=";"  :name="menuItem.icon" />
+                      
+                    </q-col>
+                    <q-col > 
+                      <span class="texto">home</span>
+                    </q-col>
+                    
+                  </q-row>
+                                   
                 </q-item-section>
                 <q-item-section>
-                  <!-- <router-link to="/menuItem.ruta"> -->
-                    <!-- <q-btn color="black" label="login"></q-btn> -->
-                  <!-- </router-link> -->
                 </q-item-section>
               </q-item>
-              <!-- <q-separator :key="'sep' + index" v-if="menuItem.separator"  -->
-            <!-- </template> -->
             </router-link>
 
           </q-list>
         </q-scroll-area>
       </q-drawer>
 
-      <q-page-container>
-        <q-page padding>
+      <q-page-container class="contenedor">
+        <q-page padding >
           <router-view></router-view>
         </q-page>
+        
       </q-page-container>
+      <q-footer elevated class="footer">
+        <q-toolbar class="glossy">
+          <q-toolbar-title>Footer</q-toolbar-title>
+        </q-toolbar>
+      </q-footer>
     </q-layout>
+    
   </div>
+  
 </template>
   <script setup>
   import { ref } from 'vue'
   let drawer = ref(true)
   const menuList = ref([
     {
-      icon: 'inbox',
+      icon: 'home',
       label: 'Inbox',
       separator: true,
+
       ruta: "/body/home"
     },
     {
       icon: 'send',
-      label: 'Outbox',
+      label: 'Mantenimiento/Usuario',
       separator: false,
-      ruta: "/body/mantenimiento"
+      ruta: "/body/mantenimiento/usuario"
     },
     // {
     //   icon: 'delete',
@@ -112,15 +127,43 @@
  .header{
   background: linear-gradient(to right, #020202, #ffffff);
   height:80px;
+  font-family: 'Indie Flower', cursive;
+ }
+ .icon{
+  color: #020202;
+  
+ }
+ .texto{
+  text-align: center;
+  color: #020202;
+  margin: 20px;
+  font-size: 20px;
+  font-family: 'Indie Flower', cursive;
+ }
+ .footer{
+  background: linear-gradient(to right, #020202, #ffffff);
+  font-family: 'Indie Flower', cursive;
  }
  .botones{
-  background-color: #858080;
+  background-color: #5c57579d;
   margin-bottom: 10px;
- }
- .lugar{
-  background-color: #020202;
- }
+  margin :10px;
+  border-radius: 20px;
  
+ }
+
+.ludafsgfdg{
+  background-color: rgba(53, 53, 53, 0.671);
+
+}
+.contenedor{
+  background-image: url(../assets/img/fondo.png);
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  
+ 
+
+}
   
 </style>
   
