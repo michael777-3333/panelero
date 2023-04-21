@@ -1,25 +1,25 @@
 <template>
-
-  <div class="items-center justify-center section" style="height: 100vh" > 
-      
-        <div class="row q-ma-xs justify-center d-flex items-center">
-          <div class="col-4"></div>
-          <div class="col-4 text-center  q-pa-xs" style="background-color: #303030ab;">
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md" >
-              <q-input
-                filled
-                type="email"
-                v-model="email"
-                label="Ingrese su correo *"
-                class="bg-white rounded-borders"
-                lazy-rules
-                :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-              />
+  <div class="items-center justify-center bg-d"> 
+    <div class="row justify-center d-flex items-center" style="height: 100vh" >
+      <div class="col-4"></div>
+      <div class="col-4 text-center rounded-borders q-pa-md bg-teal-14">
+          <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md justify-center" >
+            <q-input
+              filled
+              type="email"
+              v-model="email"
+              label="Ingrese su correo *"
+              class="bg-light-green-1 rounded-borders q-mt-lg d-flex"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please type something'
+                ]"
+            />
            
       
               <q-input
                 filled
-                class="bg-white rounded-borders"
+                class="bg-light-green-1 rounded-borders"
                 type="password"
                 v-model="password"
                 label="Ingrese su contraseña *"
@@ -30,9 +30,9 @@
                 ]"
               />
       
-              <div>
+              <div class="q-mt-lg q-mb-lg">
                 <p class="text-white">Olvide mi contraseña?</p>
-                <q-btn @click="sesion()" label="Submit" type="submit" color="primary" />
+                <q-btn @click="sesion()" label="Submit" type="submit" color="light-green-9" />
                 
               </div>
             </q-form>
@@ -43,79 +43,7 @@
 
         </div>
     
-      <!-- <div class="row section ">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-12">
-            <br>
-                    <span class="q-ma-xl"></span>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <span class="q-ma-xl"></span>
-        <h1 style="">.</h1>
-          </div>
-        </div>
-
-        <div class="row q-ma-xs">
-          <div class="col-4"></div>
-          <div class="col-4 text-center q-pa-xs" style="background-color: #303030ab;">
-            <div class="q-pa-md" style="max-width: 400px">
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-              <q-input
-                filled
-                type="email"
-                v-model="email"
-                label="Ingrese su correo *"
-                class="bg-white rounded-borders"
-                lazy-rules
-                :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-              />
-              hint="correo"
-      
-              <q-input
-                filled
-                class="bg-white rounded-borders"
-                type="password"
-                v-model="password"
-                label="Ingrese su contraseña *"
-                lazy-rules
-                :rules="[
-                  (val) => (val !== null && val !== '') || 'Please type your contraseña',
-                  (val) => (val > 0 && val < 100) || 'Please type a real contraseña',
-                ]"
-              />
-      
-              <q-toggle v-model="accept" label="I accept the license and terms" />
-      
-              <div>
-                <p class="text-white">Olvide mi contraseña?</p>
-                <q-btn @click="sesion()" label="Submit" type="submit" color="primary" />
-                <q-btn
-                  label="Reset"
-                  type="reset"
-                  color="primary"
-                  flat
-                  class="q-ml-sm"
-                />
-              </div>
-            </q-form>
-            </div>
-          </div>
-          <div class="col-4"></div>
-        </div>
-      </div>
-    </div>
-  </div> -->
+     
   </template>
   
 <script setup>
@@ -164,10 +92,15 @@
   </script>
 
 <style>
-.section {
+.bg-d {
+  height: 100vh;
+  background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,60,1) 35%, rgba(0,212,255,1) 100%);
+}
+/* .section {
     background-image: url("../src/assets/img/bgll.jpg");
     background-repeat: no-repeat;
     background-position: absolute;
-}
+} */
 
 </style>

@@ -13,6 +13,10 @@ export const useUsuarioStore = defineStore('usuario', {
             })
             .then(res => console.log(res))
             .catch(error => console.log(error))
+        },
+        async getUsuario(){
+            await axios.get('http://localhost:3000/api/clientes').then(response => console.log(response))
+
         }
     },
 })
