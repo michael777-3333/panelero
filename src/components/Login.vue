@@ -1,106 +1,135 @@
 <template>
-  <div class="items-center justify-center bg-d"> 
-    <div class="row justify-center d-flex items-center" style="height: 100vh" >
-      <div class="col-4"></div>
-      <div class="col-4 text-center rounded-borders q-pa-md bg-teal-14">
-          <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md justify-center" >
-            <q-input
-              filled
-              type="email"
-              v-model="email"
-              label="Ingrese su correo *"
-              class="bg-light-green-1 rounded-borders q-mt-lg d-flex"
-              lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Please type something'
-                ]"
-            />
-           
-      
-              <q-input
-                filled
-                class="bg-light-green-1 rounded-borders"
-                type="password"
-                v-model="password"
-                label="Ingrese su contraseña *"
-                lazy-rules
-                :rules="[
-                  (val) => (val !== null && val !== '') || 'Please type your contraseña',
-                  (val) => (val > 0 && val < 100) || 'Please type a real contraseña',
-                ]"
-              />
-      
-              <div class="q-mt-lg q-mb-lg">
-                <p class="text-white">Olvide mi contraseña?</p>
-                <q-btn @click="sesion()" label="Submit" type="submit" color="light-green-9" />
-                
-              </div>
-            </q-form>
-            
-          </div>
-          <div class="col-4"></div>
+  <div>
+    <img src="../assets/img/fondo1.jpg" class="img1">
+  </div>
+  <div class="items-center justify-center bg-d">
+    <div class="row justify-center d-flex items-center" style="height: 100vh">
+      <div class="card1 col-4 "></div>
+       <div class="col-4 text-center rounded-borders q-pa-md car">
+        <div class="logi-mg">
+          <img src="../assets/img/fondo2.png" class="img">
         </div>
+        
+        <q-form
+          @submit="onSubmit"
+          @reset="onReset"
+          class="q-gutter-md justify-center"
+          >
+          <q-input
+            filled
+            type="email"
+            v-model="email"
+            label="Ingrese su correo *"
+            class="car1 rounded-borders q-mt-lg d-flex"
+            lazy-rules
+            :rules="[
+              (val) => (val && val.length > 0) || 'Please type something',
+            ]"
+          />
 
-        </div>
-    
-     
-  </template>
+          <q-input
+            filled
+            class="car1 rounded-borders"
+            type="password"
+            v-model="password"
+            label="Ingrese su contraseña *"
+            lazy-rules
+            text-color="white"
+            :rules="[
+              (val) =>
+                (val !== null && val !== '') || 'Please type your contraseña',
+              (val) =>
+                (val > 0 && val < 100) || 'Please type a real contraseña',
+            ]"
+          />
+
+          <div class="q-mt-lg q-mb-lg">
+            <p class="text-white">Olvide mi contraseña?</p>
+            <q-btn
+              @click="sesion()"
+              label="Submit"
+              type="submit"
+              color="white"
+              text-color="black"
+            />
+          </div>
+        </q-form>
+      </div>
+      <div class="col-4"></div>
+    </div>
+  </div>
+</template>
   
 <script setup>
-  import useQuasar from "quasar/src/composables/use-quasar.js";
-  import { ref } from "vue";
+import useQuasar from "quasar/src/composables/use-quasar.js";
+import { ref } from "vue";
 
-  import {useRouter} from "vue-router"
+import { useRouter } from "vue-router";
 
-  const router = useRouter()
+const router = useRouter();
 
-  const $q = useQuasar();
+const $q = useQuasar();
 
-  const email = ref(null);
-  const password = ref(null);
-  const accept = ref(false);
+const email = ref(null);
+const password = ref(null);
+const accept = ref(false);
 
-    function onSubmit() {
-      if (accept.value !== true) {
-        $q.notify({
-          color: "red-5",
-          textColor: "white",
-          icon: "warning",
-          message: "You need to accept the license and terms first",
-        });
-      } else {
-        $q.notify({
-          color: "green-4",
-          textColor: "white",
-          icon: "cloud_done",
-          message: "Submitted",
-        });
-      }
-    }
-
-    function onReset() {
-      email.value = null;
-      password.value = null;
-      accept.value = false;
-    }
-    
-
-  function sesion() {
-    router.push("/body")
+function onSubmit() {
+  if (accept.value !== true) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "You need to accept the license and terms first",
+    });
+  } else {
+    $q.notify({
+      color: "green-4",
+      textColor: "white",
+      icon: "cloud_done",
+      message: "Submitted",
+    });
   }
-
-  </script>
-
+}
+function onReset() {
+  email.value = null;
+  password.value = null;
+  accept.value = false;
+}
+function sesion() {
+  router.push("/body/home");
+}
+</script>
 <style>
 .bg-d {
   height: 100vh;
-  background: rgb(2,0,36);
-background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,60,1) 35%, rgba(0,212,255,1) 100%);
 }
-/* .section {
-    background-image: url("../src/assets/img/bgll.jpg");
-    background-repeat: no-repeat;
-    background-position: absolute;
-} */
-
+.card1 {
+  background: rgb(216, 9, 9);
+  background-color: rgb(212, 203, 203);
+}
+.logi-mg{
+  width: 100%;
+  max-width: 250px;
+}
+.img{
+  width: 243%;
+  justify-content: center;
+}
+.img1{
+  position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+.car{
+  background-color:  rgba(0, 0, 0, 0.432);
+}
+.car1{
+  background-color:  rgba(255, 255, 255, 0.781);
+  text-decoration-color: rgb(0, 0, 0);
+}
 </style>
