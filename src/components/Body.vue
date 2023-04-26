@@ -1,27 +1,48 @@
 <template>
   <div class="q-pa-none">
-    <q-layout view="hHh Lpr fFf" container style="height: 100vh" class="shadow-2 rounded-borders">
-      <q-header elevated :class="$q.dark.isActive ? 'bg-secondary' : 'bg-black'">
+    <q-layout
+      view="hHh Lpr fFf"
+      container
+      style="height: 100vh"
+      class="shadow-2 rounded-borders"
+    >
+      <q-header
+        elevated
+        :class="$q.dark.isActive ? 'bg-secondary' : 'bg-black'"
+      >
         <q-toolbar class="header">
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
           <q-toolbar-title>Paneleros</q-toolbar-title>
 
           <router-link to="/">
-            <q-btn class="text-left">Salir</q-btn>
+            <q-btn class="iboto text-left">Salir</q-btn>
           </router-link>
-
         </q-toolbar>
       </q-header>
 
-      <q-drawer style="background-color:hsla(32, 87%, 57%, 0.61);" v-model="drawer" :width="250" :breakpoint="500"
-        bordered>
+      <q-drawer
+        style="background-color: hsla(32, 87%, 57%, 0.61)"
+        v-model="drawer"
+        :width="250"
+        :breakpoint="500"
+        bordered
+      >
         <!-- overlay -->
         <q-scroll-area class="fit">
           <q-list>
-            <router-link v-for="(menuItem, index) in menuList" :key="index" :to="menuItem.ruta"
-              style="text-decoration: none;">
+            <router-link
+              v-for="(menuItem, index) in menuList"
+              :key="index"
+              :to="menuItem.ruta"
+              style="text-decoration: none"
+            >
               <!-- Aqui le paso menuItem.ruta a la funcion mostrar   botones -->
-              <q-item @click="mostrarBotones(menuItem.ruta)" class="botones" clickable v-ripple>
+              <q-item
+                @click="mostrarBotones(menuItem.ruta)"
+                class="botones"
+                clickable
+                v-ripple
+              >
                 <q-item-section avatar>
                   <q-row>
                     <q-col>
@@ -42,15 +63,13 @@
         <q-page padding>
           <router-view></router-view>
         </q-page>
-
       </q-page-container>
       <q-footer elevated class="header">
         <q-toolbar>
-          <q-toolbar-title>Footer</q-toolbar-title>
+          <q-toolbar-title>Proyecto Panelero MEAW 🔅</q-toolbar-title>
         </q-toolbar>
       </q-footer>
     </q-layout>
-
   </div>
 </template>
 <!-- <script >
@@ -69,8 +88,8 @@
   };
 </script> -->
 <script>
-import { ref } from 'vue'
-import { useUsuarioStore } from "../stores/usuarioStore"
+import { ref } from "vue";
+import { useUsuarioStore } from "../stores/usuarioStore";
 export default {
   // created() {
   //     this.info = "Componente cargado";
@@ -80,72 +99,54 @@ export default {
   // var URLactual = window.location;
   setup() {
     /**Cargo las variables de Pinia -> ../src/stores/usuariostore.js */
-    const userStore = useUsuarioStore()
-    
-    let drawer = ref(true)
+    const userStore = useUsuarioStore();
+
+    let drawer = ref(true);
 
     /** Menu, que es cargado al iniciar la pagina */
-    let menuList = ref(userStore.menuListHome /** Traido desde Pinia */)
+    let menuList = ref(userStore.menuListHome /** Traido desde Pinia */);
 
     /** Cambiamos el menu según los datos que corresponden */
-    function mostrarBotones(r/**string*/) {
-
+    function mostrarBotones(r /**string*/) {
       /**Dependiendo de la ruta del boton seleccinado cargo el respectivo menu */
-      if (r == "/body/costos/costosModulos") {
-        menuList.value = userStore.menuListCostos
-      }else if (r=='/body/mantenimiento/HomeMantenimiento') {
-        menuList.value=userStore.menuListMantenimiento
-      } 
-      
-      else if (r == "/body/home"){
-
-//       /**Dependiendo de la ruta del boton seleciinado cargo el respectivo menu */
-//       if (r == "/body/costos/costosModulos") {
-//         menuList.value = userStore.menuListCostos
-//       } else if (r == "/body/home"){
-// >>>>>>> d350617ed9c95718082a8c9f6666a6467b750c63
-        /**Este es para regresar */
-        menuList.value = userStore.menuListHome
+      if (r == "/body/costos/homeCostos") {
+        menuList.value = userStore.menuListCostos;
+      } else if (r == "/body/mantenimiento/homeMantenimiento") {
+        menuList.value = userStore.menuListMantenimiento;
+      } else if (r == "/body/facturacion/facturacionModulos") {
+        menuList.value = userStore.menuListFacturacion;
+      } else if (r == "/body/home") {
+        /** Este es para regresar */
+        menuList.value = userStore.menuListHome;
       }
-
     }
     return {
-      userStore, drawer, menuList, mostrarBotones
-    }
+      userStore,
+      drawer,
+      menuList,
+      mostrarBotones,
+    };
   },
-    // data: () => ({
-    //   info: null,
-    //   // mostrarBotones
-    // }),
-    // created() {
-    //   this.info = "Componente cargado";
-    //   console.log(this.info);
-    //   // mostrarBotones()
-    // },
-}
-
-
-
+};
 </script>
   
 <style  scoped>
 .header {
-  background: linear-gradient(to right, #F39A31, #F39A31);
+  background: linear-gradient(to right, #f39a31, #f39a31);
   height: 40px;
-  font-family: 'Indie Flower', cursive;
+  font-family: "Indie Flower";
 }
 
 .icon {
-  color: #020202;
-
+  color: #ffffff;
 }
 
 .texto {
   text-align: center;
-  color: #020202;
+  color: #ffffff;
   margin: 20px;
   font-size: 20px;
-  font-family: 'Indie Flower', cursive;
+  font-family: "Indie Flower";
 }
 
 /* .footer{
@@ -153,11 +154,13 @@ export default {
   font-family: 'Indie Flower', cursive;
  } */
 .botones {
-  background-color: #F8EDE2;
+  background-color: rgba(0, 0, 0, 0.34);
   margin-bottom: 10px;
   margin: 10px;
   border-radius: 20px;
-
+}
+.iboto {
+  background-color: rgb(255, 255, 255);
 }
 
 .contenedor {
@@ -166,11 +169,10 @@ export default {
   background-size: cover;
   /* align-content: center; */
   width: 100px;
-
 }
 
-.fdff {
-  background-color: hsla(32, 87%, 57%, 0.61);
+.fit {
+  background-color: rgb(241, 152, 50);
 }
 </style>
   

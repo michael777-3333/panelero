@@ -2,7 +2,7 @@
   <div>
     <img src="../assets/img/fondo1.jpg" class="img1">
   </div>
-  <div class="items-center justify-center bg-d">
+  <div class="cad items-center justify-center bg-d">
     <div class="row justify-center d-flex items-center" style="height: 100vh">
       <div class="card1 col-4 "></div>
        <div class="col-4 text-center rounded-borders q-pa-md car">
@@ -47,7 +47,7 @@
             <p class="text-white">Olvide mi contraseña?</p>
             <q-btn
               @click="sesion()"
-              label="Submit"
+              label="INICIO"
               type="submit"
               color="white"
               text-color="black"
@@ -104,17 +104,24 @@ function sesion() {
 .bg-d {
   height: 100vh;
 }
-.card1 {
-  background: rgb(216, 9, 9);
-  background-color: rgb(212, 203, 203);
+.car {
+  /* background: rgb(216, 9, 9);
+  background-color: rgb(212, 203, 203); */
+  width: 70vw;
+  max-width: 1000px;
+  min-width: 320px;
+  margin: auto; 
+  border-radius: 15px;
 }
-.logi-mg{
+/* .logi-mg{
   width: 100%;
   max-width: 250px;
-}
+} */
 .img{
-  width: 243%;
-  justify-content: center;
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0px 3px 5px (15, 15, 15, .5);
+
 }
 .img1{
   position: fixed;
