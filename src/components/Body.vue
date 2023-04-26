@@ -89,6 +89,7 @@ export default {
 
     /** Cambiamos el menu según los datos que corresponden */
     function mostrarBotones(r/**string*/) {
+
       /**Dependiendo de la ruta del boton seleccinado cargo el respectivo menu */
       if (r == "/body/costos/costosModulos") {
         menuList.value = userStore.menuListCostos
@@ -97,6 +98,12 @@ export default {
       } 
       
       else if (r == "/body/home"){
+
+//       /**Dependiendo de la ruta del boton seleciinado cargo el respectivo menu */
+//       if (r == "/body/costos/costosModulos") {
+//         menuList.value = userStore.menuListCostos
+//       } else if (r == "/body/home"){
+// >>>>>>> d350617ed9c95718082a8c9f6666a6467b750c63
         /**Este es para regresar */
         menuList.value = userStore.menuListHome
       }
