@@ -36,7 +36,7 @@
       </div>
 
       <q-dialog v-model="alert">
-        <q-card class="dialog">
+        <q-card class="dialog1">
           <q-card-section>
             <div style="color:" class="text-h6">Alert</div>
           </q-card-section>
@@ -46,26 +46,26 @@
               <q-card-section>
                 <div class="">
                   <div class="">
-                    <div class="boton">
+                    <div class="boton2">
                       <q-input v-model="name" label="Nombre" />
                     </div>
                   </div>
                   <div class=""></div>
                   <div class="">
-                    <div class="boton">
+                    <div class="boton2">
                       <q-input v-model="codigo" label="Codigo" />
                     </div>
                   </div>
                 </div>
                 <div class=" d-flex q-m-sm">
                   <div class="">
-                    <div class="boton">
+                    <div class="boton2">
                       <q-input v-model="cantidad" label="Cantidad" />
                     </div>
                   </div>
                   <div class=""></div>
                   <div class="">
-                    <div class="boton">
+                    <div class="boton2">
                       <q-input v-model="costo" label="Costo" />
                     </div>
                   </div>
@@ -181,7 +181,7 @@ let address = ref("");
     border-radius: 30px;
     margin-left: 60%;
 } */
-.boton {
+.boton2 {
   /* margin-top: 5px; */
   /* background-color: #cace06; */
   border-radius: 30px;
@@ -196,7 +196,7 @@ let address = ref("");
 .contenedorBoton {
   margin-left: 44%;
 }
-.dialog {
+.dialog1{
   background-color: #f39a31;
   width: 1000px;
 }

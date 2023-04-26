@@ -25,7 +25,7 @@
             title="Facturas"
             :rows="rows"
             :columns="columns"
-            row-key="name"
+            row-key="nameMFa"
           />
         </div>
       </div>
@@ -44,7 +44,7 @@
               <div class="row">
                 <div class="col-5">
                   <div class="boton">
-                    <q-input v-model="name" label="Nombre" />
+                    <q-input v-model="nameMFa" label="Nombre" />
                   </div>
                 </div>
                 <div class="col-2"></div>
@@ -63,7 +63,7 @@
                 <div class="col-2"></div>
                 <div class="col-5">
                   <div class="boton">
-                    <q-input v-model="costo" label="Costo" />
+                    <q-input v-model="emailMFa" label="Costo" />
                   </div>
                 </div>
               </div>
@@ -99,39 +99,45 @@
   <script setup>
 import { ref } from "vue";
 
-let name = ref("");
+let nameMFa = ref("");
 let numeroDocumentoMFa = ref("");
 let celularMFa = ref("");
-let costo = ref("");
+let emailMFa = ref("");
+let detallesMFa = ref("")
+let preferenciasMFa = ref("")
+let estadoMFa = ref("")
+let cantidadMFa = ref("")
+let direccionMFa = ref("")
+
 let users = ref([]);
 
 let rows = ref([
   {
-    name: "Tractor",
+    nameMFa: "Tractor",
     numeroDocumentoMFa: "5wf5515wq142",
     celularMFa: 3,
-    costo: "500.000.000",
+    emailMFa: "500.000.000",
   },
   {
-    name: "Avion",
+    nameMFa: "Avion",
     numeroDocumentoMFa: "5w142",
     celularMFa: 1,
-    costo: "1.500.000.000",
+    emailMFa: "1.500.000.000",
   },
 ]);
 
 function createUser() {
   users.value.push({
-    name: name.value,
+    nameMFa: nameMFa.value,
     numeroDocumentoMFa: numeroDocumentoMFa.value,
     celularMFa: celularMFa.value,
-    costo: costo.value,
+    emailMFa: emailMFa.value,
   });
 
   rows.value.push(users.value[0]);
   users.value = [];
 
-  console.log(rows.value);
+  // console.log(rows.value);
   modalFacturacion.value = !modalFacturacion.value;
 }
 
@@ -140,14 +146,14 @@ const columns = [
     required: true,
     label: "Nombre",
     align: "left",
-    field: (row) => row.name,
+    field: (row) => row.nameMFa,
     format: (val) => `${val}`,
     sortable: true,
   },
 
   { name: "numeroDocumentoMFa", label: "Número Documento", field: "numeroDocumentoMFa" },
   { name: "celularMFa", label: "Cantidad", field: "celularMFa" },
-  { name: "costo", label: "Costo", field: "costo" },
+  { name: "emailMFa", label: "Costo", field: "emailMFa" },
 ];
 
 let modalFacturacion = ref(false);
