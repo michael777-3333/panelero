@@ -113,23 +113,23 @@ let users = ref([]);
 
 let rows = ref([
   {
-    nameMFa: "Tractor",
-    numeroDocumentoMFa: "5wf5515wq142",
-    celularMFa: 3,
+    name: "Tractor",
+    NDocumento: "5wf5515wq142",
+    celular: 3,
     emailMFa: "500.000.000",
   },
   {
-    nameMFa: "Avion",
-    numeroDocumentoMFa: "5w142",
-    celularMFa: 1,
+    name: "Avion",
+    NDocumento: "5w142",
+    celular: 1,
     emailMFa: "1.500.000.000",
   },
 ]);
 
 function createUser() {
   users.value.push({
-    nameMFa: nameMFa.value,
-    numeroDocumentoMFa: numeroDocumentoMFa.value,
+    name: nameMFa.value,
+    NDocumento: numeroDocumentoMFa.value,
     celularMFa: celularMFa.value,
     emailMFa: emailMFa.value,
   });
@@ -146,13 +146,13 @@ const columns = [
     required: true,
     label: "Nombre",
     align: "left",
-    field: (row) => row.nameMFa,
+    field: (row) => row.name,
     format: (val) => `${val}`,
     sortable: true,
   },
 
-  { name: "numeroDocumentoMFa", label: "Número Documento", field: "numeroDocumentoMFa" },
-  { name: "celularMFa", label: "Cantidad", field: "celularMFa" },
+  { name: "numeroDocumento", label: "Número Documento", field: "NDocumento" },
+  { name: "celular", label: "Celular", field: "celular" },
   { name: "emailMFa", label: "Costo", field: "emailMFa" },
 ];
 
