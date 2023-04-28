@@ -12,7 +12,7 @@ import AdmCostos from '../components/modulos/costos/CostoAdmin.vue'
 
 
 import Facturacion from '../components/modulos/facturacion/Facturacion.vue'
-// import Pedidos from '../components/modulos/facturacion/Pedidos.vue'
+import Pedidos from '../components/modulos/facturacion/Pedidos.vue'
 
 export const routes = [
     { path:"/", component: Login },
@@ -37,6 +37,7 @@ export const routes = [
             {
                 path:"facturacion", children: [
                     { path:"facturacionModulos", component: Facturacion},
+                    { path:"pedidosModulos", component: Pedidos},
                 ]
             }
         ]

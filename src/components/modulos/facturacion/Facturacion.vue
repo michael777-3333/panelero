@@ -63,7 +63,20 @@
                 <div class="col-2"></div>
                 <div class="col-5">
                   <div class="boton">
-                    <q-input v-model="emailMFa" label="Costo" />
+                    <q-input v-model="emailMFa" label="Email" />
+                  </div>
+                </div>
+              </div>
+              <div class="row d-flex q-m-sm">
+                <div class="col-5">
+                  <div class="boton">
+                    <q-input v-model="celularMFa" label="Celular" />
+                  </div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5">
+                  <div class="boton">
+                    <q-input v-model="emailMFa" label="Email" />
                   </div>
                 </div>
               </div>
@@ -116,13 +129,13 @@ let rows = ref([
     name: "Tractor",
     NDocumento: "5wf5515wq142",
     celular: 3,
-    emailMFa: "500.000.000",
+    email: "w@w.com",
   },
   {
     name: "Avion",
     NDocumento: "5w142",
     celular: 1,
-    emailMFa: "1.500.000.000",
+    email: "a@a.com",
   },
 ]);
 
@@ -153,7 +166,7 @@ const columns = [
 
   { name: "numeroDocumento", label: "Número Documento", field: "NDocumento" },
   { name: "celular", label: "Celular", field: "celular" },
-  { name: "emailMFa", label: "Costo", field: "emailMFa" },
+  { name: "email", label: "email", field: "email" },
 ];
 
 let modalFacturacion = ref(false);

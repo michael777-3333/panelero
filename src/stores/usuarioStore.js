@@ -90,12 +90,12 @@ export const useUsuarioStore = defineStore("usuario", {
       {
         icon: 'send',
         text:'Pedidos',
-        ruta: "/body/costos/costosModulos",
+        ruta: "/body/facturacion/pedidosModulos",
       },
       {
         icon: 'description', /**request_page */
         text:'Facturacion',
-        ruta: "/body/costos/costosModulos",
+        ruta: "/body/facturacion/facturacionModulos",
       }]
   }),
   actions: {
