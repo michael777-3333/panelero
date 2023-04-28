@@ -1,5 +1,5 @@
 // FILE: main.js
-
+import './style.css'
 import { createApp } from 'vue'
 import { Quasar } from 'quasar'
 

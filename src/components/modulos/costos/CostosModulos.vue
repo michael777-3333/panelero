@@ -1,75 +1,90 @@
 <template>
-  <div class="justify-center items-center d-flex">
-    <div class="row">
+ <div class="justify-center items-center d-flex"> 
+  <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
         <div class="tituloF text-center ">
-          <h1 class="tituloh1 text-h6">Costo Inventario</h1>
+          <h1 class="bgColorEnfasis borderTitle text-h6">Costo Inventario</h1>
         </div>
       </div>
+      <br>
       <div class="col-4"></div>
     </div>
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <div class=" text-center ">
-          <q-btn label="Crear Costo" style="color: #f39a31" @click="alert = true" />
+        <div class="colorEnfasis text-center ">
+          <q-btn @click="alertt = true" >
+          <span class="">Crear Costo</span>
+          </q-btn>
         </div>
       </div>
       <div class="col-4"></div>
     </div>
-    <!-- <div class="contenedorBoton q-pa-md q-gutter-sm justify-center items-center d-flex">
-      <q-btn label="Crear Costo" style="color: #f39a31" @click="alert = true" />
-    </div> -->
-
-    <div class="conta row justify-center items-center d-flex">
-      <div class="correr"></div>
-      <div class="row1 col-8 justify-center ">
-        <div class="cost q-pa-md">
-          <q-table
-            title="Lista de costos"
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-          />
-        </div>
-      </div>
-
-      <q-dialog v-model="alert">
+  </div>  
+  <div class="q-pa-md">
+    <q-table
+      class="my-sticky-header-table"
+      flat bordered
+      title="Treats"
+      :rows="rows"
+      :columns="columns"
+      row-key="name"
+    />
+  </div>
+  <q-dialog v-model="alertt">
         <q-card class="dialog1">
           <q-card-section>
-            <div style="color:" class="text-h6">Alert</div>
+            <div style="color:" class="text-h6">alert</div>
           </q-card-section>
 
           <q-card-section class="q-pt-none">
             <q-card class="my-card d-flex" style="width: 100%">
-              <q-card-section>
-                <div class="">
+              <q-card-section class="cardse">
                   <div class="">
                     <div class="boton2">
                       <q-input v-model="name" label="Nombre" />
                     </div>
                   </div>
-                  <div class=""></div>
                   <div class="">
                     <div class="boton2">
                       <q-input v-model="codigo" label="Codigo" />
                     </div>
                   </div>
+                  <div class="q-pa-md" style="max-width: 500px">
+                  <q-input filled v-model="date" mask="date" :rules="['date']">
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date v-model="date">
+                            <div class="row items-center justify-end">
+                              <q-btn
+                                v-close-popup
+                                label="Close"
+                                color="primary"
+                                flat
+                              />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
                 </div>
-                <div class=" d-flex q-m-sm">
                   <div class="">
                     <div class="boton2">
                       <q-input v-model="cantidad" label="Cantidad" />
                     </div>
                   </div>
-                  <div class=""></div>
                   <div class="">
                     <div class="boton2">
                       <q-input v-model="costo" label="Costo" />
                     </div>
                   </div>
-                </div>
               </q-card-section>
               <q-separator />
               <q-card-actions align="center">
@@ -81,12 +96,6 @@
                 />
               </q-card-actions>
               <q-card-actions align="center">
-                <!-- <q-btn
-                  @click=""
-                  style="color: #f39a31"
-                  class="q-my-md"
-                  label="Descartar"
-                /> -->
               </q-card-actions>
             </q-card>
           </q-card-section>
@@ -96,38 +105,152 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
-    </div>
-  </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from "vue";
+let alertt = ref(false);
 
-let name = ref("");
-let codigo = ref("");
-let cantidad = ref("");
-let costo = ref("");
-let users = ref([]);
+const columns = [
+  {
+    name: 'name',
+    required: true,
+    label: 'Nombre',
+    align: 'left',
+    field: row => row.name,
+    format: val => `${val}`,
+    sortable: true
+  },
+  { name: "codigo", label: "Codigo", field: "codigo" },
+  { name: "cantidad", label: "Cantidad", field: "cantidad" },
+  { name: "date", label: "Fecha", field: "date" },
+  { name: "costo", label: "Costo", field: "costo" },
+  // {
+  //   // required: true,
+  //   // label: "Nombre",
+  //   // align: "left",
+  //   // field: (row) => row.name,
+  //   // format: (val) => `${val}`,
+  //   // sortable: true,
+  // },
 
-let rows = ref([
+]
+
+const rows = [
   {
     name: "Tractor",
     codigo: "5wf5515wq142",
+    date: "2019/02/01",
     cantidad: 3,
     costo: "500.000.000",
   },
   {
     name: "Avion",
     codigo: "5w142",
+    date: "2019/02/01",
     cantidad: 1,
     costo: "1.500.000.000",
   },
-]);
+  {
+    name: "Tractor",
+    codigo: "5wf5515wq142",
+    date: "2019/02/01",
+    cantidad: 3,
+    costo: "500.000.000",
+  },
+  {
+    name: "Avion",
+    codigo: "5w142",
+    date: "2019/02/01",
+    cantidad: 1,
+    costo: "1.500.000.000",
+  },
+  {
+    name: "Tractor",
+    codigo: "5wf5515wq142",
+    date: "2019/02/01",
+    cantidad: 3,
+    costo: "500.000.000",
+  },
+  {
+    name: "Avion",
+    codigo: "5w142",
+    date: "2019/02/01",
+    cantidad: 1,
+    costo: "1.500.000.000",
+  },
+  {
+    name: "Tractor",
+    codigo: "5wf5515wq142",
+    date: "2019/02/01",
+    cantidad: 3,
+    costo: "500.000.000",
+  },
+  {
+    name: "Avion",
+    codigo: "5w142",
+    date: "2019/02/01",
+    cantidad: 1,
+    costo: "1.500.000.000",
+  },
+  {
+    name: "Tractor",
+    codigo: "5wf5515wq142",
+    date: "2019/02/01",
+    cantidad: 3,
+    costo: "500.000.000",
+  },
+  {
+    name: "Avion",
+    codigo: "5w142",
+    date: "2019/02/01",
+    cantidad: 1,
+    costo: "1.500.000.000",
+  },
+  {
+    name: "Tractor",
+    codigo: "5wf5515wq142",
+    date: "2019/02/01",
+    cantidad: 3,
+    costo: "500.000.000",
+  },
+  {
+    name: "Avion",
+    codigo: "5w142",
+    date: "2019/02/01",
+    cantidad: 1,
+    costo: "1.500.000.000",
+  },
+  {
+    name: "Tractor",
+    codigo: "5wf5515wq142",
+    date: "2019/02/01",
+    cantidad: 3,
+    costo: "500.000.000",
+  },
+  {
+    name: "Avion",
+    codigo: "5w142",
+    date: "2019/02/01",
+    cantidad: 1,
+    costo: "1.500.000.000",
+  },
+]
 
+export default {
+  setup () {
+    return {
+      columns,
+      rows,
+      alertt
+    }
+  }
+}
 function createUser() {
   users.value.push({
     name: name.value,
     codigo: codigo.value,
+    date: date.value,
     cantidad: cantidad.value,
     costo: costo.value,
   });
@@ -138,80 +261,35 @@ function createUser() {
   console.log(rows.value);
 }
 
-const columns = [
-  {
-    required: true,
-    label: "Nombre",
-    align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-
-  { name: "codigo", label: "Codigo", field: "codigo" },
-  { name: "cantidad", label: "Cantidad", field: "cantidad" },
-  { name: "costo", label: "Costo", field: "costo" },
-];
-
-let alert = ref(false);
 let confirm = ref(false);
 let prompt = ref(false);
-
 let address = ref("");
-// let model = ref()
 </script>
 
-<style>
-.titulo {
-  /* width: 10px; */
-  /* height: 10px; */
-  background-color: #f39a31;
-  border-radius: 30px;
-  width: 400px;
-  margin-left: 37%;
-  background: #ffffff;
-}
+<style lang="sass">
+.my-sticky-header-table
+  /* height or max-height is important */
+  height: 400px
 
-.tituloh2 {
-  font-size: 20px;
-}
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    /* bg color is important for th; just specify one */
+    background-color: #f39a31
 
-/* .my-card{
-    background-color: #f3993181;
-    border-radius: 30px;
-    margin-left: 60%;
-} */
-.boton2 {
-  /* margin-top: 5px; */
-  /* background-color: #cace06; */
-  border-radius: 30px;
-  margin: 3px 3px;
-  /* height: 40px; */
-}
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
 
-.my-card-width {
-  max-width: 600px;
-}
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
 
-.contenedorBoton {
-  margin-left: 44%;
-}
-.dialog1{
-  background-color: #f39a31;
-  width: 1000px;
-}
-.row1{
-  justify-content: center;
-
-}
-.dialog{
-  background-color: #00000052;
-
-}
-.boo{
-    background-color: #00000052;
-  
-  }
-
-/*  */
+  /* prevent scrolling behind sticky top row on focus */
+  tbody
+    /* height of all previous header rows */
+    scroll-margin-top: 48px
 </style>

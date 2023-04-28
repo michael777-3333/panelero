@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <div class="tituloF text-center ">
-          <h1 class="tituloh1 text-h6">Facturación</h1>
+        <div class="tituloF text-center">
+          <h1 class="text-h6">Facturación</h1>
         </div>
       </div>
       <div class="col-4"></div>
@@ -14,11 +14,9 @@
       <div class="col-3"></div>
       <div class="col-6 text-center">
         <div class="q-pa-md q-gutter-sm">
-          <q-btn
-            label="Crear Facturación"
-            style="color: #f39a31"
-            @click="modalFacturacion = true"
-          />
+          <q-btn @click="modalFacturacion = true">
+          <span class="colorEnfasis">Crear Facturas</span>
+          </q-btn>
         </div>
         <div class="q-pa-md">
           <q-table
@@ -35,75 +33,60 @@
     <q-dialog v-model="modalFacturacion">
       <q-card class="dialog">
         <q-card-section>
-          <div style="color: black" class="text-h6">Facturacion</div>
+          <span class="text-black text-h6">Facturacion</span>
+
+          <!-- <div class="text-black text-h6"></div> -->
+          <q-btn @click="modalFacturacion = !modalFacturacion" class="bg-red text-white float-right" label="Cerrar" />
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-card class="my-card d-flex" style="width: 100%">
+          <q-card class="my-card d-flex">
             <q-card-section>
               <div class="row">
                 <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="nameMFa" label="Nombre" />
-                  </div>
+                  <q-input v-model="nameMFa" label="Nombre" />
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="numeroDocumentoMFa" label="Número Documento" />
-                  </div>
+                  <q-input v-model="numeroDocumentoMFa" label="Número Documento" />
                 </div>
+              <!--  -->
+              <div class="col-5">
+                <q-input v-model="celularMFa" label="Celular" />
               </div>
-              <div class="row d-flex q-m-sm">
-                <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="celularMFa" label="Celular" />
-                  </div>
-                </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="emailMFa" label="Email" />
-                  </div>
-                </div>
+              <div class="col-2"></div>
+              <div class="col-5">
+                <q-input v-model="emailMFa" label="Email" />
               </div>
-              <div class="row d-flex q-m-sm">
-                <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="celularMFa" label="Celular" />
-                  </div>
-                </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="emailMFa" label="Email" />
-                  </div>
-                </div>
+              <!--  -->
+              <div class="col-5">
+                <q-input v-model="celularMFa" label="Celular" />
               </div>
+              <div class="col-2"></div>
+              <div class="col-5">
+                <q-input v-model="emailMFa" label="Email" />
+              </div>
+            </div>
+
             </q-card-section>
             <q-separator />
             <q-card-actions align="center">
-              <q-btn
-                @click="createUser()"
-                style="color: #f39a31"
-                class="q-my-md"
-                label="Guardar Costo"
-              />
+              <q-btn @click="createUser()" style="color: #f39a31" class="q-my-md" label="Crear Factura" />
             </q-card-actions>
-            <q-card-actions align="center">
-              <q-btn
+            <!-- <q-card-actions align="center"> -->
+              <!-- <q-btn
                 @click="modalFacturacion = !modalFacturacion"
                 style="color: #f39a31"
                 class="q-my-md"
                 label="Descartar"
-              />
-            </q-card-actions>
+              /> -->
+            <!-- </q-card-actions> -->
           </q-card>
         </q-card-section>
 
-        <q-card-actions align="right">
+        <!-- <q-card-actions align="right">
           <q-btn flat label="OK" style="color: #f39a31" v-close-popup />
-        </q-card-actions>
+        </q-card-actions> -->
       </q-card>
     </q-dialog>
   </div>
@@ -116,11 +99,11 @@ let nameMFa = ref("");
 let numeroDocumentoMFa = ref("");
 let celularMFa = ref("");
 let emailMFa = ref("");
-let detallesMFa = ref("")
-let preferenciasMFa = ref("")
-let estadoMFa = ref("")
-let cantidadMFa = ref("")
-let direccionMFa = ref("")
+let detallesMFa = ref("");
+let preferenciasMFa = ref("");
+let estadoMFa = ref("");
+let cantidadMFa = ref("");
+let direccionMFa = ref("");
 
 let users = ref([]);
 
@@ -176,38 +159,6 @@ let prompt = ref(false);
 let address = ref("");
 // let model = ref()
 </script>
-  
-  <style>
-.tituloF {
-  background-color: #f39a31;
-  border-radius: 30px;
-}
-
-.tituloh1 {
-  font-size: 20px;
-}
-
-/* .my-card{
-      background-color: #f3993181;
-      border-radius: 30px;
-      margin-left: 60%;
-  } */
-.boton {
-  /* margin-top: 5px; */
-  /* background-color: #cace06; */
-  border-radius: 30px;
-  margin: 3px 3px;
-  /* height: 40px; */
-}
-
-.my-card-width {
-  max-width: 600px;
-}
-
-.dialog {
-  background-color: #f39a31;
-  width: 1000px;
-}
-
+<style>
 /*  */
 </style>

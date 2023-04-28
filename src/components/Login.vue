@@ -101,42 +101,5 @@ function sesion() {
 }
 </script>
 <style>
-.bg-d {
-  height: 100vh;
-}
-.car {
-  /* background: rgb(216, 9, 9);
-  background-color: rgb(212, 203, 203); */
-  width: 70vw;
-  max-width: 1000px;
-  min-width: 320px;
-  margin: auto; 
-  border-radius: 15px;
-}
-/* .logi-mg{
-  width: 100%;
-  max-width: 250px;
-} */
-.img{
-  width: 100%;
-  border-radius: 15px;
-  box-shadow: 0px 3px 5px (15, 15, 15, .5);
 
-}
-.img1{
-  position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
-}
-.car{
-  background-color:  rgba(0, 0, 0, 0.432);
-}
-.car1{
-  background-color:  rgba(255, 255, 255, 0.781);
-  text-decoration-color: rgb(0, 0, 0);
-}
 </style>

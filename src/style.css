@@ -1,0 +1,178 @@
+.bg-d {
+    height: 100vh;
+  }
+  .car {
+
+    width: 70vw;
+    max-width: 1000px;
+    min-width: 320px;
+    margin: auto; 
+    border-radius: 15px;
+  }
+ 
+  .img{
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0px 3px 5px (15, 15, 15, .5);
+  
+  }
+  .img1{
+    position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+  }
+  .car{
+    background-color:  rgba(0, 0, 0, 0.432);
+  }
+  .car1{
+    background-color:  rgba(255, 255, 255, 0.781);
+    text-decoration-color: rgb(0, 0, 0);
+  }
+
+  .header {
+    background: linear-gradient(to right, #f39a31, #f39a31);
+    height: 40px;
+    font-family: "Indie Flower";
+  }
+  
+  .icon {
+    color: #ffffff;
+  }
+  
+  .texto {
+    text-align: center;
+    color: #ffffff;
+    margin: 20px;
+    font-size: 20px;
+    font-family: "Indie Flower";
+  }
+  
+  .botones {
+    background-color: rgba(0, 0, 0, 0.34);
+    margin-bottom: 10px;
+    margin: 10px;
+    border-radius: 20px;
+  }
+  .iboto {
+    background-color: rgb(255, 255, 255);
+  }
+  
+  .contenedor {
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    width: 100px;
+  }
+  
+  .titulo {
+    background-color: #f39a31;
+    border-radius: 30px;
+    width: 400px;
+    margin-left: 37%;
+    background: #ffffff;
+  }
+  
+  .tituloh2 {
+    font-size: 20px;
+  }
+  
+  .boton {
+    border-radius: 30px;
+    margin: 3px 3px;
+  }
+  
+  .my-card-width {
+    max-width: 600px;
+  }
+  
+  .contenedorBoton {
+    margin-left: 44%;
+  }
+  .targeta {
+    background-color: #f39a31;
+    width: 1000px;
+  }
+  .row1{
+    justify-content: center;
+  
+  }
+  .titlesub {
+    background-color: #f39a31;
+
+  }
+
+/* estilos modulo facturacion y pedidos  */
+.borderTitle {
+  border-radius: 30px;
+}
+  
+.bgColorEnfasis {
+  background-color: #f39a31;
+}
+
+/* tengo un problema con el textp  */
+.colorEnfasis  {
+  color: #f39a31;
+}
+/* estilos modulo facturacion y pedidos  */
+
+/* estilos home costo  */
+.homecosto {
+    width: 500%;
+    margin: 5%;
+    max-width: 500px;
+  }
+/* fin estilos home costo  */
+
+
+/* estilos costo modulo*/
+
+.titulo {
+
+  background-color: #f39a31;
+  border-radius: 30px;
+  width: 400px;
+  margin-left: 37%;
+  background: #ffffff;
+}
+
+.tituloh2 {
+  font-size: 20px;
+}
+.boton2 {
+
+  border-radius: 30px;
+  margin: 3px 3px;
+  
+}
+
+.my-card-width {
+  max-width: 600px;
+}
+
+.contenedorBoton {
+  margin-left: 44%;
+}
+.dialog1{
+  background-color: #f39a31;
+  width: 1000px;
+}
+.row1{
+  justify-content: center;
+
+}
+.dialog{
+  background-color: #00000052;
+
+}
+.boo{
+  background-color: #00000052;
+}
+
+
+/* fin estilos costo modulo*/

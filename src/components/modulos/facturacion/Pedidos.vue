@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <div class="tituloF text-center ">
+        <div class="bgColorEnfasis borderTitle text-center ">
           <h1 class="text-h6">Pedidos</h1>
         </div>
       </div>
@@ -14,7 +14,9 @@
       <div class="col-3"></div>
       <div class="col-6 text-center">
         <div class="q-pa-md q-gutter-sm">
-          <q-btn label="Crear Pedidos" style="color: #f39a31" @click="modalPedidos = true" />
+          <button @click="modalPedidos = true" class="q-btn">
+            <span class="colorEnfasis">Crear Pedidos</span>
+            </button>
         </div>
         <div class="q-pa-md">
           <q-table title="Pedidos" :rows="rows" :columns="columns" row-key="clienteMFa" />
@@ -24,12 +26,13 @@
     </div>
 
     <q-dialog v-model="modalPedidos">
-      <q-card class="dialog">
+      <q-card class="bgColorEnfasis">
         <q-card-section>
           <!-- <h6 class="text-black">Pedidos</h6> -->
           <span class="text-black text-h6">Pedidos</span>
           <!-- <div class="text-black">Pedidos</div> -->
-          <q-btn @click="modalPedidos = !modalPedidos" style="color: #f39a31" class="bg-red text-white float-right" label="Cerrar" />
+          
+          <q-btn @click="modalPedidos = !modalPedidos" class="bg-red text-white float-right" label="Cerrar" />
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -37,27 +40,18 @@
             <q-card-section>
               <div class="row">
                 <div class="col-5">
-                  <!-- <div class="boton"> -->
                   <q-input v-model="clienteMFa" label="Cliente" />
-                  <!-- </div> -->
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <!-- <div class="boton"> -->
                   <q-input v-model="tipoDocumentoMFa" label="Tipo de Documento" />
-                  <!-- </div> -->
                 </div>
-                <!--  -->
                 <div class="col-5">
-                  <!-- <div class="boton"> -->
                   <q-input v-model="numeroDocumentoMFa" label="Número de documento" />
-                  <!-- </div> -->
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <!-- <div class="boton"> -->
                   <q-input v-model="celularMFa" label="Celular" />
-                  <!-- </div> -->
                 </div>
                 <!--  -->
                 <div class="col-5">
@@ -87,16 +81,13 @@
             </q-card-section>
             <q-separator />
             <q-card-actions align="center">
-              <q-btn @click="createUser()" style="color: #f39a31" class="q-my-md" label="Crear Pedido" />
-            <!-- </q-card-actions> -->
-            <!-- <q-card-actions align="center"> -->
+              <q-btn @click="createUser()" class="q-my-md ">
+                <span class="colorEnfasis">Crear Pedido</span>
+              </q-btn>
             </q-card-actions>
           </q-card>
         </q-card-section>
 
-        <!-- <q-card-actions align="right">
-          <q-btn flat label="OK" style="color: #a39a31" v-close-popup />
-        </q-card-actions> -->
       </q-card>
     </q-dialog>
   </div>
@@ -337,7 +328,6 @@ function createUser() {
   rows.value.push(users.value[0]);
   users.value = [];
 
-  // console.log(rows.value);
   modalPedidos.value = !modalPedidos.value;
 }
 
@@ -365,30 +355,5 @@ let address = ref("");
 </script>
   
 <style>
-.tituloF {
-  background-color: #f39a31;
-  border-radius: 30px;
-}
-
-.tituloh1 {
-  font-size: 20px;
-}
-
-/* .my-card{
-      background-color: #f3993181;
-      border-radius: 30px;
-      margin-left: 60%;
-  } */
-
-
-.my-card-width {
-  max-width: 600px;
-}
-
-.dialog {
-  background-color: #f39a31;
-  width: 1000px;
-}
-
 /*  */
 </style>

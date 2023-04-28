@@ -28,7 +28,7 @@
         bordered
       >
         <!-- overlay -->
-        <q-scroll-area class="fit">
+        <q-scroll-area class="fit bgColorEnfasis">
           <q-list>
             <router-link
               v-for="(menuItem, index) in menuList"
@@ -36,17 +36,16 @@
               :to="menuItem.ruta"
               style="text-decoration: none"
             >
-              <!-- Aqui le paso menuItem.ruta a la funcion mostrar   botones -->
-              <q-item
+               <q-item
                 @click="mostrarBotones(menuItem.ruta)"
                 class="botones"
                 clickable
                 v-ripple
               >
-                <q-item-section avatar>
+                <q-item-section>
                   <q-row>
                     <q-col>
-                      <q-icon class="icon" size="20px" :name="menuItem.icon" />
+                      <q-icon class="icon q-m" size="20px" :name="menuItem.icon" />
                     </q-col>
                     <q-col>
                       <span class="texto">{{ menuItem.text }}</span>
@@ -89,7 +88,7 @@
 </script> -->
 <script>
 import { ref } from "vue";
-import { useUsuarioStore } from "../stores/usuarioStore";
+import { useUsuarioStore } from "../stores/menuStore";
 export default {
   // created() {
   //     this.info = "Componente cargado";
@@ -131,48 +130,6 @@ export default {
 </script>
   
 <style  scoped>
-.header {
-  background: linear-gradient(to right, #f39a31, #f39a31);
-  height: 40px;
-  font-family: "Indie Flower";
-}
 
-.icon {
-  color: #ffffff;
-}
-
-.texto {
-  text-align: center;
-  color: #ffffff;
-  margin: 20px;
-  font-size: 20px;
-  font-family: "Indie Flower";
-}
-
-/* .footer{
-  background: linear-gradient(to right, #faa508, #ffffff);
-  font-family: 'Indie Flower', cursive;
- } */
-.botones {
-  background-color: rgba(0, 0, 0, 0.34);
-  margin-bottom: 10px;
-  margin: 10px;
-  border-radius: 20px;
-}
-.iboto {
-  background-color: rgb(255, 255, 255);
-}
-
-.contenedor {
-  /* background-image: url(../assets/img/fondo.png); */
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* align-content: center; */
-  width: 100px;
-}
-
-.fit {
-  background-color: rgb(241, 152, 50);
-}
 </style>
   
