@@ -1,8 +1,7 @@
 // FILE: main.js
 import './style.css'
 import { createApp } from 'vue'
-import { Quasar } from 'quasar'
-
+import { Quasar ,Notify} from 'quasar'
 import { createPinia } from 'pinia'
 
 
@@ -11,6 +10,10 @@ import '@quasar/extras/material-icons/material-icons.css'
 
 // Import Quasar css
 import 'quasar/src/css/index.sass'
+
+
+
+
 
 import App from './App.vue'
 import { createRouter, createWebHashHistory } from "vue-router" 
@@ -27,7 +30,11 @@ const pinia = createPinia()
 const myApp = createApp(App);
 
 myApp.use(Quasar, {
-  plugins: {}, 
+  plugins: {
+    Notify
+  }, config: {
+    notify: { /* look at QuasarConfOptions from the API card */ }
+  }
 });
 
 myApp.use(router);

@@ -1,6 +1,6 @@
 <template>
   <div class="justify-center items-center d-flex">
-      <!-- <div class="justify-center items-center d-flex"> -->
+    <!-- TUTILO DE LA PANTALLA -->
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
@@ -11,51 +11,43 @@
       <div class="col-4"></div>
     </div>
 
+    <!-- TABLA DE LA PANTALLA -->
 
     <div class="row">
       <div class="col-3"></div>
       <div class="col-6">
-
-      <div class=" q-pa-md">
-
-        
-        <q-table class="paddingTabla"
-          title="Treats"
-          :rows="rows"
-          :columns="columns"
-          row-key="name"
-
-        >
-
-
-      <template v-slot:body-cell-state="props">
-        <!-- <q-toggle @click="test()" v-model="scope.selected" /> -->
-             
+        <div class=" q-pa-md">
+          <q-table class="paddingTabla"
+            title="Treats"
+            :rows="rows"
+            :columns="columns"
+            row-key="name"
+            >
+            <template v-slot:body-cell-state="props">
               <q-checkbox  @click="test(props.row._id,props)"   />
+            </template>
 
-              <!-- :v-model="val[props.row._id].status = props.row.state" -->
-      </template>
-
-      <template v-slot:body-cell-editar="props">
-               <td >
+            <template v-slot:body-cell-editar="props">
+              <td>
                 <q-btn class="botonEditar" @click="modal(JSON.stringify(props.row))" glossy label="Editar" />
-               </td>     
-        
-      </template>
+              </td>     
+            
+            </template>
       
-    </q-table>
-    <!-- 
-      
-     -->
-      <!-- </q-table> -->
-      </div>
-
+          </q-table>
+        </div>
       </div>
       <div class="col-3"></div>
     </div>
+
+    <!-- BOTON PARA CREAR UN UN NUEVO USUARIO-->
+
     <div class="contenedorBoton q-pa-md q-gutter-sm">
-      <q-btn label="Crear usuario" style="color: #F39A31;" @click="alert = true" />
+      <q-btn label="Crear usuario"  style="color: #F39A31;" @click="alert = true" />
     </div>
+
+    <!-- FORMULARIO DE LA TABLA -->
+    
     <q-dialog  v-model="alert">
       <q-card class="dialog">
         <q-card-section>
@@ -64,6 +56,7 @@
 
         <q-card-section class="q-pt-none">
           <q-card class="my-card d-flex" style="width: 100%">
+
             <q-card-section>
               <div class="row">
                 <div class="col-5">
@@ -71,9 +64,10 @@
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <div class="boton"><q-input v-model="identificacion" label="identificacion" /></div>
+                  <div class="boton"><q-select outlined v-model="model" :options="tipoUsuario" label="Tipo de usuario" /></div>
                 </div>
               </div>
+
               <div class="row d-flex q-m-sm">
                 <div class="col-5">
                   <div class="boton"><q-input v-model="email" label="correo" /></div>
@@ -83,21 +77,14 @@
                   <div class="boton"><q-input v-model="password" label="contraseña" /></div>
                 </div>
               </div>
-              <div class="row d-flex q-m-sm">
-
-                <div class="col-5">
-                  <div class="boton"><q-select outlined v-model="model" :options="tipoUsuario" label="Tipo de usuario" />
-                  </div>
-                </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                  <div class="boton"><q-input v-model="eps" label="EPS" /></div>
-                </div>
-              </div>
+              <!-- { name: 'editar', label: 'editar'}, -->
             </q-card-section>
+
             <q-separator />
+
+            <!-- BOTON DENTRO DEL FORMULARIO PARA CREAR USUARIO -->
             <q-card-actions align="center">
-              <q-btn @click="createUser()" style="color:#F39A31 " class="q-my-md" label="Crear Usuario" />
+              <q-btn @click="createUser()"  style="color:#F39A31 " class="q-my-md" label="Crear Usuario" />
             </q-card-actions>
           </q-card>
         </q-card-section>
@@ -115,13 +102,17 @@
 <script setup>
 
   import { ref } from 'vue';
-
   import { useUsuarioStore } from '../../../stores/usuarioStore.js'
-  
   import axios from 'axios';
+  import { Notify } from 'quasar'
+  import useQuasar from 'quasar/src/composables/use-quasar.js';
 
+
+  //  VARIABLES A UTILIZAR
   const store = useUsuarioStore()
-
+  // console.log(store.getToken()); 
+  // Promise.all([store.getToken()]).then(response => console.log(response))
+  const $q = useQuasar()
   let val = ref()
   let name = ref('');
   let email = ref('')
@@ -130,9 +121,12 @@
   let model = ref('')
   let identificacion = ref('')
   let state= ref()
+  let validacionBotonEditar=ref(true)
   let rows = ref()
   let alert = ref(false)
+  let data= ref()
 
+  // PARA ACTIVAR Y DESACTIVAR USUARIO
  async function test(id,prueba) {
   if(prueba.value == 1){
     await axios.put(`http://localhost:3000/usuario/desactivar/${id}`).then(response=> console.log(response.data.msj));
@@ -145,22 +139,66 @@
   Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
 }
  
-
+//  FUNCION PARA TRAER LOS USUARIOS DE LA BASE DE DATOS 
   async function createUser() {
-      
+    if (name.value=='') {
+      $q.notify({
+          type: 'negative',
+          message: 'digite el nombre'
+        })
+    }else if (model.value=='') {
+      $q.notify({
+          type: 'negative',
+          message: 'seleccione el tipo de usuario'
+        })
+    }else if (email.value=='') {
+      $q.notify({
+          type: 'negative',
+          message: 'digite el email'
+        })
+    }else if (password.value=='') {
+      $q.notify({
+          type: 'negative',
+          message: 'digite la contrasena'
+        })
+    }else if(validacionBotonEditar.value==true){
+      await store.addUsuario({name: name.value, email: email.value, password: password.value, eps: eps.value, identification: identificacion.value, tipoUsuario:model.value, state:state.value })
+      Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
+      console.log(rows.value);
+      alert.value = false 
+      $q.notify({
+          type: 'positive',
+          message: 'el usuario ha sido creado correctamente'
+        })
 
-    await store.addUsuario({name: name.value, email: email.value, password: password.value, eps: eps.value, identification: identificacion.value, tipoUsuario:model.value, state:state.value })
+    }else if (validacionBotonEditar.value==false) {
+      
+      console.log(data.value);
+      console.log(data.value.name);
+
+      data.value.name =name.value
+      data.value.email=email.value
+      data.value.tipoUsuario=model.value
+      data.value.password = password.value
+
+      await store.putUsuario({name: name.value, email: email.value, password: password.value, tipoUsuario:model.value, })
+      Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
+      alert.value = false 
+      $q.notify({
+          type: 'positive',
+          message: 'el usuario ha sido actualizado correctamente'
+        })
+        validacionBotonEditar.value=true
+        vaciar ()
+
+    }
+
     
-    Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
-    
-    console.log(rows.value);
-    alert.value = false 
   }
 
     Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
 
-
-
+//  LAS COLUMNAS DE LA TABLA HECHAS POR JAVASCRIPT
   const columns = 
     [
       {
@@ -169,16 +207,13 @@
         field: row => row.name, 
         format: val => `${val}`,
         sortable: true,
-        
       },
       
       { name: 'email', label: 'Email', field: 'email' },
-      { name: 'password', label: 'Contraseña', field: 'password' },
-      { name: 'eps', label: 'EPS', field: 'eps' },
-      { name: 'identificacion', label: 'Indentificacion', field: 'identification' },
       { name: 'model', label: 'Rol', field: 'typeUser' },
       { name: 'state', field:'state'},
-      { name: 'editar', label: 'editar'}
+      { name: 'password', label: 'Contraseña', field: 'password' },
+      { name: 'editar', label: 'editar'},
 
       
     ] 
@@ -186,30 +221,39 @@
   function traerDatosAxios() {
     
   }
-  function modal(s) {
-    let data = JSON.parse(s)
-    alert.value=true
-    // console.log(s+ ' fsdf');
-    // console.log(JSON.parse(s))
-    console.log(data);
-    name.value=data.name
-    identificacion.value=data.identification
-    email.value=data.email
-    password.value=data.password
-    model.value=data.modal
-    eps.value=data.eps
-  }
-    
 
-  
-  
+  // TRAER LOS DATOS DEL USUARIO PARA CREARLO EN LA TABLA
+  function modal(s) {
+    validacionBotonEditar.value=false
+    data.value = JSON.parse(s)
+    alert.value=true
+    // console.log(data);
+    name.value=data.value.name
+    email.value=data.value.email
+    password.value=''
+    model.value=data.value.modal
+  }
+
   let tipoUsuario = [
     'Super Usuario', 'Administrador', 'Usuario'
   ]
-  
-  
   let selected = ref([])
-  // console.log(selected.value);
+
+  function vaciar () {
+    name.value=''
+    email.value=''
+    model.value=''
+    password.value=''
+  }
+
+
+  
+
+  
+        
+      
+  
+  
 
 </script>
 
