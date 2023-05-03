@@ -1,13 +1,13 @@
 <template>
   <div>
-    <img src="../assets/img/fondo1.jpg" class="img1">
+    <img src="../assets/img/fondo.jpg" class="img1">
   </div>
   <div class="cad items-center justify-center bg-d">
     <div class="row justify-center d-flex items-center" style="height: 100vh">
       <div class="card1 col-4 "></div>
        <div class="col-4 text-center rounded-borders q-pa-md car">
         <div class="logi-mg">
-          <img src="../assets/img/fondo2.png" class="img">
+          <img src="../assets/img/card.png" class="img">
         </div>
         
         <q-form
