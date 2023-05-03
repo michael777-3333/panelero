@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-export const useUsuarioStore = defineStore("menu", {
+export const useMenuStore = defineStore("menu", {
   state: () => ({
     // crear store para rutas
     /** Defino el menu de home aqui! */

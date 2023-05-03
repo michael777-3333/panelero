@@ -15,7 +15,7 @@
           <q-toolbar-title>Paneleros</q-toolbar-title>
 
           <router-link to="/">
-            <q-btn class="iboto text-left">Salir</q-btn>
+            <q-btn class="bg-white text-left">Salir</q-btn>
           </router-link>
         </q-toolbar>
       </q-header>
@@ -71,65 +71,32 @@
     </q-layout>
   </div>
 </template>
-<!-- <script >
-  export default {
-    beforeCreate() {
-      console.log("No se ha ejecutado nada todavía");
-    },
-//   };
-//   export default {
-    data: () => ({
-      info: null,
-    }),
-    created() {
-      this.info = "Componente cargado";
-    },
-  };
-</script> -->
-<script>
-import { ref } from "vue";
-import { useUsuarioStore } from "../stores/menuStore";
-export default {
-  // created() {
-  //     this.info = "Componente cargado";
-  //     console.log(this.info);
-  //     mostrarBotones()
-  //   },
-  // var URLactual = window.location;
-  setup() {
-    /**Cargo las variables de Pinia -> ../src/stores/usuariostore.js */
-    const userStore = useUsuarioStore();
+<script setup>
+  import { ref } from "vue";
+  import { useMenuStore } from "../stores/menuStore";
+  
+  const menuStore = useMenuStore();
 
-    let drawer = ref(true);
+  let drawer = ref(false);
 
-    /** Menu, que es cargado al iniciar la pagina */
-    let menuList = ref(userStore.menuListHome /** Traido desde Pinia */);
+  /** Menu, que es cargado al iniciar la pagina */
+  let menuList = ref(menuStore.menuListHome /** Traido desde Pinia */);
 
-    /** Cambiamos el menu según los datos que corresponden */
-    function mostrarBotones(r /**string*/) {
-      /**Dependiendo de la ruta del boton seleccinado cargo el respectivo menu */
-      if (r == "/body/costos/homeCostos") {
-        menuList.value = userStore.menuListCostos;
-      } else if (r == "/body/mantenimiento/homeMantenimiento") {
-        menuList.value = userStore.menuListMantenimiento;
-      } else if (r == "/body/facturacion/facturacionModulos") {
-        menuList.value = userStore.menuListFacturacion;
-      } else if (r == "/body/home") {
-        /** Este es para regresar */
-        menuList.value = userStore.menuListHome;
-      }
+  /** Cambiamos el menu según los datos que corresponden */
+  function mostrarBotones(r /**string*/) {
+    /**Dependiendo de la ruta del boton seleccinado cargo el respectivo menu */
+    if (r == "/body/costos/homeCostos") {
+      menuList.value = menuStore.menuListCostos;
+    } else if (r == "/body/mantenimiento/homeMantenimiento") {
+      menuList.value = menuStore.menuListMantenimiento;
+    } else if (r == "/body/facturacion/facturacionModulos") {
+      menuList.value = menuStore.menuListFacturacion;
+    } else if (r == "/body/home") {
+      /** Este es para regresar */
+      menuList.value = menuStore.menuListHome;
     }
-    return {
-      userStore,
-      drawer,
-      menuList,
-      mostrarBotones,
-    };
-  },
-};
+  }
 </script>
   
 <style  scoped>
-
 </style>
-  

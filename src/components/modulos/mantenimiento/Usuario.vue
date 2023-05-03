@@ -1,10 +1,10 @@
 <template>
   <div class="justify-center items-center d-flex">
-    <!-- TUTILO DE LA PANTALLA -->
+    <!-- TITULO DE LA PANTALLA -->
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <div class="tituloF text-center ">
+        <div class="text-center ">
           <h1 class="tituloh1 text-h6">usuarios</h1>
         </div>
       </div>
@@ -16,20 +16,22 @@
     <div class="row">
       <div class="col-3"></div>
       <div class="col-6">
-        <div class=" q-pa-md">
-          <q-table class="paddingTabla"
-            title="Treats"
+        <div class="q-pa-md">
+          <q-table
+            title="Usuarios"
             :rows="rows"
             :columns="columns"
             row-key="name"
-            >
+          >
             <template v-slot:body-cell-state="props">
-              <q-checkbox  @click="test(props.row._id,props)"   />
+              <td>
+                <q-checkbox  @click="editarEstado(props.row._id,props)"   />
+              </td>
             </template>
 
             <template v-slot:body-cell-editar="props">
               <td>
-                <q-btn class="botonEditar" @click="modal(JSON.stringify(props.row))" glossy label="Editar" />
+                <q-btn class="botonEditar" @click="usuarioEditar(props.row)" glossy label="Editar" />
               </td>     
             
             </template>
@@ -55,28 +57,36 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-card class="my-card d-flex" style="width: 100%">
+          <q-card class="my-card d-flex">
 
             <q-card-section>
               <div class="row">
                 <div class="col-5">
-                  <div class="boton"> <q-input v-model="name" label="nombre" /></div>
+                  <div class="boton"> 
+                    <q-input v-model="name" label="nombre" />
+                  </div>
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <div class="boton"><q-select outlined v-model="model" :options="tipoUsuario" label="Tipo de usuario" /></div>
+                  <div class="boton">
+                    <q-select outlined v-model="typeUser" :options="tipoUsuario" label="Tipo de usuario" />
+                  </div>
                 </div>
               </div>
 
               <div class="row d-flex q-m-sm">
                 <div class="col-5">
-                  <div class="boton"><q-input v-model="email" label="correo" /></div>
+                  <div class="boton">
+                    <q-input v-model="email" label="correo" />
+                  </div>
                 </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                  <div class="boton"><q-input v-model="password" label="contraseña" /></div>
+              <div class="col-2"></div>
+              <div class="col-5">
+                <div class="boton">
+                  <q-input v-model="password" label="contraseña" />
                 </div>
               </div>
+            </div>
               <!-- { name: 'editar', label: 'editar'}, -->
             </q-card-section>
 
@@ -89,116 +99,109 @@
           </q-card>
         </q-card-section>
 
-        <q-card-actions align="right">
+        <!-- <q-card-actions align="right">
           <q-btn flat label="OK" style="color:#F39A31 " v-close-popup />
-        </q-card-actions>
+        </q-card-actions> -->
       </q-card>
     </q-dialog>
-
-
   </div>
 </template>
 
 <script setup>
-
   import { ref } from 'vue';
   import { useUsuarioStore } from '../../../stores/usuarioStore.js'
   import axios from 'axios';
-  import { Notify } from 'quasar'
-  import useQuasar from 'quasar/src/composables/use-quasar.js';
+  import { useQuasar } from 'quasar';
 
+  async function ordenarUsuarios() {
+    await Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
+  }
 
-  //  VARIABLES A UTILIZAR
+  ordenarUsuarios()
+
+  //  VARIABLES
   const store = useUsuarioStore()
-  // console.log(store.getToken()); 
-  // Promise.all([store.getToken()]).then(response => console.log(response))
-  const $q = useQuasar()
-  let val = ref()
+  const $q = useQuasar();
   let name = ref('');
-  let email = ref('')
-  let password = ref('')
-  let eps = ref('')
-  let model = ref('')
-  let identificacion = ref('')
-  let state= ref()
-  let validacionBotonEditar=ref(true)
-  let rows = ref()
-  let alert = ref(false)
-  let data= ref()
+  let email = ref('');
+  let password = ref('');
+  let typeUser = ref('');
+  let validarCrear = ref(true);
+  let rows = ref([{name:'a', email: 'aa'}]);
+  let alert = ref(false);
+  let data = ref(null);
+  let id = ref(null)
 
   // PARA ACTIVAR Y DESACTIVAR USUARIO
- async function test(id,prueba) {
-  if(prueba.value == 1){
-    await axios.put(`http://localhost:3000/usuario/desactivar/${id}`).then(response=> console.log(response.data.msj));
-  }
-  else if(prueba.value == 0){
+  async function editarEstado(id,props) {
+    console.log(props.row);
+    if(props.value == 1){
+      await axios.put(`http://localhost:3000/usuario/desactivar/${id}`).then(response=> console.log(response.data.msj));
+    }
+    else if(props.value == 0){
       await axios.put(`http://localhost:3000/usuario/activar/${id}`).then(response=> console.log(response.data.msj));
+    }
+    console.log(props.value);
+    ordenarUsuarios();
   }
-  console.log(prueba.value)
-
-  Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
-}
  
-//  FUNCION PARA TRAER LOS USUARIOS DE LA BASE DE DATOS 
+  //  FUNCION PARA TRAER LOS USUARIOS DE LA BASE DE DATOS 
   async function createUser() {
-    if (name.value=='') {
+    if (name.value == '') {
       $q.notify({
           type: 'negative',
           message: 'digite el nombre'
-        })
-    }else if (model.value=='') {
+      })
+    }else if (typeUser.value == '') {
       $q.notify({
           type: 'negative',
           message: 'seleccione el tipo de usuario'
-        })
-    }else if (email.value=='') {
+      })
+    }else if (email.value == '') {
       $q.notify({
           type: 'negative',
           message: 'digite el email'
-        })
-    }else if (password.value=='') {
+      })
+    }else if (password.value == '') {
       $q.notify({
           type: 'negative',
           message: 'digite la contrasena'
-        })
-    }else if(validacionBotonEditar.value==true){
-      await store.addUsuario({name: name.value, email: email.value, password: password.value, eps: eps.value, identification: identificacion.value, tipoUsuario:model.value, state:state.value })
-      Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
+      })
+    }else if(validarCrear.value == true){
+      await store.addUsuario({name: name.value, email: email.value, password: password.value, tipoUsuario: typeUser.value});
+      ordenarUsuarios()
       console.log(rows.value);
-      alert.value = false 
+      alert.value = false;
       $q.notify({
           type: 'positive',
           message: 'el usuario ha sido creado correctamente'
-        })
+      });
+      limpiarCajas()
+    }else if (validarCrear.value == false) {
+      // console.log(data.value);
+      // console.log(data.value.name);
+      // data.value.name = name.value;
+      // data.value.email = email.value;
+      // data.value.typeUser = typeUser.value;
+      // data.value.password = password.value;
+      console.log(data.value)
 
-    }else if (validacionBotonEditar.value==false) {
-      
-      console.log(data.value);
-      console.log(data.value.name);
-
-      data.value.name =name.value
-      data.value.email=email.value
-      data.value.tipoUsuario=model.value
-      data.value.password = password.value
-
-      await store.putUsuario({name: name.value, email: email.value, password: password.value, tipoUsuario:model.value, })
-      Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
-      alert.value = false 
+      await store.putUsuario({name: name.value, email: email.value, password: password.value, typeUser: typeUser.value, id: id.value});
+      ordenarUsuarios()
+      alert.value = false; 
       $q.notify({
           type: 'positive',
           message: 'el usuario ha sido actualizado correctamente'
-        })
-        validacionBotonEditar.value=true
-        vaciar ()
-
+      })
+      validarCrear.value=true
+      limpiarCajas()
     }
-
-    
   }
 
-    Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
 
-//  LAS COLUMNAS DE LA TABLA HECHAS POR JAVASCRIPT
+
+    
+  //  LAS COLUMNAS DE LA TABLA HECHAS POR JAVASCRIPT
   const columns = 
     [
       {
@@ -210,63 +213,51 @@
       },
       
       { name: 'email', label: 'Email', field: 'email' },
-      { name: 'model', label: 'Rol', field: 'typeUser' },
-      { name: 'state', field:'state'},
+      { name: 'typeUser', label: 'Rol', field: 'typeUser' },
+      { name: 'state', },
       { name: 'password', label: 'Contraseña', field: 'password' },
       { name: 'editar', label: 'editar'},
 
       
     ] 
 
-  function traerDatosAxios() {
-    
-  }
 
-  // TRAER LOS DATOS DEL USUARIO PARA CREARLO EN LA TABLA
-  function modal(s) {
-    validacionBotonEditar.value=false
-    data.value = JSON.parse(s)
-    alert.value=true
-    // console.log(data);
-    name.value=data.value.name
-    email.value=data.value.email
-    password.value=''
-    model.value=data.value.modal
+  // TRAER LOS DATOS DEL USUARIO PARA Editarlo EN LA TABLA
+  function usuarioEditar(data) {
+    validarCrear.value = false;
+    data.value = data;
+    console.log(data.value);
+    alert.value = true;
+    name.value = data.value.name
+    email.value = data.value.email
+    password.value = ''
+    typeUser.value = data.value.typeUser
+    id.value = data.value._id
   }
 
   let tipoUsuario = [
-    'Super Usuario', 'Administrador', 'Usuario'
-  ]
-  let selected = ref([])
+    'super usuario', 'administrador', 'usuario'
+  ];
 
-  function vaciar () {
-    name.value=''
-    email.value=''
-    model.value=''
-    password.value=''
+  function limpiarCajas() {
+    name.value = ''
+    email.value = ''
+    typeUser.value = ''
+    password.value = ''
+    id.value = null
   }
-
-
-  
-
-  
-        
-      
-  
-  
-
 </script>
 
 <style>
-.titulo {
+/* .titulo { */
   /* width: 10px; */
   /* height: 10px; */
-  background-color: #F39A31;
-  border-radius: 30px;
+  /* background-color: #F39A31; */
+  /* border-radius: 30px; */
   /* width: 400px;
   margin-left: 37%; */
 
-}
+/* } */
 
 .tituloh1 {
   font-size: 20px;
