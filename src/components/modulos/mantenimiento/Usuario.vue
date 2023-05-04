@@ -1,6 +1,5 @@
 <template>
   <div class="justify-center items-center d-flex">
-    <!-- TITULO DE LA PANTALLA -->
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
@@ -11,7 +10,7 @@
       <div class="col-4"></div>
     </div>
 
-    <!-- TABLA DE LA PANTALLA -->
+    <!--tabla-->
 
     <div class="row">
       <div class="col-3"></div>
@@ -25,7 +24,7 @@
           >
             <template v-slot:body-cell-state="props">
               <td>
-                <q-checkbox  @click="editarEstado(props.row._id,props)"   />
+                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editarEstado(props.row)" />
               </td>
             </template>
 
@@ -42,14 +41,12 @@
       <div class="col-3"></div>
     </div>
 
-    <!-- BOTON PARA CREAR UN UN NUEVO USUARIO-->
-
+    <!--boton abrir dialog para crear usuario-->
     <div class="contenedorBoton q-pa-md q-gutter-sm">
       <q-btn label="Crear usuario"  style="color: #F39A31;" @click="alert = true" />
     </div>
 
-    <!-- FORMULARIO DE LA TABLA -->
-    
+    <!--dialog-->
     <q-dialog  v-model="alert">
       <q-card class="dialog">
         <q-card-section>
@@ -92,17 +89,12 @@
 
             <q-separator />
 
-            <!-- BOTON DENTRO DEL FORMULARIO PARA CREAR USUARIO -->
             <q-card-actions align="center">
               <q-btn @click="createUser()"  style="color:#F39A31 " class="q-my-md" label="Crear Usuario" />
             </q-card-actions>
           </q-card>
         </q-card-section>
-
-        <!-- <q-card-actions align="right">
-          <q-btn flat label="OK" style="color:#F39A31 " v-close-popup />
-        </q-card-actions> -->
-      </q-card>
+    </q-card>
     </q-dialog>
   </div>
 </template>
@@ -116,10 +108,7 @@
   async function ordenarUsuarios() {
     await Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
   }
-
-  ordenarUsuarios()
-
-  //  VARIABLES
+  
   const store = useUsuarioStore()
   const $q = useQuasar();
   let name = ref('');
@@ -127,25 +116,36 @@
   let password = ref('');
   let typeUser = ref('');
   let validarCrear = ref(true);
-  let rows = ref([{name:'a', email: 'aa'}]);
+  let rows = ref([]);
   let alert = ref(false);
   let data = ref(null);
   let id = ref(null)
+  
+  ordenarUsuarios();
 
-  // PARA ACTIVAR Y DESACTIVAR USUARIO
-  async function editarEstado(id,props) {
-    console.log(props.row);
-    if(props.value == 1){
-      await axios.put(`http://localhost:3000/usuario/desactivar/${id}`).then(response=> console.log(response.data.msj));
+  async function editarEstado(props) {
+    console.log(props);
+    if(props.state == 0){
+      await axios.put(`http://localhost:3000/usuario/desactivar/${props._id}`,{
+        token: store.token
+      })
+      .then(response=> console.log(response))
+      .catch(error=>console.log(error));
+      console.log('aqui')
     }
-    else if(props.value == 0){
-      await axios.put(`http://localhost:3000/usuario/activar/${id}`).then(response=> console.log(response.data.msj));
+    else if(props.state == 1){
+      await axios.put(`http://localhost:3000/usuario/activar/${props._id}`,{
+        token: store.token
+      })
+      .then(response=> console.log(response))
+      .catch(error=>console.log(error));
+      console.log('aqui II')
     }
-    console.log(props.value);
+
     ordenarUsuarios();
   }
  
-  //  FUNCION PARA TRAER LOS USUARIOS DE LA BASE DE DATOS 
+  //crear o actualizar usuario en la base de datos
   async function createUser() {
     if (name.value == '') {
       $q.notify({
@@ -168,6 +168,7 @@
           message: 'digite la contrasena'
       })
     }else if(validarCrear.value == true){
+      // crear usuario
       await store.addUsuario({name: name.value, email: email.value, password: password.value, tipoUsuario: typeUser.value});
       ordenarUsuarios()
       console.log(rows.value);
@@ -178,6 +179,8 @@
       });
       limpiarCajas()
     }else if (validarCrear.value == false) {
+      // actualizar usuario
+
       // console.log(data.value);
       // console.log(data.value.name);
       // data.value.name = name.value;
@@ -198,31 +201,25 @@
     }
   }
 
-
-
-    
-  //  LAS COLUMNAS DE LA TABLA HECHAS POR JAVASCRIPT
-  const columns = 
-    [
-      {
-        label: 'Nombre',
-        align: 'left',
-        field: row => row.name, 
-        format: val => `${val}`,
-        sortable: true,
-      },
+  const columns = [
+    {
+      label: 'Nombre',
+      align: 'left',
+      field: row => row.name, 
+      format: val => `${val}`,
+      sortable: true,
+    },
       
-      { name: 'email', label: 'Email', field: 'email' },
-      { name: 'typeUser', label: 'Rol', field: 'typeUser' },
-      { name: 'state', },
-      { name: 'password', label: 'Contraseña', field: 'password' },
-      { name: 'editar', label: 'editar'},
+    { name: 'email', align: 'left', label: 'Email', field: 'email' },
+    { name: 'typeUser', align: 'left', label: 'Rol', field: 'typeUser' },
+    { name: 'state', },
+    { name: 'password', align: 'left', label: 'Contraseña', field: 'password' },
+    { name: 'editar', align: 'left', label: 'editar'},
 
-      
-    ] 
+  ] 
 
 
-  // TRAER LOS DATOS DEL USUARIO PARA Editarlo EN LA TABLA
+  // actualizar usuario, llenar inputs del dialog para actualizar usuario
   function usuarioEditar(data) {
     validarCrear.value = false;
     data.value = data;

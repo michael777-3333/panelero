@@ -9,7 +9,7 @@
           <img src="../assets/img/card.png" class="img-card">
         </div>
         <q-form
-          @submit = "sesion()"
+          @submit = "sesion"
           class="q-gutter-md  justify-center"
         >
           <q-input
@@ -50,7 +50,7 @@
 </template>
   
 <script setup>
-  // import useQuasar from "quasar/src/composables/use-quasar.js";
+  // import { useQuasar } from "quasar";
   import { ref } from "vue";
 
   import { useRouter } from "vue-router";
@@ -58,7 +58,9 @@
 
 
   const router = useRouter();
-  const store = useUsuarioStore()
+  const store = useUsuarioStore();
+
+  Promise.all([store.getUsuario()]).then(response => console.log(response));
 
   // const $q = useQuasar();
 
@@ -68,13 +70,13 @@
   async function sesion() {
     await store.login({email: email.value, password: password.value});
 
-    if(store.token !== null){
-    
-    router.push("/body/home");
+    console.log(store.token);
 
-    }else{
-      console.log('fallo al logearse', store.token);
+    if(store.token !== null){
+      console.log(store.token);
       router.push("/body/home");
+    }else{
+      console.log('fallo!');
     }
   }
 

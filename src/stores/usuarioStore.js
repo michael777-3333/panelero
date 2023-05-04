@@ -26,7 +26,7 @@ export const useUsuarioStore = defineStore("usuario", {
     async login(data) {
       await axios
         .post("http://localhost:3000/usuario/login", {email: data.email, password: data.password})
-          .then((res) => {console.log(res); this.token = res})
+          .then((res) => {this.token = res.data.token; console.log(res.data)})
           .catch((error) => console.log(error));
     },
     
