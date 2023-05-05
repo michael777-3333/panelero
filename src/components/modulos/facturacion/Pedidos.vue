@@ -47,7 +47,7 @@
                   <q-input v-model="tipoDocumentoMFa" label="Tipo de Documento" />
                 </div>
                 <div class="col-5">
-                  <q-input v-model="numeroDocumentoMFa" label="Número de documento" />
+                  <q-input v-model="numeroDocumentoMFa" label="Número de documento" type="number" />
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
@@ -71,7 +71,7 @@
                 </div>
                 <!--  -->
                 <div class="col-5">
-                  <q-input v-model="cantidadMFa" label="Cantidad la panela" />
+                  <q-input v-model="cantidadMFa" label="Cantidad la panela" type="number" />
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
@@ -81,7 +81,7 @@
             </q-card-section>
             <q-separator />
             <q-card-actions align="center">
-              <q-btn @click="createUser()" class="q-my-md ">
+              <q-btn @click="createOrder()" class="q-my-md ">
                 <span class="colorEnfasis">Crear Pedido</span>
               </q-btn>
             </q-card-actions>
@@ -96,6 +96,16 @@
 <script setup>
 import { ref } from "vue";
 
+import { usePedidoStore } from '../../../stores/pedidos.js'
+import axios from 'axios';
+
+//  VARIABLES A UTILIZAR
+const store = usePedidoStore()
+
+async function ordenarPedidos() {
+  await Promise.all([store.getPedido()]).then(response => rows.value = response[0].data.pedidos);
+}
+
 let clienteMFa = ref("");
 let numeroDocumentoMFa = ref("");
 let tipoDocumentoMFa = ref("");
@@ -108,225 +118,28 @@ let cantidadMFa = ref("")
 let direccionMFa = ref("")
 
 let users = ref([]);
+let rows = ref([])
 
-let rows = ref([
-{
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },  {
-    name: "Tractor",
-    tipoD: "cc",
-    NDocumento: "5wf5515wq142",
-    celular: 3,
-    email: "w@w.com",
-    descripcion: "Panela cafe",
-    preferencias: "w",
-    estado: 0,
-    cantidad: 234,
-    direccion: "cra 23"
-  },
-]);
+ordenarPedidos();
 
-function createUser() {
-  users.value.push({
-    name: clienteMFa.value,
-    tipoD: tipoDocumentoMFa,
-    NDocumento: numeroDocumentoMFa.value,
-    celularMFa: celularMFa.value,
-    emailMFa: emailMFa.value,
-    descripcion: detallesMFa.value,
-    preferencias: preferenciasMFa.value,
-    estado: estadoMFa.value,
-    cantidad: cantidadMFa.value,
-    direccion: direccionMFa.value,
+async function createOrder() {
+  // users.value.push();
+  
+  await store.addPedido({
+    customerName: clienteMFa.value,
+    documentType: tipoDocumentoMFa.value,
+    documentNumber: numeroDocumentoMFa.value,
+    phoneNumber: celularMFa.value,
+    email: emailMFa.value,
+    descriptionOfPanela: detallesMFa.value,
+    preferencesOfPanela: preferenciasMFa.value,
+    orderStatus: estadoMFa.value,
+    quantityOfPanela: cantidadMFa.value,
+    address: direccionMFa.value,
   });
-
-  rows.value.push(users.value[0]);
-  users.value = [];
+  ordenarPedidos();
+  // rows.value.push(users.value[0]);
+  // users.value = [];
 
   modalPedidos.value = !modalPedidos.value;
 }
@@ -336,13 +149,13 @@ const columns = [
     required: true,
     label: "Cliente",
     align: "left",
-    field: (row) => row.name,
+    field: (row) => row.customerName,
     format: (val) => `${val}`,
     sortable: true,
   },
 
-  { name: "cantidad", label: "Cantidad", field: "cantidad" },
-  { name: "numeroDocumento", label: "Estado", field: "estado" },
+  { name: "cantidad", label: "Cantidad", field: "quantityOfPanela" },
+  { name: "numeroDocumento", label: "Estado", field: "orderStatus" },
   // { name: "email", label: "email", field: "email" },
 ];
 
@@ -354,6 +167,6 @@ let address = ref("");
 // let model = ref()
 </script>
   
-<style>
+<style scoped>
 /*  */
 </style>

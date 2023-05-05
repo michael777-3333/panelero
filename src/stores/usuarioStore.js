@@ -1,49 +1,120 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+// import jwt  from 'jsonwebtoken';
 
 export const useUsuarioStore = defineStore("usuario", {
-  actions: {
-    async addUsuario(data) {
-      await axios
-        .post("http://localhost:3000/usuario", {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          eps: data.eps,
-          identification: data.identification,
-          typeUser: data.tipoUsuario,
-          state: data.state
-        })
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
-    },
-    async getUsuario() {
-      return await axios
-        .get("http://localhost:3000/usuario")
-    },
-    async getToken() {
-      await axios
-      
-        .post("http://localhost:3000/usuario/login", {email:"michael@gmail.com", password:"12345678"})
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
-    },
-    async putUsuario(data){
-      await axios
-        .put("http://localhost:3000/usuario/64519566af7c88c51c149ff6", {
-          token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pY2hhZWxAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjM0NTY3OCIsImlhdCI6MTY4MzA2OTA5MywiZXhwIjoxNjgzMTA1MDkzfQ.Wc3ziBcRusGeJui35QvZn8OWpcyXxiigxYhEAyzoF0o",
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          // eps: data.eps,
-          // identification: data.identification,
-          typeUser: data.tipoUsuario,
-          // state: data.state
-        })
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
-    }
+  state: () => ({
+    token: null,
+    // baseURL: axios.create({
+    //   baseURL: 'http://localhost:3000/'
+    // }),
+    typeUser: null,
+    _id: null
+  }),
 
+  actions: {
+    // axios peticiones usuario
+
+    async getUsuario() {
+      return await axios(
+        {
+          method: 'get',
+          url: 'http://localhost:3000/usuario'
+        })
+    },
+
+    async addUsuario(data) {
+      await axios(
+        {
+          method: 'post',
+          url: 'http://localhost:3000/usuario',
+       
+          data: { 
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            typeUser: data.typeUser,
+          },
+          headers: {
+            // 'token'
+          }
+        })
+        // .then((res) => console.log(res))
+        .catch((error) => console.log(error));
+    },
+
+    
+
+    async login(data) {
+      await axios({
+          method: 'post',
+          url: 'http://localhost:3000/usuario/login',
+          data: {
+            email: data.email,
+            password: data.password}
+          })
+          .then(async(res) => { 
+            this.token = res.data.token;
+            // jwt.verify(this.token, 'shhhhh', function(err, decode) {
+            //   if(err){
+            //     console.log(err);
+            //   }
+
+            //   const { _id, typeUser } = decode;
+
+            //   this._id = _id;
+            //   this.typeUser = typeUser;
+
+            //   console.log(this.state);
+            // });
+          })
+          .catch((error) => console.log(error));
+    },
+    
+    async putUsuario(data){
+      await axios(
+        {
+          method: 'put',
+          url: `http://localhost:3000/usuario/${data.id}`,
+       
+          data: {
+            name: data.name,
+            password: data.password,
+            typeUser: data.typeUser,
+          },
+          headers: {
+            'token' : this.token,
+          }
+        })
+        .then((res) => console.log(res))
+        .catch((error) => console.log(error));
+    },
+
+    async activarUsuario(props) {
+      await axios(
+        {
+          method: 'put',
+          url: `http://localhost:3000/usuario/desactivar/${props._id}`,
+          headers: {
+            'token': this.token,
+          }
+        })
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+    },
+
+    async desactivarUsuario(props) {
+      await axios(
+        {
+          method: 'put',
+          url:`http://localhost:3000/usuario/activar/${props._id}`,
+          headers: {
+            'token': this.token,
+          }
+        })
+      .then(response=> console.log(response))
+      .catch(error=>console.log(error));
+    }
 
   },
 

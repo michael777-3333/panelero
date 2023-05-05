@@ -13,7 +13,7 @@ export const useUsuarioStore = defineStore("menu", {
       },
       {
         icon: 'description', /**request_page */
-        text:'cotos',
+        text:'Cotos',
         ruta: "/body/costos/homeCostos",
         
       },
@@ -24,7 +24,7 @@ export const useUsuarioStore = defineStore("menu", {
       },
       {
         icon: 'description', /**request_page */
-        text:'Facturacion',
+        text:'Facturación',
         ruta: "/body/facturacion/facturacionModulos",
       },
       
@@ -77,7 +77,7 @@ export const useUsuarioStore = defineStore("menu", {
       },
       {
         icon: "image_not_supported",
-        text: "lotes",
+        text: "Lotes",
         ruta: "/body/mantenimiento/lotes",
       },
     ],
@@ -88,13 +88,13 @@ export const useUsuarioStore = defineStore("menu", {
         ruta: "/body/home",
       },
       {
-        icon: 'send',
+        icon: 'request_page',
         text:'Pedidos',
         ruta: "/body/facturacion/pedidosModulos",
       },
       {
         icon: 'description', /**request_page */
-        text:'Facturacion',
+        text:'Facturación',
         ruta: "/body/facturacion/facturacionModulos",
       }]
   }),
