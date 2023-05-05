@@ -44,7 +44,7 @@ export const useUsuarioStore = defineStore("usuario", {
             // 'token'
           }
         })
-        .then((res) => console.log(res))
+        // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
 

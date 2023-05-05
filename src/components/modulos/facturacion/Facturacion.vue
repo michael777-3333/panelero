@@ -79,7 +79,7 @@
   </div>
 </template>
   
-  <script setup>
+<script setup>
 import { ref } from "vue";
 
 let nameMFa = ref("");
