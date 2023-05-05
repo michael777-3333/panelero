@@ -101,15 +101,15 @@
 
 <script setup>
   import { ref } from 'vue';
-  import { useUsuarioStore } from '../../../stores/usuarioStore.js'
+  import { useUsuarioStore } from '../../../stores/usuarioStore.js';
   import axios from 'axios';
   import { useQuasar } from 'quasar';
 
   async function ordenarUsuarios() {
-    await Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.users)
+    await Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.usuarios);
   }
   
-  const store = useUsuarioStore()
+  const store = useUsuarioStore();
   const $q = useQuasar();
   let name = ref('');
   let email = ref('');
@@ -119,7 +119,7 @@
   let rows = ref([]);
   let alert = ref(false);
   let data = ref(null);
-  let id = ref(null)
+  let id = ref(null);
   
   ordenarUsuarios();
 
@@ -131,7 +131,6 @@
       })
       .then(response=> console.log(response))
       .catch(error=>console.log(error));
-      console.log('aqui')
     }
     else if(props.state == 1){
       await axios.put(`http://localhost:3000/usuario/activar/${props._id}`,{
@@ -139,7 +138,6 @@
       })
       .then(response=> console.log(response))
       .catch(error=>console.log(error));
-      console.log('aqui II')
     }
 
     ordenarUsuarios();
@@ -169,8 +167,8 @@
       })
     }else if(validarCrear.value == true){
       // crear usuario
-      await store.addUsuario({name: name.value, email: email.value, password: password.value, tipoUsuario: typeUser.value});
-      ordenarUsuarios()
+      await store.addUsuario({name: name.value, email: email.value, password: password.value, typeUser: typeUser.value});
+      ordenarUsuarios();
       console.log(rows.value);
       alert.value = false;
       $q.notify({
@@ -180,24 +178,15 @@
       limpiarCajas()
     }else if (validarCrear.value == false) {
       // actualizar usuario
-
-      // console.log(data.value);
-      // console.log(data.value.name);
-      // data.value.name = name.value;
-      // data.value.email = email.value;
-      // data.value.typeUser = typeUser.value;
-      // data.value.password = password.value;
-      console.log(data.value)
-
       await store.putUsuario({name: name.value, email: email.value, password: password.value, typeUser: typeUser.value, id: id.value});
-      ordenarUsuarios()
+      ordenarUsuarios();
       alert.value = false; 
       $q.notify({
           type: 'positive',
           message: 'el usuario ha sido actualizado correctamente'
-      })
-      validarCrear.value=true
-      limpiarCajas()
+      });
+      validarCrear.value = true;
+      limpiarCajas();
     }
   }
 
@@ -246,29 +235,15 @@
 </script>
 
 <style>
-/* .titulo { */
-  /* width: 10px; */
-  /* height: 10px; */
-  /* background-color: #F39A31; */
-  /* border-radius: 30px; */
-  /* width: 400px;
-  margin-left: 37%; */
-
-/* } */
-
 .tituloh1 {
   font-size: 20px;
 }
+
 .botonEditar{
   background-color: #F39A31;
   border-radius: 10px;
 }
 
-/* .my-card{
-    background-color: #f3993181;
-    border-radius: 30px;
-    margin-left: 60%;
-} */
 .boton {
   /* margin-top: 5px; */
   /* background-color: #cace06; */
@@ -284,6 +259,7 @@
 .contenedorBoton {
   margin-left: 44%;
 }
+
 .dialog{
   background-color: #F39A31;
   width: 1000px;

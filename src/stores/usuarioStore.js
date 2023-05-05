@@ -12,7 +12,7 @@ export const useUsuarioStore = defineStore("usuario", {
           name: data.name,
           email: data.email,
           password: data.password,
-          typeUser: data.tipoUsuario
+          typeUser: data.typeUser
         })
         .then((res) => console.log(res))
         .catch((error) => console.log(error));
@@ -26,7 +26,7 @@ export const useUsuarioStore = defineStore("usuario", {
     async login(data) {
       await axios
         .post("http://localhost:3000/usuario/login", {email: data.email, password: data.password})
-          .then((res) => {this.token = res.data.token; console.log(res.data)})
+          .then((res) => { this.token = res.data.token; })
           .catch((error) => console.log(error));
     },
     
