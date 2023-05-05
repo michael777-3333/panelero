@@ -3,8 +3,8 @@
         <div class="text-h2 text-center">
             Inventario
         </div>
-
         <div>
+
         </div>
     </div>
 </template>

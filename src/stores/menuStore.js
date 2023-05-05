@@ -80,6 +80,11 @@ export const useMenuStore = defineStore("menu", {
         text: "lotes",
         ruta: "/body/mantenimiento/lotes",
       },
+      {
+        icon: "image_not_supported",
+        text: "dueños lotes",
+        ruta: "/body/mantenimiento/dueñosLote",
+      },
     ],
     menuListFacturacion : [
       {

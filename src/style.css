@@ -1,20 +1,7 @@
-  /* .car {
+  /* login */
 
-    width: 70vw;
-    max-width: 1000px;
-    min-width: 320px;
-    marg in: auto; 
-    border-radius: 15px;
-  } */
- 
-  .img-card{
-    width: 100%;
-    border-radius: 15px;
-    box-shadow: 0px 3px 5px (15, 15, 15, .5);
-  
-  }
   .fondo{
-    opacity: 0.65;
+    opacity: 0.45;
     position: fixed;
     top: 0;
     left: 0;
@@ -23,26 +10,42 @@
     overflow: hidden;
     z-index: -1;
   }
+
   .card-fondo{
-    background-color:  rgba(0, 0, 0, 0.800);
+    background-color:  rgba(64, 64, 64, 0.85);
   }
+
+  .img-card{
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0px 3px 5px (15, 15, 15, .5);
+  }
+ 
   .card-input{
-    background-color: rgba(255, 255, 255, 0.950);
+    background-color: rgb(255, 255, 255);
     color: black;
     /* opacity: 1; */
   }
 
-  .header {
-    background: linear-gradient(to right, #f39a31, #f39a31);
-    height: 40px;
-    font-family: "Indie Flower";
+
+  /* body */
+
+  .color-principal{
+    background-color: #f39a31;
   }
-  
-  .icon {
-    color: #ffffff;
+
+  .botones-menuList {
+    background-color: rgba(0, 0, 0, 0.34);
+    margin-bottom: 10px;
+    margin: 10px;
+    border-radius: 20px;
   }
-  
-  .texto {
+
+  .icon-menuList {
+    background-color: #ffffff;
+  }
+
+  .texto-menuList {
     text-align: center;
     color: #ffffff;
     margin: 20px;
@@ -50,12 +53,16 @@
     font-family: "Indie Flower";
   }
   
-  .botones {
-    background-color: rgba(0, 0, 0, 0.34);
-    margin-bottom: 10px;
-    margin: 10px;
-    border-radius: 20px;
+  .header-body {
+    background: linear-gradient(to right, #f39a31, #f39a31);
+    height: 40px;
+    font-family: "Indie Flower";
   }
+  
+  
+  
+  
+  
   
   .contenedor {
 
@@ -158,10 +165,6 @@
   background-color: #f39a31;
   width: 1000px;
 }
-.row1{
-  justify-content: center;
-
-}
 .dialog{
   background-color: #00000052;
 
@@ -172,3 +175,8 @@
 
 
 /* fin estilos costo modulo*/
+
+.fecha_costo{
+  /* justify-content: center; */
+  margin: 0px 60px;
+}

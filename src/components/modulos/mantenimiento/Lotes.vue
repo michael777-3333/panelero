@@ -17,16 +17,28 @@
         <div class="col-3"></div>
         <div class="col-6">
           <div class=" q-pa-md">
-            <q-table class="paddingTabla"
-            title="Treats"
+          <q-table class="paddingTabla"
+            title="Lotes"
             :rows="rows"
             :columns="columns"
             row-key="name"
-            />
+            >
 
+            <template v-slot:body-cell-state="props">
+              <td>
+                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editarEstado(props.row)" />
+              </td>
+            </template>
+
+            <template v-slot:body-cell-editar="props">
+              <td>
+                <q-btn class="botonEditar" @click="usuarioEditar(props.row)" glossy label="Editar" />
+              </td>     
+            
+            </template>
+      
+          </q-table>
           </div>
-        
-        
       </div>
       <div class="col-3"></div>
       <div class="contenedorBoton q-pa-md q-gutter-sm">
@@ -47,33 +59,22 @@
                   </div>
                   <div class="col-2"></div>
                   <div class="col-5">
-                    <div class="buton"><q-input v-model="identificacion" label="identificacion" /></div>
+                    <div class="buton"><q-input v-model="size" label="tamaño" /></div>
                   </div>
                 </div>
                 <div class="row d-flex q-m-sm">
                   <div class="col-5">
-                    <div class="buton"><q-input v-model="email" label="correo" /></div>
+                    <div class="buton"><q-input v-model="owner" label="dueño" /></div>
                   </div>
                   <div class="col-2"></div>
                   <div class="col-5">
-                    <div class="buton"><q-input v-model="password" label="contraseña" /></div>
-                  </div>
-                </div>
-                <div class="row d-flex q-m-sm">
-  
-                  <div class="col-5">
-                    <div class="buton"><q-select outlined v-model="model" :options="tipoUsuario" label="Tipo de usuario" />
-                    </div>
-                  </div>
-                  <div class="col-2"></div>
-                  <div class="col-5">
-                    <div class="buton"><q-input v-model="eps" label="EPS" /></div>
+                    <div class="buton"><q-input v-model="createdAt" label="fecha" /></div>
                   </div>
                 </div>
               </q-card-section>
               <q-separator />
               <q-card-actions align="center">
-                <q-btn @click="createUser()" style="color:#F39A31 " class="q-my-md" label="Crear Usuario" />
+                <q-btn @click="createAllotment()" style="color:#F39A31 " class="q-my-md" label="Crear Usuario" />
               </q-card-actions>
             </q-card>
           </q-card-section>
@@ -92,80 +93,97 @@
   <script setup>
   
   import { ref } from 'vue';
+  import { useLoteStore} from '../../../stores/lotesStore.js'
+  import { useUsuarioStore } from '../../../stores/usuarioStore'; 
+  import axios from 'axios';
+  import {useQuasar} from 'quasar'
+
+  async function ordenarLotes (){
+    const res= await store.getLote()
+    
+    if (res.status<300) {
+      rows.value=res.data.lote
+    } else if (res.response.status==404) {
+      console.log("los datos no existen");
+    }
+
+    // await Promise.all([store.getLote()]).then(response => rows.value = response[0].data.lotes);
+    
   
-  // import { useUsuarioStore } from '../../../stores/usuarioStore.js'
-  // export default {
-    // setup() {
-      let name = ref('');
-      let email = ref('')
-      let password = ref('')
-      let eps = ref('')
-      let model = ref('')
-      let identificacion = ref('')
-      let users = ref([
-        {
-          name: "Juan",
-          email: 'estivem03@gmail.com',
-          password: '383u3n73',
-          eps: 'Sanitas',
-          identificacion: "110202022",
-          model: 'google',
-  
-        },
-      ])
-  
-      function createUser() {
-        users.value.push({
-          name: name.value,
-          email: email.value,
-          password: password.value,
-          eps: eps.value,
-          identificacion: identificacion.value,
-          model: model.value// tipoUsuario:tipoUsuario.value
-  
-        })
-        console.log(users.value);
+  }
+  const store = useLoteStore()
+  const $q = useQuasar();
+  let alert = ref(false)
+  let name = ref("")
+  let rows =ref([])
+  let size = ref('');
+  let owner = ref('')
+  let createdAt = ref('')
+  const storeUser = useUsuarioStore()
+
+  store.getToken(storeUser.token)
+
+  ordenarLotes()
+
+  async function editarEstado(props){
+    console.log(props);
+    if (props.state==0) {
+      await store.activarLote(props)
+    }else if (props.state ==1) {
+      await store.desactivarLote(props)
+    }
+    ordenarLotes()
+    }
+
+
+   async function createAllotment() {
+      if (name.value =='') {
+        $q.notify({
+          type: 'negative',
+          message: 'digite el nombre'
+      })
+      }else if(size.value==''){
+        $q.notify({
+          type: 'negative',
+          message: 'digite el tamaño'
+      })
+      }else if(owner.value==''){
+        $q.notify({
+          type: 'negative',
+          message: 'digite el dueño '
+      })
+      }else if(createdAt.value== ''){
+        $q.notify({
+          type: 'negative',
+          message: 'digite la fecha'
+      })
+      }else{
+      await store.addLote({name: name.value, size: size.value, owner: owner.value, createdAt: createdAt.value});
+      ordenarLotes()
+      console.log(rows.value);
+      alert.value = false;
+      $q.notify({
+          type: 'positive',
+          message: 'el usuario ha sido creado correctamente'
+      });
       }
-  
-      // const columns = [{name: 'name', label: 'Nombre', align: 'left'}]
-  
-      // const store = useUsuarioStore()
-  
-  
-  
-      // async function crearUsuario() {
-      //   await store.addUsuario(
-      //     { name: name.value, email: email.value, password: password.value }
-      //   )
-  
-      //   console.log(await store.getUsuario())
-      // }
-  
-  
-  
-  
-  
-      // crearUsuario()
-  
-  
-      // return {
-      //   eps, model, password, email, identificacion, name, users, createUser,
-  
-        let alert = ref(false)
-        let confirm = ref(false)
-        let prompt = ref(false)
-  
-        let address = ref('')
-        // let model = ref()
-        let tipoUsuario = [
-          'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-        ]
-      // }
-    // }
-  // }
-  
-  
-  
+    }
+    const columns = [
+    { name: 'state', label : 'Estado' ,align:"left" },
+    {
+      label: 'Nombre',
+      align: 'left',
+      field: row => row.name, 
+      format: val => `${val}`,
+      sortable: true,
+    },
+      
+    { name: 'size', align: 'left', label: 'tamaño', field: 'size' },
+    { name: 'owner', align: 'left', label: 'dueño', field: 'owner' },
+    { name: 'createdAt', align: 'left', label: 'fecha creacion', field: 'createdAt' },
+    { name: 'editar', align: 'left', label: 'editar'},
+
+  ]
   
   </script>
   

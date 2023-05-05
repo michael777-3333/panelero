@@ -13,20 +13,6 @@ export const useUsuarioStore = defineStore("usuario", {
   }),
 
   actions: {
-    // axios peticiones usuario
-
-    async getUsuario() {
-      
-        try {
-          return await axios(
-            {
-              method: 'get',
-              url: 'http://localhost:3000/usuario'
-            })
-        } catch (error) {
-          return error
-        }
-    },
 
     async addUsuario(data) {
       await axios(
@@ -41,14 +27,17 @@ export const useUsuarioStore = defineStore("usuario", {
             typeUser: data.typeUser,
           },
           headers: {
-            // 'token'
+      
           }
         })
         .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
 
-    
+    async getUsuario() {
+      return await axios
+        .get("http://localhost:3000/usuario")
+    },
 
     async login(data) {
       await axios({
@@ -58,10 +47,8 @@ export const useUsuarioStore = defineStore("usuario", {
             email: data.email,
             password: data.password}
           })
-          .then(async(res) => {
-            console.log(res)
+          .then(async(res) => { 
             this.token = res.data.token;
-
             // jwt.verify(this.token, 'shhhhh', function(err, decode) {
             //   if(err){
             //     console.log(err);
@@ -86,6 +73,7 @@ export const useUsuarioStore = defineStore("usuario", {
        
           data: {
             name: data.name,
+            email: data.email,
             password: data.password,
             typeUser: data.typeUser,
           },
@@ -110,7 +98,7 @@ export const useUsuarioStore = defineStore("usuario", {
       .catch(error => console.log(error));
     },
 
-    async desactivarUsuario(props) {
+    async desactivarUsuario() {
       await axios(
         {
           method: 'put',

@@ -50,11 +50,11 @@
 </template>
   
 <script setup>
-  // import { useQuasar } from "quasar";
+  import { useQuasar } from "quasar";
   import { ref } from "vue";
 
   import { useRouter } from "vue-router";
-  import { useUsuarioStore } from '../stores/usuarioStore.js'
+  import { useUsuarioStore } from '../stores/usuarioStore.js';
 
 
   const router = useRouter();
@@ -62,21 +62,28 @@
 
   Promise.all([store.getUsuario()]).then(response => console.log(response));
 
-  // const $q = useQuasar();
+  const $q = useQuasar();
 
-  const email = ref(null);
-  const password = ref(null);
+  const email = ref('usuario@gmail.com');
+  const password = ref('12345');
 
   async function sesion() {
-    await store.login({email: email.value, password: password.value});
+    await store.login({
+      email: email.value,
+      password: password.value
+    });
 
     console.log(store.token);
+   
 
-    if(store.token !== null){
+    if(store.token !== null) {
       console.log(store.token);
       router.push("/body/home");
-    }else{
-      console.log('fallo!');
+    } else {
+      $q.notify({
+        type:'negative',
+        message:'contraseña o email invalidos!'
+      });
     }
   }
 

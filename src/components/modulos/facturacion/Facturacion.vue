@@ -67,26 +67,13 @@
                 <q-input v-model="emailMFa" label="Email" />
               </div>
             </div>
-
             </q-card-section>
             <q-separator />
             <q-card-actions align="center">
               <q-btn @click="createUser()" style="color: #f39a31" class="q-my-md" label="Crear Factura" />
             </q-card-actions>
-            <!-- <q-card-actions align="center"> -->
-              <!-- <q-btn
-                @click="modalFacturacion = !modalFacturacion"
-                style="color: #f39a31"
-                class="q-my-md"
-                label="Descartar"
-              /> -->
-            <!-- </q-card-actions> -->
           </q-card>
         </q-card-section>
-
-        <!-- <q-card-actions align="right">
-          <q-btn flat label="OK" style="color: #f39a31" v-close-popup />
-        </q-card-actions> -->
       </q-card>
     </q-dialog>
   </div>

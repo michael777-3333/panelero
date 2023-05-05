@@ -10,7 +10,7 @@
         elevated
         :class="$q.dark.isActive ? 'bg-secondary' : 'bg-black'"
       >
-        <q-toolbar class="header">
+        <q-toolbar class="header-body">
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
           <q-toolbar-title>Paneleros</q-toolbar-title>
 
@@ -26,9 +26,10 @@
         :width="250"
         :breakpoint="500"
         bordered
+        overlay
       >
         <!-- overlay -->
-        <q-scroll-area class="fit bgColorEnfasis">
+        <q-scroll-area class="fit color-principal">
           <q-list>
             <router-link
               v-for="(menuItem, index) in menuList"
@@ -38,17 +39,17 @@
             >
                <q-item
                 @click="mostrarBotones(menuItem.ruta)"
-                class="botones"
+                class="botones-menuList"
                 clickable
                 v-ripple
               >
                 <q-item-section>
                   <q-row>
                     <q-col>
-                      <q-icon class="icon q-m" size="20px" :name="menuItem.icon" />
+                      <q-icon class="icon-menuList" size="20px" :name="menuItem.icon" />
                     </q-col>
                     <q-col>
-                      <span class="texto">{{ menuItem.text }}</span>
+                      <span class="texto-menuList">{{ menuItem.text }}</span>
                     </q-col>
                   </q-row>
                 </q-item-section>
@@ -63,7 +64,7 @@
           <router-view></router-view>
         </q-page>
       </q-page-container>
-      <q-footer elevated class="header">
+      <q-footer elevated class="header-body">
         <q-toolbar>
           <q-toolbar-title>Proyecto Panelero MEAW 🔅</q-toolbar-title>
         </q-toolbar>
