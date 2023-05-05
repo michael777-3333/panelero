@@ -1,14 +1,13 @@
-
 <template>
-  <div>
-    <img src="../../../assets/img/fondo1.jpg" class="img1">
-  </div>
+<!-- <div>
+    <img src="../../../assets/img/fondo.jpg" class="">
+  </div> -->
   <div class="tituloF text-center ">
           <h1 class="bgColorEnfasis borderTitle text-h6">HOME COSTO</h1>
         </div>
   <div class="row justify-center items-center d-flex">
     <q-card class="homecosto">
-      <q-img src="../../../assets/img/fondoPanela.jpg">
+      <q-img src="../../../assets/img/card.png">
         <div class="absolute-bottom text-h6">Costo Inventario</div>
       </q-img>
 
@@ -18,7 +17,7 @@
     </q-card>
 
     <q-card class="homecosto">
-      <q-img src="../../../assets/img/fondoPanela.jpg">
+      <q-img src="../../../assets/img/card.png">
         <div class="absolute-bottom text-h6">Costo Administrativo</div>
       </q-img>
 
@@ -27,18 +26,10 @@
       </q-card-section>
     </q-card>
   </div>
-</template>   
-<script>
-export default {
-  setup() {
-    return {
-      lorem:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        loe: "aaaaaaaaaaaaa"    
-};
-    
-  },
-};
+
+</template>
+
+<script setup>
 </script>
 
 <style >

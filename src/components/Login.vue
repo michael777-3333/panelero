@@ -1,105 +1,86 @@
 <template>
   <div>
-    <img src="../assets/img/fondo1.jpg" class="img1">
+    <img src="../assets/img/fondo.jpg" class="fondo ">
   </div>
-  <div class="cad items-center justify-center bg-d">
-    <div class="row justify-center d-flex items-center" style="height: 100vh">
-      <div class="card1 col-4 "></div>
-       <div class="col-4 text-center rounded-borders q-pa-md car">
-        <div class="logi-mg">
-          <img src="../assets/img/fondo2.png" class="img">
+  <div class="row justify-center d-flex items-center" style="height: 100vh;">
+    <div class="col-4 "></div>
+    <div class="col-4 text-center rounded-borders q-pa-md card-fondo">
+        <div>
+          <img src="../assets/img/card.png" class="img-card">
         </div>
-        
         <q-form
-          @submit="onSubmit"
-          @reset="onReset"
-          class="q-gutter-md justify-center"
-          >
+          @submit = "sesion"
+          class="q-gutter-md  justify-center"
+        >
           <q-input
             filled
             type="email"
             v-model="email"
-            label="Ingrese su correo *"
-            class="car1 rounded-borders q-mt-lg d-flex"
+            label="Ingrese su direccion de correo"
+            class="card-input rounded-borders q-mt-lg"
             lazy-rules
             :rules="[
-              (val) => (val && val.length > 0) || 'Please type something',
+              (email) => (email && email.length > 0) || 'por favor digite email',
             ]"
           />
 
           <q-input
             filled
-            class="car1 rounded-borders"
             type="password"
             v-model="password"
-            label="Ingrese su contraseña *"
+            label="Ingrese su contraseña"
+            class="card-input rounded-borders q-mt-lg"
             lazy-rules
-            text-color="white"
             :rules="[
-              (val) =>
-                (val !== null && val !== '') || 'Please type your contraseña',
-              (val) =>
-                (val > 0 && val < 100) || 'Please type a real contraseña',
+              (password) => (password && password !== '') || 'por favor digite contraseña',
             ]"
           />
 
-          <div class="q-mt-lg q-mb-lg">
-            <p class="text-white">Olvide mi contraseña?</p>
+          <div class="q-mt-lg">
             <q-btn
-              @click="sesion()"
-              label="INICIO"
+              label="ENTRAR"
               type="submit"
-              color="white"
-              text-color="black"
+              class="bg-white text-black"
             />
           </div>
         </q-form>
       </div>
       <div class="col-4"></div>
     </div>
-  </div>
 </template>
   
 <script setup>
-import useQuasar from "quasar/src/composables/use-quasar.js";
-import { ref } from "vue";
+  // import { useQuasar } from "quasar";
+  import { ref } from "vue";
 
-import { useRouter } from "vue-router";
+  import { useRouter } from "vue-router";
+  import { useUsuarioStore } from '../stores/usuarioStore.js'
 
-const router = useRouter();
 
-const $q = useQuasar();
+  const router = useRouter();
+  const store = useUsuarioStore();
 
-const email = ref(null);
-const password = ref(null);
-const accept = ref(false);
+  Promise.all([store.getUsuario()]).then(response => console.log(response));
 
-function onSubmit() {
-  if (accept.value !== true) {
-    $q.notify({
-      color: "red-5",
-      textColor: "white",
-      icon: "warning",
-      message: "You need to accept the license and terms first",
-    });
-  } else {
-    $q.notify({
-      color: "green-4",
-      textColor: "white",
-      icon: "cloud_done",
-      message: "Submitted",
-    });
+  // const $q = useQuasar();
+
+  const email = ref(null);
+  const password = ref(null);
+
+  async function sesion() {
+    await store.login({email: email.value, password: password.value});
+
+    console.log(store.token);
+
+    if(store.token !== null){
+      console.log(store.token);
+      router.push("/body/home");
+    }else{
+      console.log('fallo!');
+    }
   }
-}
-function onReset() {
-  email.value = null;
-  password.value = null;
-  accept.value = false;
-}
-function sesion() {
-  router.push("/body/home");
-}
-</script>
-<style>
 
+</script>
+
+<style>
 </style>
