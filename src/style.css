@@ -136,12 +136,11 @@
 /* estilos costo modulo*/
 
 .titulo {
-
   background-color: #f39a31;
-  border-radius: 30px;
-  width: 400px;
-  margin-left: 37%;
   background: #ffffff;
+  border-radius: 30px;
+  margin-left: 37%;
+  width: 400px;
 }
 
 .tituloh2 {

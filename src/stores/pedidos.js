@@ -3,19 +3,29 @@ import axios from "axios";
 
 export const usePedidoStore = defineStore("pedido", {
   state: () => ({
+    token: null,
+    URL: 'http://localhost:3000/pedido',
     baseURL: axios.create({
       baseURL: 'http://localhost:3000/'
     })
   }),
 
   actions: {
-    // axios peticiones pedidos
+    // axios peticiones pedido
+    
+    getToken(data) {
+      this.token = data
+      // console.log(data, 2);
+    },
         
     async getPedido() {
       return await axios(
         {
           method: 'get',
-          url: 'http://localhost:3000/pedidos'
+          url: this.URL,
+          headers: {
+            'token' : this.token,
+          }
         })
     },
 
@@ -23,8 +33,7 @@ export const usePedidoStore = defineStore("pedido", {
       await axios(
         {
           method: 'post',
-          url: 'http://localhost:3000/pedidos',
-       
+          url: this.URL,
           data: {
             customerName: data.customerName,
             documentType: data.documentType,
@@ -35,16 +44,31 @@ export const usePedidoStore = defineStore("pedido", {
             preferencesOfPanela: data.preferencesOfPanela,
             orderStatus: data.orderStatus,
             quantityOfPanela: data.quantityOfPanela,
-            address: data.address,
+            sendAddress: data.sendAddress,
           },
           headers: {
-            // 'token'
+            'token' : this.token,
           }
         })
-        .then((res) => console.log(res))
+        // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
 
+    async editPedido(data) {
+      await axios(
+        {
+          method: 'put',
+          url: `${this.URL}/${data.id}`,
+          data: {
+            orderStatus: data.orderStatus,
+          },
+          headers: {
+            'token' : this.token,
+          }
+        })
+        // .then((res) => console.log(res))
+        .catch((error) => console.log(error));
+    },
 
 
     // async getToken() {

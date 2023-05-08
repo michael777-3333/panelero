@@ -78,7 +78,7 @@
   
   const menuStore = useMenuStore();
 
-  let drawer = ref(false);
+  let drawer = ref(true);
 
   /** Menu, que es cargado al iniciar la pagina */
   let menuList = ref(menuStore.menuListHome /** Traido desde Pinia */);
@@ -99,5 +99,5 @@
   }
 </script>
   
-<style  scoped>
+<style scoped>
 </style>

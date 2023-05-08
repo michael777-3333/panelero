@@ -25,7 +25,7 @@ export const useMenuStore = defineStore("menu", {
       {
         icon: 'description', /**request_page */
         text:'Facturación',
-        ruta: "/body/facturacion/facturacionModulos",
+        ruta: "/body/facturacion/pedidosModulos",
       },
       
 

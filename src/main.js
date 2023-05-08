@@ -13,10 +13,9 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import { routes } from './routes/routes.js';
 
 const router = createRouter({
-    history:createWebHashHistory(),
+    history: createWebHashHistory(),
     routes: routes
 });
-
 
 const pinia = createPinia();
 
