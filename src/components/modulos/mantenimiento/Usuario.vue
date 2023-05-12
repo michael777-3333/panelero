@@ -143,6 +143,7 @@
     console.log(props);
     if(props.state == 0){
       await store.activarUsuario(props);
+      console.log(data.value);
     }
     else if(props.state == 1){
       await store.desactivarUsuario(props);

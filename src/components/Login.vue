@@ -56,6 +56,7 @@
   import { useRouter } from "vue-router";
   import { useUsuarioStore } from '../stores/usuarioStore.js';
 
+  
 
   const router = useRouter();
   const store = useUsuarioStore();
@@ -63,17 +64,20 @@
   Promise.all([store.getUsuario()]).then(response => console.log(response));
 
   const $q = useQuasar();
+  // console.log($q.localStorage.getItem("key"));
 
-  const email = ref('usuario@gmail.com');
-  const password = ref('12345');
+  const email = ref('michael@gmail.com');
+  const password = ref('12345678');
 
   async function sesion() {
     await store.login({
       email: email.value,
       password: password.value
     });
+    // Guardo el token en LStorage
+  $q.localStorage.set("token", store.token)
 
-    console.log(store.token);
+    // console.log(store.token);
    
 
     if(store.token !== null) {

@@ -4,7 +4,8 @@ import axios from "axios";
 export const usePedidoStore = defineStore("pedido", {
   state: () => ({
     token: null,
-    URL: 'http://localhost:3000/pedido',
+    // URL: 'http://localhost:3000/pedido',
+    URL: 'https://proyecto-panelera.onrender.com/pedido',
     baseURL: axios.create({
       baseURL: 'http://localhost:3000/'
     })
@@ -15,7 +16,6 @@ export const usePedidoStore = defineStore("pedido", {
     
     getToken(data) {
       this.token = data
-      // console.log(data, 2);
     },
         
     async getPedido() {

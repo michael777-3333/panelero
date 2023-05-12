@@ -107,10 +107,21 @@
   
 <script setup>
 import { ref } from "vue";
+import { useQuasar } from 'quasar'
 import axios from 'axios';
 import { usePedidoStore } from '../../../stores/pedidos.js'
 import { useUsuarioStore } from '../../../stores/usuarioStore'
 import { storeToRefs } from "pinia";
+
+const $q = useQuasar()
+
+// $q.localStorage.set("key", "value")
+// console.log($q.localStorage.getItem("token"));
+// const value = $q.localStorage.getItem(key)
+
+// $q.sessionStorage.set(key, value)
+// const otherValue = $q.sessionStorage.getItem(key)
+
 
 const store = usePedidoStore()
 const storeUsuario = useUsuarioStore()
@@ -152,12 +163,14 @@ let readonly = ref(false)
 
 
 function addOrder() {
+  $q.localStorage.removeItem("token")
+
   modalPedidos.value = isAdd.value = true
   readonly.value = false
 }
 
 async function ordenarPedidos() {
-  store.getToken(stateUser.token.value)
+  store.getToken($q.localStorage.getItem("token"))
   const res = await store.getPedido()
 
   if (res.status == 200) {
@@ -172,7 +185,7 @@ async function ordenarPedidos() {
 ordenarPedidos();
 
 async function createOrder() {
-  await store.addPedido({
+    await store.addPedido({
     customerName: clienteMFa.value,
     descriptionOfPanela: detallesMFa.value,
     documentNumber: numeroDocumentoMFa.value,

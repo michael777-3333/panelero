@@ -1,6 +1,6 @@
 import './style.css';
 import { createApp } from 'vue';
-import { Quasar, Notify} from 'quasar';
+import { Quasar, LocalStorage, SessionStorage, Notify} from 'quasar';
 import { createPinia } from 'pinia';
 
 import '@quasar/extras/material-icons/material-icons.css';
@@ -23,10 +23,13 @@ const myApp = createApp(App);
 
 myApp.use(Quasar, {
   plugins: {
-    Notify
+    Notify,
+    LocalStorage,
+    SessionStorage
   }, 
   config: {
     notify: { /* look at QuasarConfOptions from the API card */ }
+
   }
 });
 

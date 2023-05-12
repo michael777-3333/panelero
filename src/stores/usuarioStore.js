@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 // import jwt  from 'jsonwebtoken';
 
+let URL_produccion="https://proyecto-panelera.onrender.com/"
 export const useUsuarioStore = defineStore("usuario", {
   state: () => ({
     token: null,
@@ -21,7 +22,12 @@ export const useUsuarioStore = defineStore("usuario", {
           return await axios(
             {
               method: 'get',
-              url: 'http://localhost:3000/usuario'
+              url: `${URL_produccion}usuario`, //https://proyecto-panelera.onrender.com/usuario
+
+              headers:{
+                "token":this.token
+              },
+               
             })
         } catch (error) {
           return error
@@ -32,7 +38,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'post',
-          url: 'http://localhost:3000/usuario',
+          url: 'https://proyecto-panelera.onrender.com/usuario',
        
           data: { 
             name: data.name,
@@ -41,7 +47,7 @@ export const useUsuarioStore = defineStore("usuario", {
             typeUser: data.typeUser,
           },
           headers: {
-            // 'token'
+            'token':this.token
           }
         })
         // .then((res) => console.log(res))
@@ -53,7 +59,7 @@ export const useUsuarioStore = defineStore("usuario", {
     async login(data) {
       await axios({
           method: 'post',
-          url: 'http://localhost:3000/usuario/login',
+          url: 'https://proyecto-panelera.onrender.com/usuario/login',
           data: {
             email: data.email,
             password: data.password}
@@ -82,7 +88,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url: `http://localhost:3000/usuario/${data.id}`,
+          url: `https://proyecto-panelera.onrender.com/usuario/${data.id}`,
        
           data: {
             name: data.name,
@@ -101,7 +107,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url: `http://localhost:3000/usuario/desactivar/${props._id}`,
+          url: `https://proyecto-panelera.onrender.com/usuario/desactivar/${props._id}`,
           headers: {
             'token': this.token,
           }
@@ -114,7 +120,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url:`http://localhost:3000/usuario/activar/${props._id}`,
+          url:`https://proyecto-panelera.onrender.com/usuario/activar/${props._id}`,
           headers: {
             'token': this.token,
           }

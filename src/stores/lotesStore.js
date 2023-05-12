@@ -3,22 +3,23 @@ import axios from "axios";
 
 export const useLoteStore = defineStore("lote", {
   state: () => ({
-    token: null
+    token: null,
   }),
+
   actions: {
     getToken(token) {
       this.token = token
-      console.log(token, this.token)
+      // console.log("token:", this.token)
     },
 
     async addLote(data) {
       await axios(
         {
           method : "post",
-          url: "http://localhost:3000/lote",
+          url: "https://proyecto-panelera.onrender.com/lote",
 
           data: {
-            name:data.name,
+            // name:data.name,
             owner: data.owner,
             size: data.size,
             createdAt: data.createdAt,
@@ -33,22 +34,23 @@ export const useLoteStore = defineStore("lote", {
     },
 
     async getLote() {
-      try {
-        return await axios(
-          {
-            method: 'get',
-            url: 'http://localhost:3000/lote'
-          })
-      } catch (error) {
-        return error
-      }
+      return await axios(
+        {
+          method: 'get',
+          url: 'https://proyecto-panelera.onrender.com/lote',
+          headers: {
+            'token' : this.token,
+          }
+        })
+        // .then((res) => res)
+        // .catch((error) => console.log(error));
     },
 
     async putLote(data){
       await axios(
         {
           method: 'put',
-          url: `http://localhost:3000/lote/${data.id}`,
+          url: `https://proyecto-panelera.onrender.com/lote/${data.id}`,
        
           data: {
             owner: data.owner,
@@ -67,7 +69,7 @@ export const useLoteStore = defineStore("lote", {
       await axios(
         {
           method: 'put',
-          url: `http://localhost:3000/lote/desactivar/${props._id}`,
+          url: `https://proyecto-panelera.onrender.com/lote/desactivar/${props._id}`,
           headers: {
             'token': this.token,
           }
@@ -76,11 +78,11 @@ export const useLoteStore = defineStore("lote", {
       .catch(error => console.log(error));
     },
 
-    async desactivarLote() {
+    async desactivarLote(props) {
       await axios(
         {
           method: 'put',
-          url:`http://localhost:3000/lote/activar/${props._id}`,
+          url:`https://proyecto-panelera.onrender.com/lote/activar/${props._id}`,
           headers: {
             'token': this.token,
           }
