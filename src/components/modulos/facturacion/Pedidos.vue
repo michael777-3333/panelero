@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <div class="bgColorEnfasis borderTitle text-center ">
+        <div class="bgColorEnfasis borderTitle text-center">
           <h1 class="text-h6">Pedidos</h1>
         </div>
       </div>
@@ -14,12 +14,12 @@
       <div class="col-3"></div>
       <div class="col-6 text-center">
         <div class="q-pa-md q-gutter-sm">
-          <button @click="addOrder()" class="q-btn">
-            <span class="colorEnfasis">Crear Pedidos</span>
-          </button>
+
+          <q-btn class="colorEnfasis" @click="addOrder()" glossy label="Crear Pedidos" />
         </div>
         <div class="q-pa-md">
-          <q-table title="Pedidos" :rows="rows" :columns="columns" row-key="clienteMFa">
+          <q-table title="Pedidos" :rows="rows" :columns="columns" row-key="id" no-data-label="No existen datos!"
+            :visible-columns="visibleColumns">
             <template v-slot:body-cell-editar="props">
               <td>
                 <q-btn class="botonEditar" @click="editOrder(props.row)" glossy label="Editar" />
@@ -33,7 +33,7 @@
     </div>
 
     <q-dialog v-model="modalPedidos">
-      <q-card class="bgColorEnfasis" style="background-color: #f39a31;">
+      <q-card class="bgColorEnfasis">
         <q-card-section>
           <!-- <h6 class="text-black">Pedidos</h6> -->
           <span class="text-black text-h6">Pedidos</span>
@@ -68,35 +68,37 @@
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <q-input v-model="detallesMFa" label="Descripcion de la panela" :readonly="readonly" />
+                  <q-input v-model="detalles" label="Descripcion de la panela" :readonly="readonly" />
                 </div>
                 <!--  -->
                 <div class="col-5">
-                  <q-input v-model="preferenciasMFa" label="Preferencia de la panela" :readonly="readonly" />
+                  <q-input v-model="preferencias" label="Preferencia de la panela" :readonly="readonly" />
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <q-select filled v-model="estadoMFa" :options="optionsStatus" label="Estado del pedido" stack-label
+                  <q-select filled v-model="estado" :options="optionsStatus" label="Estado del pedido" stack-label
                     :dense="dense" :options-dense="denseOpts" />
                   <!-- <q-input v-model="" label="Estado del pedido" /> -->
                 </div>
                 <!--  -->
                 <div class="col-5">
-                  <q-input v-model="cantidadMFa" label="Cantidad de panela" type="number" :readonly="readonly" />
+                  <q-input v-model="cantidad" label="Cantidad de panela" type="number" :readonly="readonly" />
                 </div>
                 <div class="col-2"></div>
                 <div class="col-5">
-                  <q-input v-model="direccionMFa" label="Dirección de envio" :readonly="readonly" />
+                  <q-input v-model="direccionEnvio" label="Dirección de envio" :readonly="readonly" />
                 </div>
               </div>
             </q-card-section>
             <q-separator />
+
             <q-card-actions align="center">
-              <q-btn class="q-my-md">
-                <span v-if="isAdd == true" @click="createOrder()" class="colorEnfasis">Crear Pedido</span>
-                <span v-else @click="changeSatus()" class="colorEnfasis">Modificar Pedido</span>
+              <q-btn class="q-my-md colorEnfasis">
+                <span v-if="isAdd == true" @click="createOrder()">Crear Pedido</span>
+                <span v-else               @click="changeStatus()">Modificar Pedido</span>
               </q-btn>
             </q-card-actions>
+
           </q-card>
         </q-card-section>
 
@@ -107,13 +109,16 @@
   
 <script setup>
 import { ref } from "vue";
-import { useQuasar } from 'quasar'
-import axios from 'axios';
 import { usePedidoStore } from '../../../stores/pedidos.js'
-import { useUsuarioStore } from '../../../stores/usuarioStore'
-import { storeToRefs } from "pinia";
+import { useQuasar } from 'quasar'
+
 
 const $q = useQuasar()
+
+  // or pass in options also:
+  // $q.cookies.set('cookie_name', cookie_value, options)
+
+
 
 // $q.localStorage.set("key", "value")
 // console.log($q.localStorage.getItem("token"));
@@ -122,83 +127,92 @@ const $q = useQuasar()
 // $q.sessionStorage.set(key, value)
 // const otherValue = $q.sessionStorage.getItem(key)
 
+const hasItToken = $q.cookies.has('token')
 
 const store = usePedidoStore()
-const storeUsuario = useUsuarioStore()
-const stateUser = storeToRefs(storeUsuario)
 
 let clienteMFa = ref("");
 let numeroDocumentoMFa = ref("");
 let tipoDocumentoMFa = ref("");
 let celularMFa = ref("");
 let emailMFa = ref("");
-let detallesMFa = ref("")
-let preferenciasMFa = ref("")
-let estadoMFa = ref(null)
-let cantidadMFa = ref("")
-let direccionMFa = ref("")
-let modalPedidos = ref(false);
+let detalles = ref("")
+let preferencias = ref("")
+let estado = ref(null)
+let cantidad = ref("")
+let direccionEnvio = ref("")
 let optionsStatus = ref(['Proceso', 'Entregado', 'Cancelado', 'Realizado']);
 let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
+
+
+let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'editar'])
+let _id = null;
+let isAdd = ref(true);
+let readonly = ref(false);
 let dense = ref(!true);
 let denseOpts = ref(true);
-let rows = ref([])
+let modalPedidos = ref(false);
+let rows = ref([]);
 const columns = [
   {
-    required: true,
-    label: "Cliente",
-    align: "left",
-    field: (row) => row.customerName,
+    name: "id",
+    // required: true,
+    label: "id",
+    // align: "left",
+    field: (row) => row._id,
     format: (val) => `${val}`,
-    sortable: true,
+    // sortable: true,
+    // sortOrder: 'ad', // or 'da'
+    required: false
   },
 
+  { name: "nombre", align: "left", label: "Cliente", field: "customerName", sortable: true, },
   { name: "cantidad", label: "Cantidad", field: "quantityOfPanela" },
   { name: "numeroDocumento", label: "Estado", field: "orderStatus" },
-  { name: "editar", label: "Editar", field: "Editar" },
+  { name: "editar", align: "center", label: "Editar", field: "Editar" },
 ];
-let _id = null
-let isAdd = ref(true)
-let readonly = ref(false)
 
 
 function addOrder() {
-  $q.localStorage.removeItem("token")
+  // $q.localStorage.removeItem("token")
 
   modalPedidos.value = isAdd.value = true
   readonly.value = false
 }
 
-async function ordenarPedidos() {
-  store.getToken($q.localStorage.getItem("token"))
+async function getOrders() {
+  if (hasItToken) {
+    store.getToken($q.cookies.get('token'))
+  }
+
   const res = await store.getPedido()
 
   if (res.status == 200) {
     rows.value = res.data.pedidos
-  } else if (res.response == 404) {
+  } else if (res.status == 404) {
     console.log("No existen datos");
   } else {
     console.log(res.status);
   }
 }
 
-ordenarPedidos();
+getOrders();
 
 async function createOrder() {
-    await store.addPedido({
-    customerName: clienteMFa.value,
-    descriptionOfPanela: detallesMFa.value,
-    documentNumber: numeroDocumentoMFa.value,
-    documentType: tipoDocumentoMFa.value,
-    email: emailMFa.value,
-    orderStatus: estadoMFa.value,
-    phoneNumber: celularMFa.value,
-    preferencesOfPanela: preferenciasMFa.value,
-    quantityOfPanela: cantidadMFa.value,
-    sendAddress: direccionMFa.value,
+  await store.addPedido({
+    customerName:        clienteMFa.value,
+    descriptionOfPanela: detalles.value,
+    documentNumber:      numeroDocumentoMFa.value,
+    documentType:        tipoDocumentoMFa.value,
+    email:               emailMFa.value,
+    orderStatus:         estado.value,
+    phoneNumber:         celularMFa.value,
+    preferencesOfPanela: preferencias.value,
+    quantityOfPanela:    cantidad.value,
+    sendAddress:         direccionEnvio.value,
   });
 
-  ordenarPedidos();
+  getOrders();
   modalPedidos.value = !modalPedidos.value;
 }
 
@@ -207,25 +221,25 @@ function editOrder(paramass) {
   isAdd.value = false
   readonly.value = true
   _id = paramass._id
-  cantidadMFa.value = paramass.quantityOfPanela
+  cantidad.value = paramass.quantityOfPanela
   celularMFa.value = paramass.phoneNumber
   clienteMFa.value = paramass.customerName
-  detallesMFa.value = paramass.descriptionOfPanela
-  direccionMFa.value = paramass.sendAddress
+  detalles.value = paramass.descriptionOfPanela
+  direccionEnvio.value = paramass.sendAddress
   emailMFa.value = paramass.email
-  estadoMFa.value = paramass.orderStatus
+  estado.value = paramass.orderStatus
   numeroDocumentoMFa.value = paramass.documentNumber
-  preferenciasMFa.value = paramass.preferencesOfPanela
+  preferencias.value = paramass.preferencesOfPanela
   tipoDocumentoMFa.value = paramass.documentType
 }
 
-async function changeSatus() {
+async function changeStatus() {
   await store.editPedido({
     id: _id,
-    orderStatus: estadoMFa.value,
+    orderStatus: estado.value,
   });
-  
-  ordenarPedidos();
+
+  getOrders();
   modalPedidos.value = !modalPedidos.value;
 }
 

@@ -41,14 +41,14 @@
     border-radius: 20px;
   }
 
-  .icon-menuList {
+  /* .icon-menuList {
     background-color: #ffffff;
-  }
+  } */
 
   .texto-menuList {
-    text-align: center;
+    /* text-align: center; */
     color: #ffffff;
-    margin: 20px;
+    /* margin: 20px; */
     font-size: 20px;
     font-family: "Indie Flower";
   }
@@ -110,18 +110,18 @@
   }
 
 /* estilos modulo facturacion y pedidos  */
-.borderTitle {
+/* .borderTitle {
   border-radius: 30px;
 }
   
 .bgColorEnfasis {
   background-color: #f39a31;
-}
+} */
 
 /* tengo un problema con el textp  */
-.colorEnfasis  {
+/* .colorEnfasis  {
   color: #f39a31;
-}
+} */
 /* estilos modulo facturacion y pedidos  */
 
 /* estilos home costo  */

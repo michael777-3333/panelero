@@ -44,14 +44,14 @@
                 v-ripple
               >
                 <q-item-section>
-                  <q-row>
-                    <q-col>
-                      <q-icon class="icon-menuList" size="20px" :name="menuItem.icon" />
-                    </q-col>
-                    <q-col>
+                  <div class="row text-left">
+                    <div class="col-3">
+                      <q-icon size="30px" :name="menuItem.icon" />
+                    </div>
+                    <div class="col-9">
                       <span class="texto-menuList">{{ menuItem.text }}</span>
-                    </q-col>
-                  </q-row>
+                    </div>
+                  </div>
                 </q-item-section>
               </q-item>
             </router-link>

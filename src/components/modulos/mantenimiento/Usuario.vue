@@ -105,147 +105,149 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
-  import { useUsuarioStore } from '../../../stores/usuarioStore.js';
-  import axios from 'axios';
-  import { useQuasar } from 'quasar';
+import { ref } from 'vue';
+import { useUsuarioStore } from '../../../stores/usuarioStore.js';
+import axios from 'axios';
+import { useQuasar } from 'quasar';
 
-  async function ordenarUsuarios() {
-  
-    /* await Promise.all([store.getUsuario()]).then(response => rows.value = response[0].data.usuarios); */
-    //console.log(await store.getUsuario());
-    const res = await store.getUsuario()
-   
-    if ( res.status<300){
-      rows.value=res.data.usuarios
-    }else if (res.response.status==404){
-      console.log("No existen datos");
-    } 
+async function ordenarUsuarios() {
+  if (hasItToken) {
+    store.getToken($q.cookies.get('token'))
   }
 
-  const store = useUsuarioStore();
-  const $q = useQuasar();
-  let name = ref('');
-  let email = ref('');
-  let password = ref('');
-  let typeUser = ref('');
-  let validarCrear = ref(true);
-  let rows = ref([]);
-  let alert = ref(false);
-  let data = ref(null);
-  let id = ref(null);
+  const res = await store.getUsuario()
 
-  let labelDialog = ref('Crear usuario');
+  if (res.status < 300) {
+    rows.value = res.data.usuarios
+  } else if (res.response.status == 404) {
+    console.log("No existen datos");
+  }
+}
+
+const store = useUsuarioStore();
+const $q = useQuasar();
+const hasItToken = $q.cookies.has('token')
+let name = ref('');
+let email = ref('');
+let password = ref('');
+let typeUser = ref('');
+let validarCrear = ref(true);
+let rows = ref([]);
+let alert = ref(false);
+let data = ref(null);
+let id = ref(null);
+
+let labelDialog = ref('Crear usuario');
+
+ordenarUsuarios();
+
+async function editarEstado(props) {
+  console.log(props);
+  if (props.state == 0) {
+    await store.activarUsuario(props);
+    console.log(data.value);
+  }
+  else if (props.state == 1) {
+    await store.desactivarUsuario(props);
+  }
 
   ordenarUsuarios();
+}
 
-  async function editarEstado(props) {
-    console.log(props);
-    if(props.state == 0){
-      await store.activarUsuario(props);
-      console.log(data.value);
-    }
-    else if(props.state == 1){
-      await store.desactivarUsuario(props);
-    }
-
+//crear o actualizar usuario en la base de datos
+async function createUser() {
+  if (name.value == '') {
+    $q.notify({
+      type: 'negative',
+      message: 'digite el nombre'
+    })
+  } else if (typeUser.value == '') {
+    $q.notify({
+      type: 'negative',
+      message: 'seleccione el tipo de usuario'
+    })
+  } else if (email.value == '') {
+    $q.notify({
+      type: 'negative',
+      message: 'digite el email'
+    })
+  } else if (password.value == '') {
+    $q.notify({
+      type: 'negative',
+      message: 'digite la contrasena'
+    })
+  } else if (validarCrear.value == true) {
+    // crear usuario
+    await store.addUsuario({ name: name.value, email: email.value, password: password.value, typeUser: typeUser.value });
     ordenarUsuarios();
+    console.log(rows.value);
+    alert.value = false;
+    $q.notify({
+      type: 'positive',
+      message: 'el usuario ha sido creado correctamente'
+    });
+    limpiarCajas()
+  } else if (validarCrear.value == false) {
+    // actualizar usuario
+    await store.putUsuario({ name: name.value, password: password.value, typeUser: typeUser.value, id: id.value });
+    ordenarUsuarios();
+    alert.value = false;
+    $q.notify({
+      type: 'positive',
+      message: 'el usuario ha sido actualizado correctamente'
+    });
+    validarCrear.value = true;
+    limpiarCajas();
   }
- 
-  //crear o actualizar usuario en la base de datos
-  async function createUser() {
-    if (name.value == '') {
-      $q.notify({
-          type: 'negative',
-          message: 'digite el nombre'
-      })
-    }else if (typeUser.value == '') {
-      $q.notify({
-          type: 'negative',
-          message: 'seleccione el tipo de usuario'
-      })
-    }else if (email.value == '') {
-      $q.notify({
-          type: 'negative',
-          message: 'digite el email'
-      })
-    }else if (password.value == '') {
-      $q.notify({
-          type: 'negative',
-          message: 'digite la contrasena'
-      })
-    }else if(validarCrear.value == true){
-      // crear usuario
-      await store.addUsuario({name: name.value, email: email.value, password: password.value, typeUser: typeUser.value});
-      ordenarUsuarios();
-      console.log(rows.value);
-      alert.value = false;
-      $q.notify({
-          type: 'positive',
-          message: 'el usuario ha sido creado correctamente'
-      });
-      limpiarCajas()
-    }else if (validarCrear.value == false) {
-      // actualizar usuario
-      await store.putUsuario({name: name.value, password: password.value, typeUser: typeUser.value, id: id.value});
-      ordenarUsuarios();
-      alert.value = false; 
-      $q.notify({
-          type: 'positive',
-          message: 'el usuario ha sido actualizado correctamente'
-      });
-      validarCrear.value = true;
-      limpiarCajas();
-    }
-  }
+}
 
-  const columns = [
-    { name: 'state', label : 'Estado' ,align:"left" },
-    {
-      label: 'Nombre',
-      align: 'left',
-      field: row => row.name, 
-      format: val => `${val}`,
-      sortable: true,
-    },
-      
-    { name: 'email', align: 'left', label: 'Email', field: 'email' },
-    { name: 'typeUser', align: 'left', label: 'Rol', field: 'typeUser' },
-    // { name: 'password', align: 'left', label: 'Contraseña', field: 'password' },
-    { name: 'editar', align: 'left', label: 'editar'},
+const columns = [
+  { name: 'state', label: 'Estado', align: "left" },
+  {
+    label: 'Nombre',
+    align: 'left',
+    field: row => row.name,
+    format: val => `${val}`,
+    sortable: true,
+  },
 
-  ] 
+  { name: 'email', align: 'left', label: 'Email', field: 'email' },
+  { name: 'typeUser', align: 'left', label: 'Rol', field: 'typeUser' },
+  // { name: 'password', align: 'left', label: 'Contraseña', field: 'password' },
+  { name: 'editar', align: 'left', label: 'editar' },
+
+]
 
 
-  // actualizar usuario, llenar inputs del dialog para actualizar usuario
-  function usuarioEditar(data) {
-    console.log(password.value);
-    validarCrear.value = false;
-    labelDialog.value = 'Editar Usuario'
-    data.value = data;
-    console.log(data.value);
-    alert.value = true;
-    name.value = data.value.name
-    email.value = data.value.email
-    password.value = ''
-    typeUser.value = data.value.typeUser
-    id.value = data.value._id
+// actualizar usuario, llenar inputs del dialog para actualizar usuario
+function usuarioEditar(data) {
+  console.log(password.value);
+  validarCrear.value = false;
+  labelDialog.value = 'Editar Usuario'
+  data.value = data;
+  console.log(data.value);
+  alert.value = true;
+  name.value = data.value.name
+  email.value = data.value.email
+  password.value = ''
+  typeUser.value = data.value.typeUser
+  id.value = data.value._id
 
-    console.log(password.value);
-  }
+  console.log(password.value);
+}
 
-  let tipoUsuario = [
-    'super usuario', 'administrador', 'usuario'
-  ];
+let tipoUsuario = [
+  'super usuario', 'administrador', 'usuario'
+];
 
-  function limpiarCajas() {
-    name.value = ''
-    email.value = ''
-    typeUser.value = ''
-    password.value = ''
-    id.value = null
-    labelDialog.value = 'Crear usuraio'
-  }
+function limpiarCajas() {
+  name.value = ''
+  email.value = ''
+  typeUser.value = ''
+  password.value = ''
+  id.value = null
+  labelDialog.value = 'Crear usuraio'
+}
 
 </script>
 
@@ -254,10 +256,7 @@
   font-size: 20px;
 }
 
-.botonEditar{
-  background-color: #F39A31;
-  border-radius: 10px;
-}
+
 
 .boton {
   border-radius: 30px;
