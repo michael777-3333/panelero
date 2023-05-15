@@ -1,19 +1,21 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useQuasar } from 'quasar';
 
 export const usePedidoStore = defineStore("pedido", {
   state: () => ({
-    token: null,
-    URL: 'http://localhost:3000/pedido/',
+    $q: useQuasar(),
+    // URL: 'http://localhost:3000/pedido/',
     // URL: 'https://proyecto-panelera.onrender.com/pedido',
+    URL: 'http://10.202.80.188:3000/pedido',
   }),
 
   actions: {
     // axios peticiones pedido
     
-    getToken(data) {
-      this.token = data
-    },
+    // getToken(data) {
+    //   this.token = data
+    // },
         
     async getPedido() {
       return await axios(
@@ -21,7 +23,7 @@ export const usePedidoStore = defineStore("pedido", {
           method: 'get',
           url: this.URL,
           headers: {
-            'token' : this.token,
+            'token' : this.$q.cookies.get('token'),
           }
         })
     },
@@ -44,7 +46,7 @@ export const usePedidoStore = defineStore("pedido", {
             sendAddress: data.sendAddress,
           },
           headers: {
-            'token' : this.token,
+            'token' : this.$q.cookies.get('token'),
           }
         })
         // .then((res) => console.log(res))
@@ -60,7 +62,7 @@ export const usePedidoStore = defineStore("pedido", {
             orderStatus: data.orderStatus,
           },
           headers: {
-            'token' : this.token,
+            'token' : this.$q.cookies.get('token'),
           }
         })
         // .then((res) => console.log(res))

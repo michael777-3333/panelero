@@ -1,22 +1,26 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useQuasar } from 'quasar';
 
 export const useLoteStore = defineStore("lote", {
   state: () => ({
-    token: null,
+    $q: useQuasar(),
+    // URL: 'https://proyecto-panelera.onrender.com/lote',
+    URL: "http://10.202.80.188:3000/lote"
   }),
 
   actions: {
-    getToken(token) {
-      this.token = token
-      // console.log("token:", this.token)
-    },
+    // getToken(data) {
+    //   this.token = data
+    //   console.log(this.token);
+    //   // console.log("token:", this.token)
+    // },
 
     async addLote(data) {
       await axios(
         {
           method : "post",
-          url: "https://proyecto-panelera.onrender.com/lote",
+          url: `${this.URL}`,
 
           data: {
             // name:data.name,
@@ -25,44 +29,45 @@ export const useLoteStore = defineStore("lote", {
             createdAt: data.createdAt,
         },
         headers: {
-          'token' : this.token,
+          'token': this.$q.cookies.get('token'),
         }
         })
       
       .then((res) => console.log(res))
-      .catch((error) => console.log(error));
+      .catch((error) => error);
     },
 
     async getLote() {
       return await axios(
         {
           method: 'get',
-          url: 'https://proyecto-panelera.onrender.com/lote',
+          url: `${this.URL}`,
           headers: {
-            'token' : this.token,
+            'token' : this.$q.cookies.get('token'),
           }
         })
-        // .then((res) => res)
-        // .catch((error) => console.log(error));
+        .then((res) => {return res})
+        .catch((error) => {return error});
     },
 
     async putLote(data){
       await axios(
         {
           method: 'put',
-          url: `https://proyecto-panelera.onrender.com/lote/${data.id}`,
-       
+          url: `${this.URL}/${data.id}`,
+      
           data: {
             owner: data.owner,
             size: data.size,
-            createdAt: data.createdAt,
+            // createdAt: data.createdAt,
         },
           headers: {
-            'token' : this.token,
+            'token' : this.$q.cookies.get('token'),
           }
         })
         .then((res) => console.log(res))
         .catch((error) => console.log(error));
+        
     },
 
     async activarLote(props) {
@@ -71,7 +76,7 @@ export const useLoteStore = defineStore("lote", {
           method: 'put',
           url: `https://proyecto-panelera.onrender.com/lote/desactivar/${props._id}`,
           headers: {
-            'token': this.token,
+            'token': this.$q.cookies.get('token'),
           }
         })
       .then(response => console.log(response))
@@ -84,7 +89,7 @@ export const useLoteStore = defineStore("lote", {
           method: 'put',
           url:`https://proyecto-panelera.onrender.com/lote/activar/${props._id}`,
           headers: {
-            'token': this.token,
+            'token': this.$q.cookies.get('token'),
           }
         })
       .then(response=> console.log(response))

@@ -43,7 +43,7 @@
 
     <!--boton abrir dialog para crear usuario-->
     <div class="contenedorBoton q-pa-md q-gutter-sm">
-      <q-btn label="Crear usuario"  style="color: #F39A31;" @click="labelDialog = 'Crear usuraio'; validarCrear = true; alert = true" />
+      <q-btn label="Crear usuario"  style="color: #F39A31;" @click="labelDialog = 'Crear usuraio'; limpiarCajas(); validarCrear = true; alert = true" />
     </div>
 
     <!--dialog-->
@@ -111,9 +111,9 @@ import axios from 'axios';
 import { useQuasar } from 'quasar';
 
 async function ordenarUsuarios() {
-  if (hasItToken) {
-    store.getToken($q.cookies.get('token'))
-  }
+  // if (hasItToken) {
+  //   $q.cookies.get('token')
+  // }
 
   const res = await store.getUsuario()
 
@@ -126,7 +126,7 @@ async function ordenarUsuarios() {
 
 const store = useUsuarioStore();
 const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
+// const hasItToken = $q.cookies.has('token')
 let name = ref('');
 let email = ref('');
 let password = ref('');
@@ -178,8 +178,12 @@ async function createUser() {
     })
   } else if (validarCrear.value == true) {
     // crear usuario
-    await store.addUsuario({ name: name.value, email: email.value, password: password.value, typeUser: typeUser.value });
+    
+    const res = await store.addUsuario({ name: name.value, email: email.value, password: password.value, typeUser: typeUser.value });
     ordenarUsuarios();
+
+    console.log(res)
+
     console.log(rows.value);
     alert.value = false;
     $q.notify({
@@ -288,6 +292,5 @@ function limpiarCajas() {
 .rowPrincipal{
   background-color: rgb(16, 16, 122);
 }
-
 
 </style>

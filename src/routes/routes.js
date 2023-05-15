@@ -7,7 +7,7 @@ import HomeMantenimiento from '../components/modulos/mantenimiento/HomeMantenimi
 import Lotes from '../components/modulos/mantenimiento/Lotes.vue'
 import HomeCostos from '../components/modulos/costos/HomeCostos.vue'
 import AdmCostos from '../components/modulos/costos/CostoAdmin.vue'
-import DueñosLote from '../components/modulos/mantenimiento/DueñosLote.vue' 
+import Personas from '../components/modulos/mantenimiento/Personas.vue' 
 import Facturacion from '../components/modulos/facturacion/Facturacion.vue'
 import Pedidos from '../components/modulos/facturacion/Pedidos.vue'
 
@@ -28,7 +28,7 @@ export const routes = [
                     { path:"homeMantenimiento", component: HomeMantenimiento},
                     { path:"usuario", component: Usuario },
                     { path:"lotes", component: Lotes},
-                    { path:"dueñosLote", component: DueñosLote}
+                    { path:"personas", component: Personas}
                 ]
             },
             

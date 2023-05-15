@@ -121,8 +121,10 @@ import { useQuasar } from "quasar";
 
 const store = useLoteStore();
 const storeUser = useUsuarioStore();
-const stateUser = storeToRefs(storeUser);
+// const stateUser = storeToRefs(storeUser);
+
 const $q = useQuasar();
+// const hasItToken= $q.cookies.has("token")
 let alert = ref(false);
 let name = ref("");
 let rows = ref([]);
@@ -131,25 +133,25 @@ let owner = ref("");
 let validarEditar=ref(false)
 let createdAt = ref("");
 let data = ref(null)
+let id =ref(null)
 
 async function ordenarLotes() {
-  $q.localStorage.set("token", store.token)
+  // if (hasItToken) {
+  //     store.getToken($q.cookies.get('token'))
+  //   }
+  // $q.localStorage.set("token", store.token)
     // store.getToken(stateUser.token.value);
     const res = await store.getLote();
-    console.log(res);
-    if (res.status == 200) {
+    console.log(res.data);
+    if (res.status < 300) {
+
       rows.value = res.data.lotes;
-    } else if (res.response == 404) {
+    } else if (res.status > 400) {
       console.log("No existen datos");
     } else {
       console.log(res.status);
     }
 }
-
-// await Promise.all([store.getLote()]).then(response => rows.value = response[0].data.lotes);
-
-// store.getToken(storeUser.token);
-
 ordenarLotes();
 
 async function editarEstado(props) {
@@ -199,6 +201,9 @@ async function createAllotment() {
     });
   }else if (validarEditar.value==false) {
     await store.putLote({size: size.value, owner: owner.value,});
+
+      console.log({size: size.value, owner: owner.value,});
+      alert.value = false;
       ordenarLotes();
       $q.notify({
       type: "positive",

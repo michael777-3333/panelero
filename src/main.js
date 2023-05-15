@@ -29,7 +29,7 @@ myApp.use(Quasar, {
     SessionStorage
   },
   config: {
-    notify: { /* look at QuasarConfOptions from the API card */ }
+    notify: {}
   }
 });
 

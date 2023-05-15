@@ -4,7 +4,7 @@
       <div class="col-4"></div>
       <div class="col-4">
         <div class="text-center">
-          <h1 class="borderTitle text-h6">Costo Inventario</h1>
+          <h1 class="titlesub text-h6">Costo Inventario</h1>
         </div>
       </div>
       <br />
@@ -15,7 +15,7 @@
       <div class="col-4">
         <div class="text-center">
           <q-btn @click="alertt = true">
-            <span class="">Crear Costo</span>
+            <span class="" style="color: #f39a31">Crear Costo</span>
           </q-btn>
         </div>
       </div>
@@ -36,7 +36,7 @@
   <q-dialog v-model="alertt">
     <q-card class="dialog1" style="background-color: #f39a31">
       <q-card-section>
-        <div style="color: " class="text-h6">Nuevo Costo</div>
+        <div class="text-h6">Nuevo Costo</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
@@ -123,30 +123,6 @@ let codigoC = ref('')
 let dateC=ref('')
 let cantidadC=ref('')
 let costoC=ref('')
-
-const columns = [
-  {
-    name: "name",
-    required: true,
-    label: "Nombre",
-    align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-  { name: "codigo", label: "Codigo", field: "codigo" },
-  { name: "cantidad", label: "Cantidad", field: "cantidad" },
-  { name: "date", label: "Fecha", field: "date" },
-  { name: "costo", label: "Costo", field: "costo" },
-  // {
-  //   // required: true,
-  //   // label: "Nombre",
-  //   // align: "left",
-  //   // field: (row) => row.name,
-  //   // format: (val) => `${val}`,
-  //   // sortable: true,
-  // },
-];
 
 let users = ref([])
 const rows = ref([
@@ -250,15 +226,6 @@ const rows = ref([
   },
 ])
 
-// export default {
-//   setup() {
-//     return {
-//       columns,
-//       rows,
-//       alertt,
-//     };
-//   },
-// };
 function createUser() {
   users.value.push({
     name: nameC.value,
@@ -272,10 +239,29 @@ function createUser() {
   users.value = [];
 
   // console.log(rows);
+  modalInv.value = !modalInv.value;
 }
 
+const columns = [
+  {
+    name: "name",
+    required: true,
+    label: "Nombre",
+    align: "left",
+    field: (row) => row.name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  { name: "codigo", label: "Codigo", field: "codigo" },
+  { name: "cantidad", label: "Cantidad", field: "cantidad" },
+  { name: "date", label: "Fecha", field: "date" },
+  { name: "costo", label: "Costo", field: "costo" },
+];
+
+let modalInv = ref(false);
 let confirm = ref(false);
 let prompt = ref(false);
+
 let address = ref("");
 </script>
 

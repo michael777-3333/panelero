@@ -115,8 +115,8 @@ import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
 
-  // or pass in options also:
-  // $q.cookies.set('cookie_name', cookie_value, options)
+// or pass in options also:
+// $q.cookies.set('cookie_name', cookie_value, options)
 
 
 
@@ -143,8 +143,6 @@ let cantidad = ref("")
 let direccionEnvio = ref("")
 let optionsStatus = ref(['Proceso', 'Entregado', 'Cancelado', 'Realizado']);
 let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
-
-
 let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'editar'])
 let _id = null;
 let isAdd = ref(true);
@@ -181,11 +179,13 @@ function addOrder() {
 }
 
 async function getOrders() {
-  if (hasItToken) {
-    store.getToken($q.cookies.get('token'))
-  }
+  // if (hasItToken) {
+  //   store.getToken($q.cookies.get('token'))
+  // }
 
   const res = await store.getPedido()
+
+  console.log(res)
 
   if (res.status == 200) {
     rows.value = res.data.pedidos

@@ -13,10 +13,7 @@
         <q-toolbar class="header-body">
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
           <q-toolbar-title>Paneleros</q-toolbar-title>
-
-          <router-link to="/">
-            <q-btn class="bg-white text-left">Salir</q-btn>
-          </router-link>
+          <q-btn class="text-back" @click="goLogin()" label="Salir" />
         </q-toolbar>
       </q-header>
 
@@ -37,12 +34,10 @@
               :to="menuItem.ruta"
               style="text-decoration: none"
             >
-               <q-item
+              <q-item
                 @click="mostrarBotones(menuItem.ruta)"
                 class="botones-menuList"
-                clickable
-                v-ripple
-              >
+                clickable v-ripple>
                 <q-item-section>
                   <div class="row text-left">
                     <div class="col-3">
@@ -73,30 +68,52 @@
   </div>
 </template>
 <script setup>
-  import { ref } from "vue";
-  import { useMenuStore } from "../stores/menuStore";
-  
-  const menuStore = useMenuStore();
+import { ref } from "vue";
+import { useMenuStore } from "../stores/menuStore.js";
+import { useUsuarioStore } from "../stores/usuarioStore.js";
+import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
-  let drawer = ref(true);
 
-  /** Menu, que es cargado al iniciar la pagina */
-  let menuList = ref(menuStore.menuListHome /** Traido desde Pinia */);
+const $q = useQuasar();
 
-  /** Cambiamos el menu según los datos que corresponden */
-  function mostrarBotones(r /**string*/) {
-    /**Dependiendo de la ruta del boton seleccinado cargo el respectivo menu */
-    if (r == "/body/costos/homeCostos") {
-      menuList.value = menuStore.menuListCostos;
-    } else if (r == "/body/mantenimiento/homeMantenimiento") {
-      menuList.value = menuStore.menuListMantenimiento;
-    } else if (r == "/body/facturacion/facturacionModulos") {
-      menuList.value = menuStore.menuListFacturacion;
-    } else if (r == "/body/home") {
-      /** Este es para regresar */
-      menuList.value = menuStore.menuListHome;
-    }
+const menuStore = useMenuStore();
+
+const store = useUsuarioStore();
+
+const router = useRouter();
+
+console.log($q.cookies.get("token"));
+
+function goLogin() {
+  $q.cookies.remove("token");
+
+  router.push("/");
+}
+
+let drawer = ref(false);
+
+
+
+/** Menu, que es cargado al iniciar la pagina */
+let menuList = ref(menuStore.menuListHome); /** Traido desde Pinia */
+
+/** Cambiamos el menu según los datos que corresponden */
+function mostrarBotones(r /**string*/) {
+  /**Dependiendo de la ruta del boton seleccinado cargo el respectivo menu */
+  if (r == "/body/costos/homeCostos") {
+    menuList.value = menuStore.menuListCostos;
+  } else if (r == "/body/mantenimiento/homeMantenimiento") {
+    menuList.value = menuStore.menuListMantenimiento;
+  } else if (r == "/body/facturacion/facturacionModulos") {
+    menuList.value = menuStore.menuListFacturacion;
+  } else if (r == "/body/home") {
+    /** Este es para regresar */
+    menuList.value = menuStore.menuListHome;
   }
+ 
+}
+
 </script>
   
 <style scoped>

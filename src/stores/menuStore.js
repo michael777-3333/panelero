@@ -83,9 +83,10 @@ export const useMenuStore = defineStore("menu", {
       {
         icon: "image_not_supported",
         text: "dueños lotes",
-        ruta: "/body/mantenimiento/dueñosLote",
+        ruta: "/body/mantenimiento/Personas",
       },
     ],
+    
     menuListFacturacion : [
       {
         icon: "keyboard_backspace",

@@ -4,7 +4,7 @@
             Inventario
         </div>
         <div>
-
+            <!-- <q-dialog></q-dialog> -->
         </div>
     </div>
 </template>

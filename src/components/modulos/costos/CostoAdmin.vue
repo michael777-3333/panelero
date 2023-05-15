@@ -57,26 +57,26 @@
                   <div class="col-6">
                     <div class="">
                       <div class="boton">
-                        <q-input v-model="name" label="Nombre" />
+                        <q-input v-model="nameA" label="Nombre" />
                       </div>
                     </div>
                     <br />
                     <div class="">
                       <div class="boton">
-                        <q-input v-model="costo" label="Costo" />
+                        <q-input v-model="costoA" label="Costo" />
                       </div>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="">
                       <div class="boton">
-                        <q-input v-model="codigo" label="Codigo" />
+                        <q-input v-model="codigoA" label="Codigo" />
                       </div>
                     </div>
                     <br />
                     <div class="">
                       <div class="boton">
-                        <q-input v-model="detalle" label="Detalle" />
+                        <q-input v-model="detalleA" label="Detalle" />
                       </div>
                     </div>
                   </div>
@@ -84,18 +84,18 @@
                 <div class="fecha_admin q-pa-md" style="max-width: 500px">
                     <q-input
                       filled
-                      v-model="date"
+                      v-model="dateA"
                       mask="date"
                       :rules="['date']"
                     >
                       <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                           <q-popup-proxy
-                            cover
+                              cover
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="date">
+                            <q-date v-model="dateA">
                               <div class="row items-center justify-end">
                                 <q-btn
                                   v-close-popup
@@ -137,13 +137,17 @@
 <script setup>
 import { ref } from "vue";
 
-let name = ref("");
-let codigo = ref("");
-let date = ref("");
-let detalle = ref("");
-let costo = ref("");
+import { useQuasar } from 'quasar';
+
+let nameA = ref("");
+let codigoA = ref("");
+let dateA = ref("");
+let detalleA = ref("");
+let costoA = ref("");
+
+
 let users = ref([]);
-// let alert = ref(false);
+let alert = ref(false);
 
 
 let rows = ref([
@@ -165,65 +169,19 @@ let rows = ref([
 
 function createUser() {
   users.value.push({
-    name: name.value,
-    codigo: codigo.value,
-    fecha: fecha.value,
-    costo: costo.value,
-    detalle: detalle.value,
+    name: nameA.value,
+    codigo: codigoA.value,
+    date: dateA.value,
+    costo: costoA.value,
+    detalle: detalleA.value,
   });
 
   rows.value.push(users.value[0]);
   users.value = [];
 
   console.log(rows.value);
+  modalAdmin.value = !modalAdmin.value
 }
-
-// if (name.value == '') {
-//       $q.notify({
-//           type: 'negative',
-//           message: 'digite el nombre'
-//       })
-//     }else if (typeUser.value == '') {
-//       $q.notify({
-//           type: 'negative',
-//           message: 'seleccione el tipo de usuario'
-//       })
-//     }else if (email.value == '') {
-//       $q.notify({
-//           type: 'negative',
-//           message: 'digite el email'
-//       })
-//     }else if (password.value == '') {
-//       $q.notify({
-//           type: 'negative',
-//           message: 'digite la contrasena'
-//       })
-//     }else if(validarCrear.value == true){
-//       // crear usuario
-//       await store.addUsuario({name: name.value, email: email.value, password: password.value, typeUser: typeUser.value});
-//       ordenarUsuarios();
-//       console.log(rows.value);
-//       alert.value = false;
-//       $q.notify({
-//           type: 'positive',
-//           message: 'el usuario ha sido creado correctamente'
-//       });
-//       limpiarCajas()
-//     }else if (validarCrear.value == false) {
-//       // actualizar usuario
-//       await store.putUsuario({name: name.value, email: email.value, password: password.value, typeUser: typeUser.value, id: id.value});
-//       ordenarUsuarios();
-//       alert.value = false; 
-//       $q.notify({
-//           type: 'positive',
-//           message: 'el usuario ha sido actualizado correctamente'
-//       });
-//       validarCrear.value = true;
-//       limpiarCajas();
-//     }
-//   }
-
-
 
 const columns = [
   {
@@ -237,16 +195,17 @@ const columns = [
 
   { name: "codigo", label: "Codigo", field: "codigo" },
   { name: "fecha", label: "Fecha", field: "date" },
-  // { name: "cantidad", label: "Cantidad", field: "cantidad" },
   { name: "costo", label: "Costo", field: "costo" },
   { name: "detalle", label: "Detalle", field: "detalle" },
 ];
 
-let alert = ref(false);
+let modalAdmin = ref (false);
+// let alert = ref(false);
 let confirm = ref(false);
 let prompt = ref(false);
 
 let address = ref("");
 </script>
 
-<style></style>
+<style>
+</style>

@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-// import jwt  from 'jsonwebtoken';
+import { useQuasar } from "quasar";
 
 export const useUsuarioStore = defineStore("usuario", {
   state: () => ({
     token: null,
-      URL: 'http://localhost:3000/usuario',
-      // URL: 'https://proyecto-panelera.onrender.com/usuario',
+    $q: useQuasar(),
+    // URL: 'http://localhost:3000/usuario',
+    URL: 'http://10.202.80.188:3000/usuario',
+    // URL: 'https://proyecto-panelera.onrender.com/usuario',
     typeUser: null,
     _id: null
   }),
@@ -14,9 +16,10 @@ export const useUsuarioStore = defineStore("usuario", {
   actions: {
     // axios peticiones usuario
 
-    getToken(data) {
-      this.token = data
-    },
+    // cambiar nombre de funcion por setToken
+    // getToken(data) {
+    //   this.token = data
+    // },
 
     async getUsuario() {
       
@@ -27,7 +30,7 @@ export const useUsuarioStore = defineStore("usuario", {
               url: `${this.URL}`, //https://proyecto-panelera.onrender.com/usuario
 
               headers:{
-                "token":this.token
+                "token": this.$q.cookies.get('token')
               },
                
             })
@@ -37,7 +40,7 @@ export const useUsuarioStore = defineStore("usuario", {
     },
 
     async addUsuario(data) {
-      await axios(
+      return await axios(
         {
           method: 'post',
           url: `${this.URL}`,
@@ -49,41 +52,24 @@ export const useUsuarioStore = defineStore("usuario", {
             typeUser: data.typeUser,
           },
           headers: {
-            'token':this.token
+            'token': this.$q.cookies.get('token')
           }
         })
-        // .then((res) => console.log(res))
-        .catch((error) => console.log(error));
     },
 
     
 
     async login(data) {
-      await axios({
-          method: 'post',
-          url: `${this.URL}/login`,
-          data: {
-            email: data.email,
-            password: data.password}
-          })
-          .then(async(res) => {
-            console.log(res)
-            this.token = res.data.token;
-
-            // jwt.verify(this.token, 'shhhhh', function(err, decode) {
-            //   if(err){
-            //     console.log(err);
-            //   }
-
-            //   const { _id, typeUser } = decode;
-
-            //   this._id = _id;
-            //   this.typeUser = typeUser;
-
-            //   console.log(this.state);
-            // });
-          })
-          .catch((error) => console.log(error));
+      return await axios({
+        method: 'post',
+        url: `http://10.202.80.188:3000/auth/singin`,
+        data: {
+          email: data.email,
+          password: data.password
+        }
+      }) 
+      .then((res) => res)
+      .catch((error) => error);
     },
     
     async putUsuario(data){
@@ -98,7 +84,7 @@ export const useUsuarioStore = defineStore("usuario", {
             typeUser: data.typeUser,
           },
           headers: {
-            'token' : this.token,
+            'token' : this.$q.cookies.get('token')
           }
         })
         .then((res) => console.log(res))
@@ -111,7 +97,7 @@ export const useUsuarioStore = defineStore("usuario", {
           method: 'put',
           url: `${this.URL}/${props._id}`,
           headers: {
-            'token': this.token,
+            'token': this.$q.cookies.get('token')
           }
         })
       .then(response => console.log(response))
@@ -124,7 +110,7 @@ export const useUsuarioStore = defineStore("usuario", {
           method: 'put',
           url:`${this.URL}/${props._id}`,
           headers: {
-            'token': this.token,
+            'token': this.$q.cookies.get('token')
           }
         })
       .then(response=> console.log(response))
