@@ -115,8 +115,8 @@ import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
 
-// or pass in options also:
-// $q.cookies.set('cookie_name', cookie_value, options)
+  // or pass in options also:
+  // $q.cookies.set('cookie_name', cookie_value, options)
 
 
 
@@ -143,8 +143,10 @@ let cantidad = ref("")
 let direccionEnvio = ref("")
 let optionsStatus = ref(['Proceso', 'Entregado', 'Cancelado', 'Realizado']);
 let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
+
+
 let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'editar'])
-let _id = null;
+let id = null;
 let isAdd = ref(true);
 let readonly = ref(false);
 let dense = ref(!true);
@@ -179,14 +181,13 @@ function addOrder() {
 }
 
 async function getOrders() {
-  // if (hasItToken) {
-  //   store.getToken($q.cookies.get('token'))
-  // }
+  if (hasItToken) {
+    store.getToken($q.cookies.get('token'))
+  }
 
   const res = await store.getPedido()
-
-  console.log(res)
-
+  
+  console.log(res.data.pedidos);
   if (res.status == 200) {
     rows.value = res.data.pedidos
   } else if (res.status == 404) {
@@ -216,28 +217,31 @@ async function createOrder() {
   modalPedidos.value = !modalPedidos.value;
 }
 
-function editOrder(paramass) {
+function editOrder({ _id, quantityOfPanela, phoneNumber, customerName, descriptionOfPanela, sendAddress, email, orderStatus, documentNumber, preferencesOfPanela, documentType, }) {
   modalPedidos.value = !modalPedidos.value
   isAdd.value = false
   readonly.value = true
-  _id = paramass._id
-  cantidad.value = paramass.quantityOfPanela
-  celularMFa.value = paramass.phoneNumber
-  clienteMFa.value = paramass.customerName
-  detalles.value = paramass.descriptionOfPanela
-  direccionEnvio.value = paramass.sendAddress
-  emailMFa.value = paramass.email
-  estado.value = paramass.orderStatus
-  numeroDocumentoMFa.value = paramass.documentNumber
-  preferencias.value = paramass.preferencesOfPanela
-  tipoDocumentoMFa.value = paramass.documentType
+  id = _id
+  cantidad.value = quantityOfPanela
+  celularMFa.value = phoneNumber
+  clienteMFa.value = customerName
+  detalles.value = descriptionOfPanela
+  direccionEnvio.value = sendAddress
+  emailMFa.value = email
+  estado.value = orderStatus
+  numeroDocumentoMFa.value = documentNumber
+  preferencias.value = preferencesOfPanela
+  tipoDocumentoMFa.value = documentType
 }
 
 async function changeStatus() {
-  await store.editPedido({
-    id: _id,
-    orderStatus: estado.value,
-  });
+  if (id != null) {
+    await store.editPedido({
+      id: id,
+      orderStatus: estado.value,
+    });
+    id = null
+  }
 
   getOrders();
   modalPedidos.value = !modalPedidos.value;

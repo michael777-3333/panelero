@@ -70,7 +70,7 @@
             </q-card-section>
             <q-separator />
             <q-card-actions align="center">
-              <q-btn @click="createUser()" style="color: #f39a31" class="q-my-md" label=" " />
+              <q-btn @click="createUser()" style="color: #f39a31" class="q-my-md" label="Crear Factura" />
             </q-card-actions>
           </q-card>
         </q-card-section>

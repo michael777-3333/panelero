@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useQuasar } from "quasar";
+import HOST from "../stores/config.js";
+const URLUSUARIOS = `${HOST}usuario/`;
 
 export const useUsuarioStore = defineStore("usuario", {
   state: () => ({
@@ -27,7 +29,7 @@ export const useUsuarioStore = defineStore("usuario", {
           return await axios(
             {
               method: 'get',
-              url: `${this.URL}`, //https://proyecto-panelera.onrender.com/usuario
+              url: `${URLUSUARIOS}`, //https://proyecto-panelera.onrender.com/usuario
 
               headers:{
                 "token": this.$q.cookies.get('token')
@@ -43,40 +45,42 @@ export const useUsuarioStore = defineStore("usuario", {
       return await axios(
         {
           method: 'post',
-          url: `${this.URL}`,
+          url: `http://localhost:3000/auth/singup`,
        
           data: { 
             name: data.name,
             email: data.email,
             password: data.password,
-            typeUser: data.typeUser,
+            roles: [data.roles],
           },
           headers: {
             'token': this.$q.cookies.get('token')
           }
         })
+        // .then((res) => console.log(res))
+        .catch((error) => console.log(error));
     },
 
     
 
     async login(data) {
       return await axios({
-        method: 'post',
-        url: `http://10.202.80.188:3000/auth/singin`,
-        data: {
-          email: data.email,
-          password: data.password
-        }
-      }) 
-      .then((res) => res)
-      .catch((error) => error);
+          method: 'post',
+          url: `http://localhost:3000/auth/singin`,
+          data: {
+            email: data.email,
+            password: data.password
+          }
+          })
+          .then((res) => res)
+          .catch((error) => error);
     },
     
     async putUsuario(data){
       await axios(
         {
           method: 'put',
-          url: `${this.URL}/${data.id}`,
+          url: `${URLUSUARIOS}/${data.id}`,
        
           data: {
             name: data.name,
@@ -84,7 +88,7 @@ export const useUsuarioStore = defineStore("usuario", {
             typeUser: data.typeUser,
           },
           headers: {
-            'token' : this.$q.cookies.get('token')
+            'token': this.$q.cookies.get('token')
           }
         })
         .then((res) => console.log(res))
@@ -95,7 +99,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url: `${this.URL}/${props._id}`,
+          url: `${URLUSUARIOS}desactivar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token')
           }
@@ -108,7 +112,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url:`${this.URL}/${props._id}`,
+          url:`${URLUSUARIOS}activar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token')
           }

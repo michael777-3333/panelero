@@ -66,7 +66,7 @@
                 <div class="col-2"></div>
                 <div class="col-5">
                   <div class="boton">
-                    <q-select outlined v-model="typeUser" :options="tipoUsuario" label="Tipo de usuario" />
+                    <q-select outlined v-model="roles" :options="tipoUsuario" label="Tipo de usuario" />
                   </div>
                 </div>
               </div>
@@ -112,7 +112,7 @@ import { useQuasar } from 'quasar';
 
 async function ordenarUsuarios() {
   // if (hasItToken) {
-  //   $q.cookies.get('token')
+  //   store.getToken($q.cookies.get('token'))
   // }
 
   const res = await store.getUsuario()
@@ -130,7 +130,7 @@ const $q = useQuasar();
 let name = ref('');
 let email = ref('');
 let password = ref('');
-let typeUser = ref('');
+let roles = ref('');
 let validarCrear = ref(true);
 let rows = ref([]);
 let alert = ref(false);
@@ -161,7 +161,7 @@ async function createUser() {
       type: 'negative',
       message: 'digite el nombre'
     })
-  } else if (typeUser.value == '') {
+  } else if (roles.value == '') {
     $q.notify({
       type: 'negative',
       message: 'seleccione el tipo de usuario'
@@ -178,12 +178,8 @@ async function createUser() {
     })
   } else if (validarCrear.value == true) {
     // crear usuario
-    
-    const res = await store.addUsuario({ name: name.value, email: email.value, password: password.value, typeUser: typeUser.value });
+    const res = await store.addUsuario({ name: name.value, email: email.value, password: password.value, roles: roles.value });
     ordenarUsuarios();
-
-    console.log(res)
-
     console.log(rows.value);
     alert.value = false;
     $q.notify({
@@ -193,7 +189,7 @@ async function createUser() {
     limpiarCajas()
   } else if (validarCrear.value == false) {
     // actualizar usuario
-    await store.putUsuario({ name: name.value, password: password.value, typeUser: typeUser.value, id: id.value });
+    await store.putUsuario({ name: name.value, password: password.value, roles: roles.value, id: id.value });
     ordenarUsuarios();
     alert.value = false;
     $q.notify({
@@ -216,7 +212,7 @@ const columns = [
   },
 
   { name: 'email', align: 'left', label: 'Email', field: 'email' },
-  { name: 'typeUser', align: 'left', label: 'Rol', field: 'typeUser' },
+  { name: 'roles', align: 'left', label: 'Rol', field: 'roles' },
   // { name: 'password', align: 'left', label: 'Contraseña', field: 'password' },
   { name: 'editar', align: 'left', label: 'editar' },
 
@@ -234,20 +230,20 @@ function usuarioEditar(data) {
   name.value = data.value.name
   email.value = data.value.email
   password.value = ''
-  typeUser.value = data.value.typeUser
+  roles.value = data.value.roles
   id.value = data.value._id
 
   console.log(password.value);
 }
 
 let tipoUsuario = [
-  'super usuario', 'administrador', 'usuario'
+  'admin', 'moderator', 'user'
 ];
 
 function limpiarCajas() {
   name.value = ''
   email.value = ''
-  typeUser.value = ''
+  roles.value = ''
   password.value = ''
   id.value = null
   labelDialog.value = 'Crear usuraio'

@@ -1,98 +1,57 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useQuasar } from 'quasar';
+import HOST from "../stores/config.js";
+let URLPEDIDOS = `${HOST}pedido/`;
 
 export const usePedidoStore = defineStore("pedido", {
   state: () => ({
     $q: useQuasar(),
-    // URL: 'http://localhost:3000/pedido/',
-    // URL: 'https://proyecto-panelera.onrender.com/pedido',
-    URL: 'http://10.202.80.188:3000/pedido',
+    // token: null,
   }),
 
   actions: {
     // axios peticiones pedido
-    
-    // getToken(data) {
-    //   this.token = data
-    // },
-        
+
+    // getToken(tk) { this.token = tk },
+
     async getPedido() {
-      return await axios(
-        {
-          method: 'get',
-          url: this.URL,
-          headers: {
-            'token' : this.$q.cookies.get('token'),
-          }
-        })
+      return await axios({
+        method: 'get',
+        url: URLPEDIDOS,
+        headers: {
+          'token' : this.$q.cookies.get('token'),
+        }
+      })
     },
 
-    async addPedido(data) {
-      await axios(
-        {
-          method: 'post',
-          url: this.URL,
-          data: {
-            customerName: data.customerName,
-            documentType: data.documentType,
-            documentNumber: data.documentNumber,
-            phoneNumber: data.phoneNumber,
-            email: data.email,
-            descriptionOfPanela: data.descriptionOfPanela,
-            preferencesOfPanela: data.preferencesOfPanela,
-            orderStatus: data.orderStatus,
-            quantityOfPanela: data.quantityOfPanela,
-            sendAddress: data.sendAddress,
-          },
-          headers: {
-            'token' : this.$q.cookies.get('token'),
-          }
-        })
+    async addPedido(reqData) {
+      await axios({
+        method: 'post',
+        url: URLPEDIDOS,
+        data: reqData,
+        headers: {
+          'token' : this.$q.cookies.get('token'),
+        }
+      })
         // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
 
-    async editPedido(data) {
-      await axios(
-        {
-          method: 'put',
-          url: `${this.URL}${data.id}`,
-          data: {
-            orderStatus: data.orderStatus,
-          },
-          headers: {
-            'token' : this.$q.cookies.get('token'),
-          }
-        })
+    async editPedido({ id, orderStatus }) {
+      await axios({
+        method: 'put',
+        url: `${URLPEDIDOS}${id}`,
+        data: {
+          orderStatus: orderStatus,
+        },
+        headers: {
+          'token' : this.$q.cookies.get('token'),
+        }
+      })
         // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
-
-
-    // async getToken() {
-    //   await axios
-      
-    //     .post("http://localhost:3000/pedido/login", {email:"michael@gmail.com", password:"12345678"})
-    //     .then((res) => console.log(res))
-    //     .catch((error) => console.log(error));
-    // },
-    // async putPedido(data){
-    //   await axios
-    //     .put("http://localhost:3000/pedido/64519566af7c88c51c149ff6", {
-    //       token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pY2hhZWxAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjM0NTY3OCIsImlhdCI6MTY4MzA2OTA5MywiZXhwIjoxNjgzMTA1MDkzfQ.Wc3ziBcRusGeJui35QvZn8OWpcyXxiigxYhEAyzoF0o",
-    //       name: data.name,
-    //       email: data.email,
-    //       password: data.password,
-    //       // eps: data.eps,
-    //       // identification: data.identification,
-    //       typeUser: data.tipoPedido,
-    //       // state: data.state
-    //     })
-    //     .then((res) => console.log(res))
-    //     .catch((error) => console.log(error));
-    // }
-
   },
 
 });

@@ -14,32 +14,16 @@
       <div class="col-3"></div>
       <div class="col-6">
         <div class="q-pa-md">
-          <q-table
-            class="paddingTabla"
-            title="Lotes"
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-          >
+          <q-table class="paddingTabla" title="Lotes" :rows="rows" :columns="columns" row-key="name">
             <template v-slot:body-cell-state="props">
               <td>
-                <q-checkbox
-                  v-model="props.row.state"
-                  :true-value="1"
-                  :false-value="0"
-                  @click="editarEstado(props.row)"
-                />
+                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editarEstado(props.row)" />
               </td>
             </template>
 
             <template v-slot:body-cell-editar="props">
               <td>
-                <q-btn
-                  class="botonEditar"
-                  @click="loteEditar(props.row)"
-                  glossy
-                  label="Editar"
-                />
+                <q-btn class="botonEditar" @click="loteEditar(props.row)" glossy label="Editar" />
               </td>
             </template>
           </q-table>
@@ -47,11 +31,7 @@
       </div>
       <div class="col-3"></div>
       <div class="contenedorBoton q-pa-md q-gutter-sm">
-        <q-btn
-          label="Crear usuario"
-          style="color: #f39a31"
-          @click="alert = true"
-        />
+        <q-btn label="Crear usuario" style="color: #f39a31" @click="alert = true" />
       </div>
       <q-dialog v-model="alert">
         <q-card class="dialogLotes">
@@ -91,12 +71,7 @@
               </q-card-section>
               <q-separator />
               <q-card-actions align="center">
-                <q-btn
-                  @click="createAllotment()"
-                  style="color: #f39a31"
-                  class="q-my-md"
-                  label="Crear Usuario"
-                />
+                <q-btn @click="createAllotment()" style="color: #f39a31" class="q-my-md" label="Crear Usuario" />
               </q-card-actions>
             </q-card>
           </q-card-section>
@@ -110,7 +85,7 @@
   </div>
 </template>
   
-  <script setup>
+<script setup>
 import { ref } from "vue";
 import axios from "axios";
 import { useLoteStore } from "../../../stores/lotesStore.js";
@@ -122,15 +97,15 @@ import { useQuasar } from "quasar";
 const store = useLoteStore();
 const storeUser = useUsuarioStore();
 // const stateUser = storeToRefs(storeUser);
-
 const $q = useQuasar();
-// const hasItToken= $q.cookies.has("token")
+// const hasItToken = $q.cookies.has('token')
+
 let alert = ref(false);
 let name = ref("");
 let rows = ref([]);
 let size = ref("");
 let owner = ref("");
-let validarEditar=ref(false)
+let validarEditar = ref(true)
 let createdAt = ref("");
 let data = ref(null)
 let id =ref(null)
@@ -140,17 +115,16 @@ async function ordenarLotes() {
   //     store.getToken($q.cookies.get('token'))
   //   }
   // $q.localStorage.set("token", store.token)
-    // store.getToken(stateUser.token.value);
-    const res = await store.getLote();
-    console.log(res.data);
-    if (res.status < 300) {
-
-      rows.value = res.data.lotes;
-    } else if (res.status > 400) {
-      console.log("No existen datos");
-    } else {
-      console.log(res.status);
-    }
+  // store.getToken(stateUser.token.value);
+  const res = await store.getLote();
+  // console.log(res);
+  if (res.status == 200) {
+    rows.value = res.data.lotes;
+  } else if (res.status == 404) {
+    console.log("No existen datos");
+  } else {
+    console.log(res.status);
+  }
 }
 ordenarLotes();
 
@@ -183,15 +157,17 @@ async function createAllotment() {
       type: "negative",
       message: "digite el dueño ",
     });
-  } 
+  }
   // else if (createdAt.value == "") {
   //   $q.notify({
   //     type: "negative",
   //     message: "digite la fecha",
   //   });
   // } 
-  else if (validarEditar.value==true) {
-    await store.addLote({size: size.value, owner: owner.value, createdAt: createdAt.value,});
+  else if (validarEditar.value == true) {
+    await store.addLote({
+      size: size.value, owner: owner.value, name: name.value,
+    });
     ordenarLotes();
     console.log(rows.value);
     alert.value = false;
@@ -199,53 +175,56 @@ async function createAllotment() {
       type: "positive",
       message: "el lote ha sido creado correctamente",
     });
-  }else if (validarEditar.value==false) {
-    await store.putLote({size: size.value, owner: owner.value,});
-
-      console.log({size: size.value, owner: owner.value,});
-      alert.value = false;
+  } 
+  else if (validarEditar.value == false) {
+    console.log(data.value);
+      await store.editLote({ 
+        id: data.value._id, name: name.value, size: size.value, owner: owner.value, 
+      });
+      // console.log({size: size.value, owner: owner.value,});
       ordenarLotes();
       $q.notify({
-      type: "positive",
-      message: "el lote ha sido actualizado correctamente",
-    });
-    validarEditar.value = true;
+        type: "positive",
+        message: "el lote ha sido actualizado correctamente",
+      });
+      alert.value=false
+      validarEditar.value = true;
+    }
   }
-}
 
-function loteEditar(data){
-  validarEditar.value=false
-  alert.value = true;
-  data.value=data
-  console.log(data.value);
-  size.value =data.value.size
-  owner.value =data.value.owner
+  function loteEditar(info) {
+    validarEditar.value = false
+    alert.value = true;
+    data.value = info
+    console.log("e",data.value);
+    size.value = data.value.size
+    owner.value = data.value.owner
+    name.value = data.value.name
+  }
 
-}
+  const columns = [
+    { name: "state", label: "Estado", align: "left" },
+    {
+      label: "Nombre",
+      align: "left",
+      field: (row) => row.name,
+      format: (val) => `${val}`,
+      sortable: true,
+    },
 
-const columns = [
-  { name: "state", label: "Estado", align: "left" },
-  {
-    label: "Nombre",
-    align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-
-  { name: "size", align: "left", label: "tamaño", field: "size" },
-  { name: "owner", align: "left", label: "dueño", field: "owner" },
-  {
-    name: "createdAt",
-    align: "left",
-    label: "fecha creacion",
-    field: "createdAt",
-  },
-  { name: "editar", align: "left", label: "editar" },
-];
+    { name: "size", align: "left", label: "tamaño", field: "size" },
+    { name: "owner", align: "left", label: "dueño", field: "owner" },
+    {
+      name: "createdAt",
+      align: "left",
+      label: "fecha creacion",
+      field: "createdAt",
+    },
+    { name: "editar", align: "left", label: "editar" },
+  ];
 </script>
   
-  <style>
+<style>
 .tituloLotes {
   /* width: 10px; */
   /* height: 10px; */
