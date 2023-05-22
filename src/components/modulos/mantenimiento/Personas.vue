@@ -14,14 +14,20 @@
                 <div class="col-3"></div>
                 <div class="col-6 text-center">
                     <div class="q-pa-md q-gutter-sm">
-                        <q-btn class="colorEnfasis" @click="addOrder()" glossy label="Crear Pedidos" />
+                        <q-btn class="colorEnfasis" @click="alert = true" glossy label="Crear Pedidos" />
                     </div>
                     <div class="q-pa-md">
-                        <q-table title="Pedidos" :rows="rows" :columns="columns" row-key="id" no-data-label="No existen datos!"
+                        <q-table title="Personas" :rows="rows" :columns="columns" row-key="id" no-data-label="No existen datos!"
                             :visible-columns="visibleColumns">
+                            <template v-slot:body-cell-state="props">
+                              <td>
+                                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editarEstado(props.row)" />
+                              </td>
+                            </template>
+
                             <template v-slot:body-cell-editar="props">
                                 <td>
-                                    <q-btn class="botonEditar" @click="editOrder(props.row)" glossy label="Editar" />
+                                  <q-btn class="botonEditar" @click="personaEditar(props.row)" glossy label="Editar" />
                                 </td>
 
                             </template>
@@ -30,14 +36,11 @@
                 </div>
                 <div class="col-3"></div>
             </div>
-            <q-dialog v-model="modalPersonas">
+            <q-dialog v-model="alert">
                 <q-card class="bgColorEnfasis">
                 <q-card-section>
-          <!-- <h6 class="text-black">Pedidos</h6> -->
                 <span class="text-black text-h6">Personas</span>
-          <!-- <div class="text-black">Pedidos</div> -->
-
-          <q-btn @click="modalPersonas = !modalPersonas" class="bg-red text-white float-right" label="Cerrar" />
+          <q-btn class="bg-red text-white float-right" label="Cerrar" />
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -51,7 +54,6 @@
                 <div class="col-5">
                   <q-select filled v-model="typeIdentification" :options="optionsDocument" label="Tipo de Documento"
                     stack-label :dense="dense" :options-dense="denseOpts" :readonly="readonly" />
-                  <!-- <q-input v-model="typeIdentification" label="Tipo de Documento" /> -->
                 </div>
                 <div class="col-5">
                   <q-input v-model="numberIdentification" label="Número de documento" type="number" :readonly="readonly" />
@@ -73,23 +75,13 @@
                   <q-input v-model="medicalInsuranceCompany" label="EPS" :readonly="readonly" />
                 </div>
                 <div class="col-5"></div>
-                <!--  -->
-                <!-- <div class="col-5">
-                  <q-input v-model="cantidad" label="Cantidad de panela" type="number" :readonly="readonly" />
-                </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                  <q-input v-model="direccionEnvio" label="Dirección de envio" :readonly="readonly" />
-                </div> -->
+ 
               </div>
             </q-card-section>
             <q-separator/>
 
             <q-card-actions align="center">
-              <q-btn class="q-my-md colorEnfasis">
-                <span v-if="isAdd == true" @click="createOrder()">Crear Pedido</span>
-                <span v-else               @click="changeStatus()">Modificar Pedido</span>
-              </q-btn>
+              <q-btn @click="createPersona()" class="q-my-md colorEnfasis">crear Persona</q-btn>
             </q-card-actions>
 
           </q-card>
@@ -102,27 +94,17 @@
   
 <script setup>
 import { ref } from "vue";
+
 import { usePersonasStore } from '../../../stores/personasStore.js'
+import { useUsuarioStore } from "../../../stores/usuarioStore";
 import { useQuasar } from 'quasar'
+import { storeToRefs } from "pinia";
 
-
-const $q = useQuasar()
-
-// or pass in options also:
-// $q.cookies.set('cookie_name', cookie_value, options)
-
-
-
-// $q.localStorage.set("key", "value")
-// console.log($q.localStorage.getItem("token"));
-// const value = $q.localStorage.getItem(key)
-
-// $q.sessionStorage.set(key, value)
-// const otherValue = $q.sessionStorage.getItem(key)
-
+const $q = useQuasar();
+const storeUser = useUsuarioStore();
 const hasItToken = $q.cookies.has('token')
+const store = usePersonasStore() 
 
-const store = usePersonasStore()
 
 let name = ref("");
 let numberIdentification = ref("");
@@ -131,108 +113,75 @@ let numberPhone = ref("");
 let birthDate = ref("");
 let residenceAddress = ref("")
 let medicalInsuranceCompany = ref("")
-let estado = ref(null)
-// let cantidad = ref("")
-// let direccionEnvio = ref("")
-// let optionsStatus = ref(['Proceso', 'Entregado', 'Cancelado', 'Realizado']);
+// let estado = ref(null)
+let alert = ref(false);
 let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
-
-
-let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'editar'])
+let visibleColumns = ref(['nombre', 'numero Documento', 'telefono', 'fecha nacimiento' ,"direccion",'EPS',"editar"])
 let _id = null;
-let isAdd = ref(true);
-let readonly = ref(false);
-let dense = ref(!true);
-let denseOpts = ref(true);
-let modalPersonas = ref(false);
 let rows = ref([]);
 const columns = [
+  { name: "state", label: "Estado", align: "left" },
   {
     name: "id",
-    // required: true,
     label: "id",
-    // align: "left",
-    field: (row) => row._id,
+    field: (row) => row.name,
     format: (val) => `${val}`,
-    // sortable: true,
-    // sortOrder: 'ad', // or 'da'
     required: false
   },
-
-  { name: "nombre", align: "left", label: "Cliente", field: "customerName", sortable: true, },
-  { name: "cantidad", label: "Cantidad", field: "quantityOfPanela" },
-  { name: "numeroDocumento", label: "Estado", field: "orderStatus" },
+  { name: "nombre", align: "left", label: "nombre", field: "name", sortable: true, },
+  { name: "numero Documento", label: "numero Documento", field: "numberIdentification" },
+  { name: "tipo de identificacion", label: "tipo de identificacion", field: "typeIdentification" },
+  { name: "telefono", label: "telefono", field: "numberPhone" },
+  { name: "fecha nacimiento", align: "left", label: "fecha nacimiento", field: "birthDate", sortable: true, },
+  { name: "direccion", align: "left", label: "direccion", field: "residenceAddress", sortable: true, },
+  { name: "EPS", align: "left", label: "EPS", field: "medicalInsuranceCompany", sortable: true, },
   { name: "editar", align: "center", label: "Editar", field: "Editar" },
 ];
 
+// function personaEditar(info) {
+//   alert.value=true
+//   data.value=info
+//   console.log(data.value);
+// }
 
-function addOrder() {
-  // $q.localStorage.removeItem("token")
-
-  modalPersonas.value = isAdd.value = true
-  readonly.value = false
-}
-
-async function getOrders() {
-  if (hasItToken) {
-    store.getToken($q.cookies.get('token'))
-  }
-  const res = await store.getPersona()
+async function ordenarPersona() {
+  const res=await store.getPersona()
   if (res.status == 200) {
-    rows.value = res.data.persona
+    rows.value = res.data.personas
+    console.log(rows.value);
   } else if (res.status == 404) {
     console.log("No existen datos");
   } else {
     console.log(res.status);
   }
 }
+ordenarPersona()
 
-getOrders();
+async function editarEstado(props) {
+  console.log("hola");
+  console.log(props);
+  if (props.state == 0) {
+    await store.activarLote(props);
+  } else if (props.state == 1) {
+    await store.desactivarLote(props);
+  }
+  ordenarLotes();
+}
 
-async function createOrder() {
+async function createPersona(){
+  console.log( name.value, numberIdentification.value, 
+    typeIdentification.value, numberPhone.value,
+    birthDate.value,residenceAddress.value,medicalInsuranceCompany.value);
+ 
   await store.addPersona({
-    name: name.value,
-    residenceAddress: residenceAddress.value,
-    numberIdentification: numberIdentification.value,
-    typeIdentification: typeIdentification.value,
-    birthDate: birthDate.value,
-    // orderStatus:   estado.value,
-    numberPhone: numberPhone.value,
-    medicalInsuranceCompany: medicalInsuranceCompany.value,
-    // sendAddress:  direccionEnvio.value,
+    name:name.value, numberIdentification:numberIdentification.value, 
+    typeIdentification:typeIdentification.value, numberPhone:numberPhone.value,
+    birthDate:birthDate.value,residenceAddress:residenceAddress.value,medicalInsuranceCompany:medicalInsuranceCompany.value
+  })
 
-    
-  });
-  console.log();
 
-  getOrders();
-  modalPersonas.value = !modalPersonas.value;
-}
-
-function editOrder(paramass) {
-  modalPersonas.value = !modalPersonas.value
-  isAdd.value = false
-  readonly.value = true
-  _id = paramass._id
-  numberPhone.value = paramass.phoneNumber
-  name.value = paramass.customerName
-  residenceAddress.value = paramass.descriptionOfPanela
-  direccionEnvio.value = paramass.sendAddress
-  birthDate.value = paramass.email
-  estado.value = paramass.orderStatus
-  numberIdentification.value = paramass.documentNumber
-  medicalInsuranceCompany.value = paramass.preferencesOfPanela
-  typeIdentification.value = paramass.documentType
-}
-
-async function changeStatus() {
-  await store.editPersona({
-    id: _id,
-    orderStatus: estado.value,
-  });
-
-  getOrders();
-  modalPersonas.value = !modalPersonas.value;
+ 
+  ordenarPersona()
 }
 
 </script>

@@ -1,7 +1,7 @@
   /* login */
 
   .fondo{
-    opacity: 0.45;
+    /* opacity: 0.45; */
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@
   }
 
   .card-fondo{
-    background-color:  rgba(64, 64, 64, 0.85);
+    background-color:  rgba(0, 0, 0, 0.363);
   }
 
   .img-card{
@@ -188,3 +188,17 @@
   /* justify-content: center; */
   margin: 0px 60px;
 }
+
+/* estilos home */
+.homeIni {
+  width: 300%;
+  margin: 2%;
+  max-width: 300px;
+}
+/* fin estilos home  */
+
+/* estilo gris de la card */
+.text-lo{
+  background-color:  rgba(0, 0, 0, 0);
+}
+/* fin estilo gris de la card */

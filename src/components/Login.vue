@@ -35,7 +35,8 @@ const router = useRouter();
 const store = useUsuarioStore();
 const $q = useQuasar();
 
-const email = ref('wilmer@gmail.com');
+const email = ref('andres@meaw.co');
+// const email = ref('f@f.f');
 const password = ref('1q2w.');
 
 const btnState = ref(false);

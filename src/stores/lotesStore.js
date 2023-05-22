@@ -56,7 +56,7 @@ export const useLoteStore = defineStore("lote", {
       await axios(
         {
           method: 'put',
-          url: `${URLLOTES}desactivar/${props._id}`,
+          url: `${URLLOTES}activar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token'),
           }
@@ -69,7 +69,7 @@ export const useLoteStore = defineStore("lote", {
       await axios(
         {
           method: 'put',
-          url: `${URLLOTES}activar/${props._id}`,
+          url: `${URLLOTES}desactivar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token'),
           }

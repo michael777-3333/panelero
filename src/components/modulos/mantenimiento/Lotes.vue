@@ -98,7 +98,7 @@ const store = useLoteStore();
 const storeUser = useUsuarioStore();
 // const stateUser = storeToRefs(storeUser);
 const $q = useQuasar();
-// const hasItToken = $q.cookies.has('token')
+const hasItToken = $q.cookies.has('token')
 
 let alert = ref(false);
 let name = ref("");
@@ -109,6 +109,7 @@ let validarEditar = ref(true)
 let createdAt = ref("");
 let data = ref(null)
 let id =ref(null)
+
 
 async function ordenarLotes() {
   // if (hasItToken) {
@@ -223,7 +224,8 @@ async function createAllotment() {
     { name: "editar", align: "left", label: "editar" },
   ];
 </script>
-  
+
+
 <style>
 .tituloLotes {
   /* width: 10px; */

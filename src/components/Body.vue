@@ -1,8 +1,7 @@
 <template>
   <div class="q-pa-none">
     <q-layout
-      view="hHh Lpr fFf"
-      container
+      view="hHh Lpr fFf" container
       style="height: 100vh"
       class="shadow-2 rounded-borders"
     >
@@ -20,10 +19,10 @@
       <q-drawer
         style="background-color: hsla(32, 87%, 57%, 0.61)"
         v-model="drawer"
+        show-if-above
         :width="250"
         :breakpoint="500"
-        bordered
-        overlay
+       
       >
         <!-- overlay -->
         <q-scroll-area class="fit color-principal">

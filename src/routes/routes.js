@@ -11,6 +11,8 @@ import Personas from '../components/modulos/mantenimiento/Personas.vue'
 import Facturacion from '../components/modulos/facturacion/Facturacion.vue'
 import Pedidos from '../components/modulos/facturacion/Pedidos.vue'
 
+import Etapa from '../components/modulos/mantenimiento/Etapa.vue'
+
 export const routes = [
     { path:"/", component: Login },
     { path:"/body", component: Body, children: [
@@ -28,7 +30,8 @@ export const routes = [
                     { path:"homeMantenimiento", component: HomeMantenimiento},
                     { path:"usuario", component: Usuario },
                     { path:"lotes", component: Lotes},
-                    { path:"personas", component: Personas}
+                    { path:"personas", component: Personas},
+                    { path: 'etapa', component: Etapa },
                 ]
             },
             

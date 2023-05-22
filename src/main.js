@@ -1,16 +1,13 @@
 import './style.css';
-import { createApp } from 'vue';
-import { Quasar, Cookies, LocalStorage, SessionStorage, Notify} from 'quasar';
-import { createPinia } from 'pinia';
-
 import '@quasar/extras/material-icons/material-icons.css';
-
+import 'quasar/src/css/flex-addon.sass';
 import 'quasar/src/css/index.sass';
-
-import App from './App.vue';
-
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import { createRouter, createWebHashHistory } from "vue-router";
+import { Quasar, Cookies, LocalStorage, SessionStorage, Notify} from 'quasar';
 import { routes } from './routes/routes.js';
+import App from './App.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),

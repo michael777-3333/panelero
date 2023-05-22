@@ -1,56 +1,51 @@
 <template>
   <div class="justify-center items-center d-flex">
-    <div class="row">
-      <div class="col-4"></div>
-      <div class="col-4">
-        <div class="text-center ">
-          <h1 class="tituloh1 text-h6">usuarios</h1>
-        </div>
-      </div>
-      <div class="col-4"></div>
-    </div>
-
     <!--tabla-->
-
     <div class="row">
-      <div class="col-3"></div>
-      <div class="col-6">
-        <div class="q-pa-md">
-          <q-table
-            title="Usuarios"
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-          >
+      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
+      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
+
+        <div class="row q-ma-md">
+          <div class="col-4"></div>
+          <div class="col-4 ">
+            <h1 class="text-h6 bgColorEnfasis borderTitle">Usuarios</h1>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-12 q-my-md">
+            <!--boton abrir dialog para crear usuario-->
+            <q-btn class="colorEnfasis" label="Crear usuario" @click="addUser()" />
+          </div>
+        </div>
+
+        <div class="q-ma-xs-md q-ma-lg-sm">
+          <q-table :rows="rows" :columns="columns" row-key="id" :visible-columns="visibleColumns"
+            no-data-label="No existen usuarios!">
             <template v-slot:body-cell-state="props">
               <td>
-                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editarEstado(props.row)" />
+                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editState(props.row)" />
               </td>
             </template>
 
             <template v-slot:body-cell-editar="props">
               <td>
-                <q-btn class="botonEditar" @click="usuarioEditar(props.row)" glossy label="Editar" />
-              </td>     
-            
+                <q-btn class="botonEditar" @click="editUser(props.row)" glossy label="Editar" />
+              </td>
+
             </template>
-      
           </q-table>
+
         </div>
       </div>
-      <div class="col-3"></div>
+      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
     </div>
 
-    <!--boton abrir dialog para crear usuario-->
-    <div class="contenedorBoton q-pa-md q-gutter-sm">
-      <q-btn label="Crear usuario"  style="color: #F39A31;" @click="labelDialog = 'Crear usuraio'; limpiarCajas(); validarCrear = true; alert = true" />
-    </div>
+
 
     <!--dialog-->
-    <q-dialog  v-model="alert">
+    <q-dialog v-model="modalUser">
       <q-card class="dialog">
         <q-card-section>
-          <div style="color:black;" class="text-h6">{{labelDialog}}</div>
+          <div style="color:black;" class="text-h6">{{ labelDialog }}</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -59,7 +54,7 @@
             <q-card-section>
               <div class="row">
                 <div class="col-5">
-                  <div class="boton"> 
+                  <div class="boton">
                     <q-input v-model="name" label="nombre" />
                   </div>
                 </div>
@@ -77,29 +72,32 @@
                     <q-input v-model="email" label="correo" />
                   </div>
                 </div>
-              <div class="col-2"></div>
-              <div class="col-5">
+                <div class="col-2"></div>
+                <div class="col-5">
+                  <div class="boton">
+                    <q-input v-model="password" label="contraseña" />
+                  </div>
+                </div>
+              </div>
+              <div v-show="validarCrear == false" class="row">
                 <div class="boton">
                   <q-input v-model="password" label="contraseña" />
                 </div>
               </div>
-            </div>
-            <div v-show="validarCrear == false"  class="row">
-              <div class="boton">
-                  <q-input v-model="password" label="contraseña" />
-              </div>
-            </div>
               <!-- { name: 'editar', label: 'editar'}, -->
             </q-card-section>
 
             <q-separator />
 
             <q-card-actions align="center">
-              <q-btn @click="createUser();"  style="color:#F39A31 " class="q-my-md" label="Crear Usuario" />
+              <q-btn class="q-my-md colorEnfasis">
+                <span v-if="isAdd == true" @click="createUser()">Crear Usuario</span>
+                <span v-else @click="modifyUser()">Modificar Usuario</span>
+              </q-btn>
             </q-card-actions>
           </q-card>
         </q-card-section>
-    </q-card>
+      </q-card>
     </q-dialog>
   </div>
 </template>
@@ -107,156 +105,190 @@
 <script setup>
 import { ref } from 'vue';
 import { useUsuarioStore } from '../../../stores/usuarioStore.js';
-import axios from 'axios';
 import { useQuasar } from 'quasar';
-
-async function ordenarUsuarios() {
-  // if (hasItToken) {
-  //   store.getToken($q.cookies.get('token'))
-  // }
-
-  const res = await store.getUsuario()
-
-  if (res.status < 300) {
-    rows.value = res.data.usuarios
-  } else if (res.response.status == 404) {
-    console.log("No existen datos");
-  }
-}
+const $q = useQuasar();
 
 const store = useUsuarioStore();
-const $q = useQuasar();
-// const hasItToken = $q.cookies.has('token')
+
 let name = ref('');
 let email = ref('');
 let password = ref('');
 let roles = ref('');
 let validarCrear = ref(true);
+
+let tipoUsuario = ['admin', 'moderator', 'user'];
+let id = null;
+let isAdd = ref(true);
+let modalUser = ref(false);
 let rows = ref([]);
-let alert = ref(false);
-let data = ref(null);
-let id = ref(null);
+let visibleColumns = ref(['state', 'nombre', 'email', 'roles', 'editar'])
+const columns = [
+  {
+    name: "id",
+    // required: true,
+    label: "id",
+    // align: "left",
+    field: (row) => row._id,
+    format: (val) => `${val}`,
+    // sortable: true,
+    // sortOrder: 'ad', // or 'da'
+    required: false
+  },
+  { name: 'state', label: 'Estado', align: "left" },
+  { name: 'nombre', align: 'center', label: 'Nombre', field: 'name', sortable: true, },
+  { name: 'email', align: 'center', label: 'Email', field: 'email' },
+  {
+    name: 'roles', align: 'center', label: 'Rol',
+    field: row => row.roles,
+    format: (val) => getRol(val)
+  }, // recorrec vector
+  // { name: 'password', align: 'left', label: 'Contraseña', field: 'password' },
+  { name: 'editar', align: 'center', label: 'Opciones' },
+
+]
 
 let labelDialog = ref('Crear usuario');
 
-ordenarUsuarios();
+function getRol(arrayRoles) {
+  let rol = '-'
+  let _roles = []
 
-async function editarEstado(props) {
-  console.log(props);
+  if (arrayRoles.length > 0) {
+    for (let index = 0; index < arrayRoles.length; index++) {
+      const element = arrayRoles[index];
+      _roles.push(element.name)
+    }
+
+    if (_roles.includes('admin')) {
+      rol = 'admin'
+    } else if (_roles.includes('moderator')) {
+      rol = 'moderator'
+    } else if (_roles.includes('user')) {
+      rol = 'user'
+    }
+  }
+
+  return rol
+}
+
+async function getUsers() {
+
+  const res = await store.getUsuario()
+  console.log(res.data.usuarios);
+  if (res.status < 300) {
+    rows.value = res.data.usuarios
+  } else if (res.response.status == 404) {
+    console.log("No existen datos");
+  } else {
+    console.log(res.status);
+  }
+}
+
+getUsers();
+
+function closeModal() { // Cierro el modal
+  function limpiarCajas() { // Vacio los formularios
+    name.value = email.value = roles.value = password.value = ''
+  }
+  id = null
+  getUsers(); // Actualizo la tabla
+  limpiarCajas()
+  modalUser.value = false // Cierro el modal
+  isAdd.value = false
+}
+
+async function editState() {
   if (props.state == 0) {
     await store.activarUsuario(props);
-    console.log(data.value);
   }
   else if (props.state == 1) {
     await store.desactivarUsuario(props);
   }
 
-  ordenarUsuarios();
+  getUsers();
 }
 
-//crear o actualizar usuario en la base de datos
-async function createUser() {
+function addUser() {
+  modalUser.value = true
+  isAdd.value = true
+}
+
+function validations() {
+  function showMessage(msg) {
+    $q.notify({
+      type: 'negative',
+      message: msg
+    })
+  }
+
   if (name.value == '') {
-    $q.notify({
-      type: 'negative',
-      message: 'digite el nombre'
-    })
+    showMessage('digite el nombre')
   } else if (roles.value == '') {
-    $q.notify({
-      type: 'negative',
-      message: 'seleccione el tipo de usuario'
-    })
+    showMessage('Seleccione le tipo de usuario')
   } else if (email.value == '') {
-    $q.notify({
-      type: 'negative',
-      message: 'digite el email'
-    })
+    showMessage('Digite el email')
   } else if (password.value == '') {
-    $q.notify({
-      type: 'negative',
-      message: 'digite la contrasena'
-    })
-  } else if (validarCrear.value == true) {
-    // crear usuario
-    const res = await store.addUsuario({ name: name.value, email: email.value, password: password.value, roles: roles.value });
-    ordenarUsuarios();
-    console.log(rows.value);
-    alert.value = false;
-    $q.notify({
-      type: 'positive',
-      message: 'el usuario ha sido creado correctamente'
+    showMessage('Digite la contraseña')
+  } else { return true }
+}
+
+function showDoneMessage(msg) {
+  $q.notify({
+    type: 'positive',
+    message: msg
+  })
+}
+
+//crear usuario en la base de datos
+async function createUser() {
+  if (validations() && isAdd) {
+    // fctn de la peticion para crear usuario
+    const res = await store.addUsuario({
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      roles: roles.value,
     });
-    limpiarCajas()
-  } else if (validarCrear.value == false) {
-    // actualizar usuario
-    await store.putUsuario({ name: name.value, password: password.value, roles: roles.value, id: id.value });
-    ordenarUsuarios();
-    alert.value = false;
-    $q.notify({
-      type: 'positive',
-      message: 'el usuario ha sido actualizado correctamente'
-    });
-    validarCrear.value = true;
-    limpiarCajas();
+
+    if (res.status == 200) {
+      showDoneMessage(res.data.msj)
+    }
+    closeModal()
   }
 }
 
-const columns = [
-  { name: 'state', label: 'Estado', align: "left" },
-  {
-    label: 'Nombre',
-    align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
-    sortable: true,
-  },
-
-  { name: 'email', align: 'left', label: 'Email', field: 'email' },
-  { name: 'roles', align: 'left', label: 'Rol', field: 'roles' },
-  // { name: 'password', align: 'left', label: 'Contraseña', field: 'password' },
-  { name: 'editar', align: 'left', label: 'editar' },
-
-]
-
-
-// actualizar usuario, llenar inputs del dialog para actualizar usuario
-function usuarioEditar(data) {
-  console.log(password.value);
-  validarCrear.value = false;
-  labelDialog.value = 'Editar Usuario'
-  data.value = data;
-  console.log(data.value);
-  alert.value = true;
-  name.value = data.value.name
-  email.value = data.value.email
+async function editUser(data) {
+  modalUser.value = true;
+  isAdd.value = false
+  id = data._id
+  // Traigo los datos a las cajas de textos
+  name.value = data.name
+  email.value = data.email
   password.value = ''
-  roles.value = data.value.roles
-  id.value = data.value._id
-
-  console.log(password.value);
+  roles.value = getRol(data.roles)
 }
 
-let tipoUsuario = [
-  'admin', 'moderator', 'user'
-];
+async function modifyUser() {
+  if (validations() && !isAdd && id != null) {
+    // fctn de la peticion para editar usuario
+    const res = await store.putUsuario({
+      id: id,
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      roles: roles.value
+    });
 
-function limpiarCajas() {
-  name.value = ''
-  email.value = ''
-  roles.value = ''
-  password.value = ''
-  id.value = null
-  labelDialog.value = 'Crear usuraio'
+    if (res.status == 200) {
+      showDoneMessage(res.data.msj)
+    }
+    closeModal()
+  }
 }
 
 </script>
 
 <style>
-.tituloh1 {
-  font-size: 20px;
-}
-
-
 
 .boton {
   border-radius: 30px;
@@ -264,29 +296,21 @@ function limpiarCajas() {
 
 }
 
-.my-card-width {
-  max-width: 600px;
-}
 
-.contenedorBoton {
-  margin-left: 44%;
-}
-
-.dialog{
+.dialog {
   background-color: #F39A31;
   width: 1000px;
 }
 
-.padingTabla{
+.padingTabla {
   background-color: rgb(218, 11, 138);
 }
 
-.tabla{
+.tabla {
   background-color: rgb(245, 141, 13);
 }
 
-.rowPrincipal{
+.rowPrincipal {
   background-color: rgb(16, 16, 122);
 }
-
 </style>

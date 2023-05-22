@@ -1,25 +1,23 @@
 <template>
   <div class="justify-center items-center d-flex">
-    <div class="row">
-      <div class="col-4"></div>
-      <div class="col-4">
-        <div class="bgColorEnfasis borderTitle text-center">
-          <h1 class="text-h6">Pedidos</h1>
-        </div>
-      </div>
-      <div class="col-4"></div>
-    </div>
 
-    <div class="row">
-      <div class="col-3"></div>
-      <div class="col-6 text-center">
-        <div class="q-pa-md q-gutter-sm">
+    <div class="row ">
+      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
+      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
 
-          <q-btn class="colorEnfasis" @click="addOrder()" glossy label="Crear Pedidos" />
-        </div>
-        <div class="q-pa-md">
-          <q-table title="Pedidos" :rows="rows" :columns="columns" row-key="id" no-data-label="No existen datos!"
-            :visible-columns="visibleColumns">
+          <div class="row q-ma-md">
+            <div class="col-4"></div>
+            <div class="col-4">
+              <h1 class="text-h6 bgColorEnfasis borderTitle">Pedidos</h1>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-12 q-my-md">
+              <q-btn class="colorEnfasis" @click="addOrder()" glossy label="Crear Pedidos" />
+            </div>
+          </div>
+
+        <div class="q-ma-xs-md q-ma-lg-sm">
+          <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!" :visible-columns="visibleColumns">
             <template v-slot:body-cell-editar="props">
               <td>
                 <q-btn class="botonEditar" @click="editOrder(props.row)" glossy label="Editar" />
@@ -29,7 +27,7 @@
           </q-table>
         </div>
       </div>
-      <div class="col-3"></div>
+      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
     </div>
 
     <q-dialog v-model="modalPedidos">
@@ -95,7 +93,7 @@
             <q-card-actions align="center">
               <q-btn class="q-my-md colorEnfasis">
                 <span v-if="isAdd == true" @click="createOrder()">Crear Pedido</span>
-                <span v-else               @click="changeStatus()">Modificar Pedido</span>
+                <span v-else @click="changeStatus()">Modificar Pedido</span>
               </q-btn>
             </q-card-actions>
 
@@ -106,28 +104,10 @@
     </q-dialog>
   </div>
 </template>
-  
+
 <script setup>
 import { ref } from "vue";
 import { usePedidoStore } from '../../../stores/pedidos.js'
-import { useQuasar } from 'quasar'
-
-
-const $q = useQuasar()
-
-  // or pass in options also:
-  // $q.cookies.set('cookie_name', cookie_value, options)
-
-
-
-// $q.localStorage.set("key", "value")
-// console.log($q.localStorage.getItem("token"));
-// const value = $q.localStorage.getItem(key)
-
-// $q.sessionStorage.set(key, value)
-// const otherValue = $q.sessionStorage.getItem(key)
-
-const hasItToken = $q.cookies.has('token')
 
 const store = usePedidoStore()
 
@@ -143,7 +123,6 @@ let cantidad = ref("")
 let direccionEnvio = ref("")
 let optionsStatus = ref(['Proceso', 'Entregado', 'Cancelado', 'Realizado']);
 let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
-
 
 let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'editar'])
 let id = null;
@@ -172,24 +151,24 @@ const columns = [
   { name: "editar", align: "center", label: "Editar", field: "Editar" },
 ];
 
+function clean() {
+  cantidad.value = celularMFa.value = clienteMFa.value = detalles.value = direccionEnvio.value = emailMFa.value = estado.value = numeroDocumentoMFa.value = preferencias.value = tipoDocumentoMFa.value = ''
+}
 
 function addOrder() {
-  // $q.localStorage.removeItem("token")
-
   modalPedidos.value = isAdd.value = true
   readonly.value = false
 }
 
 async function getOrders() {
-  if (hasItToken) {
-    store.getToken($q.cookies.get('token'))
-  }
 
   const res = await store.getPedido()
   
   console.log(res.data.pedidos);
   if (res.status == 200) {
     rows.value = res.data.pedidos
+  } else if (res.status == 403) {
+    console.log("No existe token");
   } else if (res.status == 404) {
     console.log("No existen datos");
   } else {
@@ -214,6 +193,7 @@ async function createOrder() {
   });
 
   getOrders();
+  clean();
   modalPedidos.value = !modalPedidos.value;
 }
 
@@ -241,6 +221,7 @@ async function changeStatus() {
       orderStatus: estado.value,
     });
     id = null
+    clean()
   }
 
   getOrders();

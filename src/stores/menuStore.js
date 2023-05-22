@@ -66,6 +66,11 @@ export const useMenuStore = defineStore("menu", {
         ruta: "/body/home",
       },
       {
+        icon: 'none',
+        text: 'etapa',
+        ruta: '/body/mantenimiento/etapa',
+      },
+      {
         icon: "image_not_supported",
         text: "Mantenimiento",
         ruta: "/body/mantenimiento/homeMantenimiento",
@@ -82,8 +87,8 @@ export const useMenuStore = defineStore("menu", {
       },
       {
         icon: "image_not_supported",
-        text: "dueños lotes",
-        ruta: "/body/mantenimiento/Personas",
+        text: "Personas",
+        ruta: "/body/mantenimiento/personas",
       },
     ],
     
