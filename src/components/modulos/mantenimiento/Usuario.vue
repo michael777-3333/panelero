@@ -45,7 +45,7 @@
     <q-dialog v-model="modalUser">
       <q-card class="dialog">
         <q-card-section>
-          <div style="color:black;" class="text-h6">{{ labelDialog }}</div>
+          <div style="color: white;" class="text-h6">{{ labelDialog }}</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -61,7 +61,7 @@
                 <div class="col-2"></div>
                 <div class="col-5">
                   <div class="boton">
-                    <q-select outlined v-model="roles" :options="tipoUsuario" label="Tipo de usuario" />
+                    <q-select outlined v-model="roles" :options="tipoUsuario" label="tipo de usuario" />
                   </div>
                 </div>
               </div>
@@ -106,8 +106,8 @@
 import { ref } from 'vue';
 import { useUsuarioStore } from '../../../stores/usuarioStore.js';
 import { useQuasar } from 'quasar';
-const $q = useQuasar();
 
+const $q = useQuasar();
 const store = useUsuarioStore();
 
 let name = ref('');
@@ -125,24 +125,18 @@ let visibleColumns = ref(['state', 'nombre', 'email', 'roles', 'editar'])
 const columns = [
   {
     name: "id",
-    // required: true,
     label: "id",
-    // align: "left",
     field: (row) => row._id,
     format: (val) => `${val}`,
-    // sortable: true,
-    // sortOrder: 'ad', // or 'da'
-    required: false
   },
-  { name: 'state', label: 'Estado', align: "left" },
+  { name: 'state', label: 'Estado', field:"state", align: "left",  sortable: true,},
   { name: 'nombre', align: 'center', label: 'Nombre', field: 'name', sortable: true, },
   { name: 'email', align: 'center', label: 'Email', field: 'email' },
   {
     name: 'roles', align: 'center', label: 'Rol',
     field: row => row.roles,
     format: (val) => getRol(val)
-  }, // recorrec vector
-  // { name: 'password', align: 'left', label: 'Contraseña', field: 'password' },
+  },
   { name: 'editar', align: 'center', label: 'Opciones' },
 
 ]
@@ -197,7 +191,7 @@ function closeModal() { // Cierro el modal
   isAdd.value = false
 }
 
-async function editState() {
+async function editState(props) {
   if (props.state == 0) {
     await store.activarUsuario(props);
   }
@@ -290,27 +284,27 @@ async function modifyUser() {
 
 <style>
 
-.boton {
-  border-radius: 30px;
-  margin: 3px 3px;
+  .boton {
+    border-radius: 30px;
+    margin: 3px 3px;
+  }
 
-}
 
+  .dialog {
+    background-color: #F39A31;
+    width: 1000px;
+  }
 
-.dialog {
-  background-color: #F39A31;
-  width: 1000px;
-}
+  .padingTabla {
+    background-color: rgb(218, 11, 138);
+  }
 
-.padingTabla {
-  background-color: rgb(218, 11, 138);
-}
+  .tabla {
+    background-color: rgb(245, 141, 13);
+  }
 
-.tabla {
-  background-color: rgb(245, 141, 13);
-}
+  .rowPrincipal {
+    background-color: rgb(16, 16, 122);
+  }
 
-.rowPrincipal {
-  background-color: rgb(16, 16, 122);
-}
 </style>

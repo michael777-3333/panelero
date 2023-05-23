@@ -68,7 +68,9 @@
                 </div>
               </div>
             </div>
-
+                  <div class="boton2">
+                    <q-input v-model="costoC" label="Costo" />
+                  </div>
             <div class="fecha_costo q-pa-md" style="max-width: 370px">
               <q-input filled v-model="dateC" mask="date" :rules="['date']">
                 <template v-slot:append>

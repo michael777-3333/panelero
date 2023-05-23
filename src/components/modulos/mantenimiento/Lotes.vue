@@ -112,13 +112,7 @@ let id =ref(null)
 
 
 async function ordenarLotes() {
-  // if (hasItToken) {
-  //     store.getToken($q.cookies.get('token'))
-  //   }
-  // $q.localStorage.set("token", store.token)
-  // store.getToken(stateUser.token.value);
   const res = await store.getLote();
-  // console.log(res);
   if (res.status == 200) {
     rows.value = res.data.lotes;
   } else if (res.status == 404) {
@@ -132,22 +126,15 @@ ordenarLotes();
 async function editarEstado(props) {
   console.log("hola");
   console.log(props);
-  if (props.state == 0) {
+  if (props.state == 1) {
     await store.activarLote(props);
-  } else if (props.state == 1) {
+  } else if (props.state == 0) {
     await store.desactivarLote(props);
   }
   ordenarLotes();
 }
 
 async function createAllotment() {
-  // if (name.value =='') {
-  //   $q.notify({
-  //     type: 'negative',
-  //     message: 'digite el nombre'
-  // })
-  // }
-
   if (size.value == "") {
     $q.notify({
       type: "negative",
@@ -159,12 +146,6 @@ async function createAllotment() {
       message: "digite el dueño ",
     });
   }
-  // else if (createdAt.value == "") {
-  //   $q.notify({
-  //     type: "negative",
-  //     message: "digite la fecha",
-  //   });
-  // } 
   else if (validarEditar.value == true) {
     await store.addLote({
       size: size.value, owner: owner.value, name: name.value,
@@ -182,7 +163,6 @@ async function createAllotment() {
       await store.editLote({ 
         id: data.value._id, name: name.value, size: size.value, owner: owner.value, 
       });
-      // console.log({size: size.value, owner: owner.value,});
       ordenarLotes();
       $q.notify({
         type: "positive",
@@ -192,7 +172,6 @@ async function createAllotment() {
       validarEditar.value = true;
     }
   }
-
   function loteEditar(info) {
     validarEditar.value = false
     alert.value = true;
@@ -202,7 +181,6 @@ async function createAllotment() {
     owner.value = data.value.owner
     name.value = data.value.name
   }
-
   const columns = [
     { name: "state", label: "Estado", align: "left" },
     {
@@ -228,41 +206,25 @@ async function createAllotment() {
 
 <style>
 .tituloLotes {
-  /* width: 10px; */
-  /* height: 10px; */
   background-color: #f39a31;
   border-radius: 30px;
-  /* width: 400px; */
+
 }
 
 .tituloh1 {
   font-size: 20px;
 }
 
-/* .my-card{
-      background-color: #f3993181;
-      border-radius: 30px;
-      margin-left: 60%;
-  } */
 .buton {
-  /* margin-top: 5px; */
+
   background-color: #f8ede2;
   border-radius: 30px;
   margin: 3px 3px;
-  /* height: 40px; */
+
 }
 
 .dialogLotes {
   background-color: #f39a31;
 }
 
-/* .my-card-width {
-    max-width: 600px;
-  } */
-
-/* .contenedorBoton {
-    margin-left: 44%;
-  } */
-
-/*  */
 </style>

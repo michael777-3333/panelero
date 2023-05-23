@@ -1,7 +1,7 @@
 <template>
-  <!-- <div>
-    <img src="../../../assets/img/fondo.jpg" class="">
-  </div> -->
+  <div>
+    <img src="../../../assets/img/fondo.jpg" class="fondo">
+  </div>
   <div class="tituloF text-center">
     <h1 class="bgColorEnfasis borderTitle text-h6">HOME COSTO</h1>
   </div>
@@ -35,6 +35,7 @@
         </q-card-section>
     </q-card>
   </div>
+
 </template>
 
 <script setup>

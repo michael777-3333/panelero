@@ -18,7 +18,7 @@
     <h1 class="bgColorEnfasis borderTitle text-h6">HOME</h1>
   </div>
 
-  <div class="row justify-center items-center d-flex">
+  <div class="row justify-center d-flex">
 
     <q-card class="homeIni my-card">
 
@@ -33,9 +33,9 @@
           voluptate facilis provident nihil! Fugiat illo numquam officiis
           nostrum saepe, cumque voluptas?
         </q-card-section> -->
-        <q-card-section class="text-lo">
-        <div class="text-subtitle2">by John Doe</div>
-      </q-card-section>
+        <q-card-section class="text-lo by-light-blue-2" >
+          <div class="text-subtitle2">by John Doe</div>
+        </q-card-section>
     </q-card>
 
 
@@ -83,6 +83,11 @@
         </q-card-section>
     </q-card>
   </div>
+  <!-- <div class="q-pa-md">
+    <q-linear-progress dark query color="cyan" class="q-mt-sm" />
+    <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
+  </div> -->
+
 </template>
 
 <script setup>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <img src="../assets/img/fondo.jpg" class="fondo ">
+    <img src="../assets/img/fondo.jpg" class="fondo">
   </div>
   <div class="row justify-center d-flex items-center" style="height: 100vh;">
-    <div class="col-4 "></div>
+    <div class="col-4  "></div>
     <div class="col-4 text-center rounded-borders q-pa-md card-fondo">
       <div>
         <img src="../assets/img/card.png" class="img-card">
@@ -35,7 +35,8 @@ const router = useRouter();
 const store = useUsuarioStore();
 const $q = useQuasar();
 
-const email = ref('andres@meaw.co');
+const email = ref('edinson@meaw.co');
+// const email = ref('andres@meaw.co');
 // const email = ref('f@f.f');
 const password = ref('1q2w.');
 
@@ -97,4 +98,6 @@ async function sesion() {
 
 </script>
 
-<style></style>
+<style>
+
+</style>

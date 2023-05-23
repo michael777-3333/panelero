@@ -30,15 +30,6 @@ export const usePersonasStore = defineStore("persona", {
 				method: 'post',
 				url: URLPERSONAS,
 				data: reqData,
-				// {
-				// 	name: data.name,
-				// 	numberIdentification: data.numberIdentification,
-				// 	numberPhone: data.numberPhone,
-				// 	birthDate: data.birthDate,
-				// 	residenceAddress: data.residenceAddress,
-				// 	medicalInsuranceCompany: data.medicalInsuranceCompany,
-				// 	typeIdentification: data.typeIdentification,
-				// },
 				headers: {
 					'token': this.$q.cookies.get('token'),
 				}
@@ -66,7 +57,7 @@ export const usePersonasStore = defineStore("persona", {
 			await axios(
 				{
 					method: 'put',
-					url: `${URLPERSONAS}activar/${reqData}`,
+					url: `${URLPERSONAS}activar/${reqData._id}`,
 					headers: {
 						'token': this.$q.cookies.get('token')
 					}
@@ -79,7 +70,7 @@ export const usePersonasStore = defineStore("persona", {
 			await axios(
 				{
 					method: 'put',
-					url: `${URLPERSONAS}desactivar/${reqData}`,
+					url: `${URLPERSONAS}desactivar/${reqData._id}`,
 					headers: {
 						'token': this.$q.cookies.get('token')
 					}

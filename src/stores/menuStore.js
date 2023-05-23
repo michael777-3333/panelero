@@ -13,9 +13,9 @@ export const useMenuStore = defineStore("menu", {
       },
       {
         icon: 'description', /**request_page */
-        text:'Cotos',
+        text: 'Cotos',
         ruta: "/body/costos/homeCostos",
-        
+
       },
       {
         icon: "send",
@@ -24,10 +24,14 @@ export const useMenuStore = defineStore("menu", {
       },
       {
         icon: 'description', /**request_page */
-        text:'Facturación',
+        text: 'Facturación',
         ruta: "/body/facturacion/pedidosModulos",
       },
-      
+      {
+        icon: 'description', /**request_page */
+        text: 'inventario',
+        ruta: "/body/inventario/homeInventario",
+      }
 
     ],
     /** Defino el menu de cosotos aqui! */
@@ -47,16 +51,12 @@ export const useMenuStore = defineStore("menu", {
         text: "costo Inventario",
         ruta: "/body/costos/costosModulos",
       },
-      // {
-      //   icon: "image_not_supported",
-      //   text: "",
-      //   ruta: "/body/costos/costosModulos",
-      // },
       {
         icon: "image_not_supported",
         text: "Costos administrativos",
         ruta: "/body/costos/adminCostos",
       },
+
     ],
     /**menu lista mantenimiento */
     menuListMantenimiento: [
@@ -90,9 +90,14 @@ export const useMenuStore = defineStore("menu", {
         text: "Personas",
         ruta: "/body/mantenimiento/personas",
       },
+      {
+        icon: "image_not_supported",
+        text: "Marcas",
+        ruta: "/body/mantenimiento/marcas",
+      },
     ],
-    
-    menuListFacturacion : [
+
+    menuListFacturacion: [
       {
         icon: "keyboard_backspace",
         text: "Regresar",
@@ -100,14 +105,33 @@ export const useMenuStore = defineStore("menu", {
       },
       {
         icon: 'request_page',
-        text:'Pedidos',
+        text: 'Pedidos',
         ruta: "/body/facturacion/pedidosModulos",
       },
       {
         icon: 'description', /**request_page */
-        text:'Facturación',
+        text: 'Facturación',
         ruta: "/body/facturacion/facturacionModulos",
-      }]
+      }
+    ],
+    menuListInventario: [
+
+      {
+        icon: "keyboard_backspace",
+        text: "Regresar",
+        ruta: "/body/home",
+      },
+      {
+        icon: "description",
+        text: "home",
+        ruta: "/body/inventario/homeInventario",
+      },
+      {
+        icon: 'request_page',
+        text: 'bodega',
+        ruta: "/body/inventario/bodega",
+      }
+    ]
   }),
 
 });

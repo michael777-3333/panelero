@@ -106,7 +106,9 @@ function mostrarBotones(r /**string*/) {
     menuList.value = menuStore.menuListMantenimiento;
   } else if (r == "/body/facturacion/facturacionModulos") {
     menuList.value = menuStore.menuListFacturacion;
-  } else if (r == "/body/home") {
+  }else if (r == "/body/inventario/homeInventario") {
+    menuList.value = menuStore.menuListInventario;
+  }else if (r == "/body/home") {
     /** Este es para regresar */
     menuList.value = menuStore.menuListHome;
   }

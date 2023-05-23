@@ -10,9 +10,10 @@ import AdmCostos from '../components/modulos/costos/CostoAdmin.vue'
 import Personas from '../components/modulos/mantenimiento/Personas.vue' 
 import Facturacion from '../components/modulos/facturacion/Facturacion.vue'
 import Pedidos from '../components/modulos/facturacion/Pedidos.vue'
-
+import Marcas from '../components/modulos/mantenimiento/Marcas.vue'
 import Etapa from '../components/modulos/mantenimiento/Etapa.vue'
-
+import Bodega from '../components/modulos/inventario/bodega.vue'
+import HomeInventario from '../components/modulos/inventario/HomeInventario.vue'
 export const routes = [
     { path:"/", component: Login },
     { path:"/body", component: Body, children: [
@@ -32,6 +33,7 @@ export const routes = [
                     { path:"lotes", component: Lotes},
                     { path:"personas", component: Personas},
                     { path: 'etapa', component: Etapa },
+                    {path: 'marcas', component:Marcas},
                 ]
             },
             
@@ -39,6 +41,12 @@ export const routes = [
                 path:"facturacion", children: [
                     { path:"facturacionModulos", component: Facturacion},
                     { path:"pedidosModulos", component: Pedidos},
+                ]
+            },
+            {
+                path:"inventario", children:[
+                    {path:"homeInventario",component:HomeInventario},
+                    {path:"bodega",component:Bodega},
                 ]
             }
         ]
