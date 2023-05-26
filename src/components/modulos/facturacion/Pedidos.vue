@@ -1,31 +1,39 @@
 <template>
   <div class="justify-center items-center d-flex">
 
-    <div class="row ">
+    <div class="row">
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
 
-          <div class="row q-ma-md">
-            <div class="col-4"></div>
-            <div class="col-4">
-              <h1 class="text-h6 bgColorEnfasis borderTitle">Pedidos</h1>
-            </div>
-            <div class="col-4"></div>
-            <div class="col-12 q-my-md">
-              <q-btn class="colorEnfasis" @click="addOrder()" glossy label="Crear Pedidos" />
-            </div>
-          </div>
+        <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
+          <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
+            :visible-columns="visibleColumns">
+            <template v-slot:top="props">
+              <div class="col-6 " align="left"><span style="font-size: 25px;">Pedidos</span></div>
 
-        <div class="q-ma-xs-md q-ma-lg-sm">
-          <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!" :visible-columns="visibleColumns">
+
+              <div class="col-6" align="right">
+                <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;"
+                  @click="addOrder()" glossy label="Crear Pedidos" />
+              </div>
+
+            </template>
+            
+
             <template v-slot:body-cell-editar="props">
               <td>
-                <q-btn class="botonEditar" @click="editOrder(props.row)" glossy label="Editar" />
+                <q-btn class="botonEditar" style="background-color: #029127;" @click="editOrder(props.row)">
+                  <q-icon style="color: white;" name="edit"></q-icon>
+                </q-btn>
               </td>
 
             </template>
           </q-table>
         </div>
+        <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
+    <q-linear-progress dark query color="green" class="q-mt-sm" />
+    <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
+  </div>
       </div>
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
     </div>
@@ -230,6 +238,6 @@ async function changeStatus() {
 
 </script>
   
-<style scoped>
+<!-- <style scoped>
 /*_*/
-</style>
+</style> -->

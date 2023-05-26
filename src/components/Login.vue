@@ -4,16 +4,16 @@
   </div>
   <div class="row justify-center d-flex items-center" style="height: 100vh;">
     <div class="col-4  "></div>
-    <div class="col-4 text-center rounded-borders q-pa-md card-fondo">
+    <div class="col-4 text-center q-pa-md card-fondo">
       <div>
         <img src="../assets/img/card.png" class="img-card">
       </div>
       <q-form @submit="sesion" class="q-gutter-md  justify-center">
         <q-input filled type="email" v-model="email" label="Ingrese su direccion de correo"
-          class="card-input rounded-borders q-mt-lg"/>
+          class="card-input q-mt-lg"/>
 
         <q-input filled type="password" v-model="password" label="Ingrese su contraseña"
-          class="card-input rounded-borders q-mt-lg"  />
+          class="card-input  q-mt-lg"  />
 
         <div class="q-mt-lg">
           <q-btn label="INGRESAR" type="submit" :disable="btnState" class="bg-white text-black" />

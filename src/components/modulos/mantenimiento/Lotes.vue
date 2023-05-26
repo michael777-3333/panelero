@@ -205,7 +205,7 @@ async function createAllotment() {
 
 
 <style>
-.tituloLotes {
+/* .tituloLotes {
   background-color: #f39a31;
   border-radius: 30px;
 
@@ -225,6 +225,6 @@ async function createAllotment() {
 
 .dialogLotes {
   background-color: #f39a31;
-}
+} */
 
 </style>

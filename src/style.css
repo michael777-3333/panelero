@@ -30,31 +30,25 @@
 
   /* body */
 
-  .color-principal{
+  /* .color-principal{
     background-color: #f39a31;
-  }
+  } */
 
-  .botones-menuList {
+  /* .botones-menuList {
     background-color: rgba(0, 0, 0, 0.34);
     margin-bottom: 10px;
     margin: 10px;
     border-radius: 20px;
-  }
+  } */
 
   /* .icon-menuList {
     background-color: #ffffff;
   } */
 
-  .texto-menuList {
-    /* text-align: center; */
-    color: #ffffff;
-    /* margin: 20px; */
-    font-size: 20px;
-    font-family: "Indie Flower";
-  }
+
   
   .header-body {
-    background: linear-gradient(to right, #f39a31, #f39a31);
+    /* background: linear-gradient(to right, #177704, #177704); */
     height: 40px;
     font-family: "Indie Flower";
   }
@@ -190,9 +184,9 @@
 }
 
 /* estilos home */
-.homeIni {
-  width: 300%;
-  margin: 2%;
+.my-card{
+  width: 100%;
+  margin: 5%;
   max-width: 300px;
 }
 /* fin estilos home  */
@@ -203,3 +197,4 @@
   
 }
 /* fin estilo gris de la card */
+

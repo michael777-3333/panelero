@@ -1,37 +1,35 @@
 <template>
-  <div class="justify-center items-center d-flex">
-    <div class="row">
-      <div class="col-4"></div>
-      <div class="col-4">
-        <div class="text-center">
-          <h1 class="bgColorEnfasis borderTitle text-h6">
-            Costo Administracion
-          </h1>
-        </div>
+
+<div class="row">
+    <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
+    <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
+
+      <div class="q-ma-xs-md q-ma-lg-sm">
+        <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
+          :visible-columns="visibleColumns">
+          <template v-slot:top="props">
+            <div class="col-6 " align="left"><span style="font-size: 25px;">Costo Inventario</span></div>
+            <div class="col-6" align="right">
+              <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;" @click="alert = true"
+                glossy label="Crear Costo" />
+            </div>
+          </template>
+
+          <template v-slot:body-cell-editar="props">
+            <td>
+              <q-btn class="botonEditar" style="background-color: #029127;" @click="editOrder(props.row)">
+                <q-icon style="color: white;" name="edit"></q-icon>
+              </q-btn>
+            </td>
+
+          </template>
+        </q-table>
       </div>
-      <div class="col-4"></div>
     </div>
-    <div class="row">
-      <div class="col-4"></div>
-      <div class="col-4">
-        <div class="text-center">
-          <q-btn label="Crear Costo" style="color: #f39a31" @click="alert = true" />
-        </div>
-      </div>
-      <div class="col-4"></div>
-    </div>
-    <!-- <div class="contenedorBoton q-pa-md q-gutter-sm justify-center items-center d-flex">
-        <q-btn label="Crear Costo" style="color: #f39a31" @click="alert = true" />
-      </div> -->
+    <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
+  </div>
 
     <div class="conta row justify-center items-center d-flex">
-      <div class="row2 col-8 justify-center">
-        <div class="q-pa-md">
-          <q-table class="my-sticky-header-table" flat bordered title="costo Administrativo" :rows="rows"
-            :columns="columns" row-key="name" />
-        </div>
-      </div>
-
       <q-dialog v-model="alert">
         <q-card class="cos_admin targeta" style="background-color: #f39a31">
           <q-card-section>
@@ -106,7 +104,6 @@
         </q-card>
       </q-dialog>
     </div>
-  </div>
 </template>
 
 <script setup>

@@ -5,30 +5,31 @@
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
 
-        <div class="row q-ma-md">
-          <div class="col-4"></div>
-          <div class="col-4 ">
-            <h1 class="text-h6 bgColorEnfasis borderTitle">Usuarios</h1>
-          </div>
-          <div class="col-4"></div>
-          <div class="col-12 q-my-md">
-            <!--boton abrir dialog para crear usuario-->
-            <q-btn class="colorEnfasis" label="Crear usuario" @click="addUser()" />
-          </div>
-        </div>
-
         <div class="q-ma-xs-md q-ma-lg-sm">
-          <q-table :rows="rows" :columns="columns" row-key="id" :visible-columns="visibleColumns"
-            no-data-label="No existen usuarios!">
+          <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen usuarios!"
+            :visible-columns="visibleColumns">
+            <template v-slot:top="props">
+
+              <div class="col-6" align="left"><span style="font-size: 25px;">Usuarios</span></div>
+              <div class="col-6" align="right">
+                <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;" @click="addUser()"
+                  glossy label="Crear Usuario" />
+              </div>
+
+            </template>
+
             <template v-slot:body-cell-state="props">
               <td>
-                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editState(props.row)" />
+                <q-checkbox keep-color="" color="green" v-model="props.row.state" :true-value="1" :false-value="0"
+                  @click="editState(props.row)" />
               </td>
             </template>
 
             <template v-slot:body-cell-editar="props">
               <td>
-                <q-btn class="botonEditar" @click="editUser(props.row)" glossy label="Editar" />
+                <q-btn class="botonEditar" style="background-color: #029127;" @click="editUser(props.row)">
+                  <q-icon style="color: white;" name="edit"></q-icon>
+                </q-btn>
               </td>
 
             </template>
@@ -42,65 +43,75 @@
 
 
     <!--dialog-->
-    <q-dialog v-model="modalUser">
-      <q-card class="dialog">
-        <q-card-section>
-          <div style="color: white;" class="text-h6">{{ labelDialog }}</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-card class="my-card d-flex">
-
+    <q-dialog v-model="modalUser" persistent>
+      <div class="row">
+        
+        
+          <q-card class="card" style="width: 1000px; height: 500px; ">
             <q-card-section>
-              <div class="row">
-                <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="name" label="nombre" />
-                  </div>
-                </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                  <div class="boton">
-                    <q-select outlined v-model="roles" :options="tipoUsuario" label="tipo de usuario" />
-                  </div>
-                </div>
-              </div>
-
-              <div v-show="validarCrear == true" class="row d-flex q-m-sm">
-                <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="email" label="correo" />
-                  </div>
-                </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                  <div class="boton">
-                    <q-input v-model="password" label="contraseña" />
-                  </div>
-                </div>
-              </div>
-              <div v-show="validarCrear == false" class="row">
-                <div class="boton">
-                  <q-input v-model="password" label="contraseña" />
-                </div>
-              </div>
-              <!-- { name: 'editar', label: 'editar'}, -->
+              <div class="text-h6">{{ labelDialog }}</div>
             </q-card-section>
 
-            <q-separator />
+            <q-card-section class="q-pt-none">
+              <q-card class="card d-flex">
 
-            <q-card-actions align="center">
-              <q-btn class="q-my-md colorEnfasis">
-                <span v-if="isAdd == true" @click="createUser()">Crear Usuario</span>
-                <span v-else @click="modifyUser()">Modificar Usuario</span>
-              </q-btn>
-            </q-card-actions>
+                <q-card-section>
+                  <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-5">
+                      <div class="boton">
+                        <!-- <q-input v-model="name" label="nombre" /> -->
+                        <q-input filled v-model="name" label="nombre" :dense="dense" />
+                      </div>
+                    </div>
+
+                    <div class="col-5">
+                      <div class="boton">
+                        <q-select outlined v-model="roles" :options="tipoUsuario" label="tipo de usuario" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1"></div>
+
+
+                  <div class="row">
+                    <div class="col-1"></div>
+                    <div  v-show="validarCrear == true" class="col-5">
+                      <div class="boton">
+                        <!-- <q-input v-model="email" label="correo" /> -->
+                        <q-input filled v-model="email" label="Correo" :dense="dense" />
+                      </div>
+                      <div v-show="validarCrear == true" class="col-5">
+                        <q-input filled v-model="password" label="contraseña" :dense="dense" />
+                      </div>
+                    </div>
+                  </div>
+                    
+                  
+                </q-card-section>
+
+                <q-separator />
+                <q-card-actions align="center">
+                  <q-btn class="q-my-md colorEnfasis">
+                    <span v-if="isAdd == true" @click="createUser()">Crear Usuario</span>
+                    <span v-else @click="modifyUser()">Modificar Usuario</span>
+
+                  </q-btn>
+
+                </q-card-actions>
+                <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
+
+              </q-card>
+            </q-card-section>
           </q-card>
-        </q-card-section>
-      </q-card>
+        </div>
+        
+      
+
     </q-dialog>
   </div>
 </template>
+
 
 <script setup>
 import { ref } from 'vue';
@@ -129,7 +140,7 @@ const columns = [
     field: (row) => row._id,
     format: (val) => `${val}`,
   },
-  { name: 'state', label: 'Estado', field:"state", align: "left",  sortable: true,},
+  { name: 'state', label: 'Estado', field: "state", align: "left", sortable: true, },
   { name: 'nombre', align: 'center', label: 'Nombre', field: 'name', sortable: true, },
   { name: 'email', align: 'center', label: 'Email', field: 'email' },
   {
@@ -221,9 +232,11 @@ function validations() {
     showMessage('Seleccione le tipo de usuario')
   } else if (email.value == '') {
     showMessage('Digite el email')
-  } else if (password.value == '') {
-    showMessage('Digite la contraseña')
-  } else { return true }
+  }
+  // else if (password.value == '') {
+  //   showMessage('Digite la contraseña')
+  // } 
+  else { return true }
 }
 
 function showDoneMessage(msg) {
@@ -279,32 +292,41 @@ async function modifyUser() {
     closeModal()
   }
 }
+function cerrarModal() {
+  validarCrear.value = true
+  closeModal()
+  // isAdd.value = false
+}
 
 </script>
 
 <style>
+.boton {
+  border-radius: 30px;
+  margin: 3px 3px;
+}
 
-  .boton {
-    border-radius: 30px;
-    margin: 3px 3px;
-  }
 
+/* .card { */
+/* width: 1000px; */
+/* height: 300px; */
+/* background-color: ; */
+/* } */
 
-  .dialog {
-    background-color: #F39A31;
-    width: 1000px;
-  }
+.padingTabla {
+  background-color: rgb(218, 11, 138);
+}
 
-  .padingTabla {
-    background-color: rgb(218, 11, 138);
-  }
+.tabla {
+  background-color: rgb(245, 141, 13);
+}
 
-  .tabla {
-    background-color: rgb(245, 141, 13);
-  }
+.rowPrincipal {
+  background-color: rgb(16, 16, 122);
+}
 
-  .rowPrincipal {
-    background-color: rgb(16, 16, 122);
-  }
-
+/* .dialogUsuarios{
+    display: flex;
+    width: 100%;
+  } */
 </style>

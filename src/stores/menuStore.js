@@ -14,13 +14,13 @@ export const useMenuStore = defineStore("menu", {
       {
         icon: 'description', /**request_page */
         text: 'Cotos',
-        ruta: "/body/costos/homeCostos",
+        ruta: "/body/costos/costosModulos",
 
       },
       {
         icon: "send",
         text: "Mantenimiento",
-        ruta: "/body/mantenimiento/homeMantenimiento",
+        ruta: "/body/mantenimiento/usuario",
       },
       {
         icon: 'description', /**request_page */
@@ -41,11 +41,11 @@ export const useMenuStore = defineStore("menu", {
         text: "Regresar",
         ruta: "/body/home",
       },
-      {
-        icon: "image_not_supported",
-        text: "Home costos",
-        ruta: "/body/costos/homeCostos",
-      },
+      // {
+      //   icon: "image_not_supported",
+      //   text: "Home costos",
+      //   ruta: "/body/costos/homeCostos",
+      // },
       {
         icon: "image_not_supported",
         text: "costo Inventario",
@@ -70,11 +70,11 @@ export const useMenuStore = defineStore("menu", {
         text: 'etapa',
         ruta: '/body/mantenimiento/etapa',
       },
-      {
-        icon: "image_not_supported",
-        text: "Mantenimiento",
-        ruta: "/body/mantenimiento/homeMantenimiento",
-      },
+      // {
+      //   icon: "image_not_supported",
+      //   text: "Mantenimiento",
+      //   ruta: "/body/mantenimiento/homeMantenimiento",
+      // },
       {
         icon: "image_not_supported",
         text: "Usuarios",

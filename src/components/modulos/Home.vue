@@ -1,99 +1,70 @@
-
-
-<!-- <script setup>
-  import { beforeCreate } from 'vue';
-
-  beforeCreate(() => {
-    console.log("No se ha ejecutado nada todavía");
-  });
-</script> -->
-
-
 <template>
   <div>
     <img src="../../assets/img/fondo.jpg" class="fondo">
   </div>
-
-  <div class="tituloF text-center">
-    <h1 class="bgColorEnfasis borderTitle text-h6">HOME</h1>
-  </div>
-
   <div class="row justify-center d-flex">
 
-    <q-card class="homeIni my-card">
+    <div class="col-6" style="margin-top: 5%;">
+      <div class="row">
+        <q-card class="my-card">
+          <router-link to="/body/costos/adminCostos">
+            <q-img src="../../assets/img/fondo.jpg">
+              <div class="absolute-bottom text-subtitle2 text-center">
+                COSTO
+              </div>
+            </q-img>
+          </router-link>
+        </q-card>
 
-        <router-link to="costos/HomeCostos">
-        <q-img src="../../assets/img/card.png">
-          <div class="absolute-bottom text-h6">COSTOS</div>
-        </q-img>
-      </router-link>
-        <!-- <q-card-section>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error qui
-          eligendi, dolorem laudantium voluptatem delectus, ipsa id dicta
-          voluptate facilis provident nihil! Fugiat illo numquam officiis
-          nostrum saepe, cumque voluptas?
-        </q-card-section> -->
-        <q-card-section class="text-lo by-light-blue-2" >
-          <div class="text-subtitle2">by John Doe</div>
-        </q-card-section>
-    </q-card>
-
-
-    <q-card class="homeIni">
-      <router-link to="/body/costos/adminCostos">
-        <q-img src="../../assets/img/card.png">
-          <div class="absolute-bottom text-h6">FACTURACIONES</div>
-        </q-img>
-      </router-link>
-      <div>
-        <q-card-section class="text-lo">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
-          Et perferendis totam quod modi. Eligendi eos, voluptas optio
-          praesentium odit ducimus ullam. Nesciunt, sapiente laboriosam. 
-          Quisquam aut quos porro error non.
-        </q-card-section>
+        <q-card class="my-card">
+          <router-link to="/body/mantenimiento/Usuario">
+            <q-img src="../../assets/img/fondo.jpg">
+              <div class="absolute-bottom text-subtitle2 text-center">
+                MANTENIMIENTO
+              </div>
+            </q-img>
+          </router-link>
+        </q-card>
       </div>
-    </q-card>
+      <div class="row">
+        <q-card class="my-card">
+          <router-link to="/body/facturacion/PedidosModulos">
+            <q-img src="../../assets/img/fondo.jpg">
+              <div class="absolute-bottom text-subtitle2 text-center">
+                FACTURACION
+              </div>
+            </q-img>
+          </router-link>
+        </q-card>
 
-    <q-card class="homeIni">
-      <router-link to="/body/costos/adminCostos">
-        <q-img src="../../assets/img/card.png">
-          <div class="absolute-bottom text-h6">INVENTARIOS</div>
-        </q-img>
-      </router-link>
-      <q-card-section class="text-lo">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
-          Et perferendis totam quod modi. Eligendi eos, voluptas optio
-          praesentium odit ducimus ullam. Nesciunt, sapiente laboriosam. 
-          Quisquam aut quos porro error non.
-        </q-card-section>
-    </q-card>
+        <q-card class="my-card">
+          <router-link to="/body/inventario/Bodega">
+            <q-img src="../../assets/img/fondo.jpg">
+              <div class="absolute-bottom text-subtitle2 text-center">
+                INVENTARIO
+              </div>
+            </q-img>
+          </router-link>
+        </q-card>   
+      </div>
+    </div>
 
-    <q-card class="homeIni">
-      <router-link to="mantenimiento/HomeMantenimiento">
-        <q-img src="../../assets/img/card.png">
-          <div class="absolute-bottom text-h6">MANTENIMIENTOS</div>
-        </q-img>
-      </router-link>
-      <q-card-section class="text-lo">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
-          Et perferendis totam quod modi. Eligendi eos, voluptas optio
-          praesentium odit ducimus ullam. Nesciunt, sapiente laboriosam. 
-          Quisquam aut quos porro error non.
-        </q-card-section>
-    </q-card>
+
+
+
+
+
   </div>
-  <!-- <div class="q-pa-md">
-    <q-linear-progress dark query color="cyan" class="q-mt-sm" />
+
+  <!-- <div class="q-pa-md" style="margin-top: 5%;">
+    <q-linear-progress dark query color="green" class="q-mt-sm" />
     <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
   </div> -->
-
 </template>
 
 <script setup>
 </script>
 
-<style >
-</style>  
+<style ></style>  
   
     
