@@ -7,10 +7,13 @@
 
         <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
           <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
-            :visible-columns="visibleColumns">
-            <template v-slot:top="props">
-              <div class="col-6 " align="left"><span style="font-size: 25px;">Pedidos</span></div>
+            card-class="bg-white text-black" table-class="text-black-8" table-header-class="text-green" flat bordered
+            :visible-columns="visibleColumns" v-model:pagination="pagination" hide-pagination>
 
+            <template v-slot:top>
+              <div class="col-6 " align="left">
+                <span style="font-size: 25px;">Pedidos</span>
+              </div>
 
               <div class="col-6" align="right">
                 <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;"
@@ -18,38 +21,46 @@
               </div>
 
             </template>
-            
 
-            <template v-slot:body-cell-editar="props">
+
+            <template v-slot:body-cell-opciones="props">
               <td>
                 <q-btn class="botonEditar" style="background-color: #029127;" @click="editOrder(props.row)">
                   <q-icon style="color: white;" name="edit"></q-icon>
+                </q-btn>
+                <q-btn class="botonEditar">
+                  <q-icon v-if="props.row.state == 1" @click="inactivedOrder(props.row._id)" style="color: green;" name="toggle_on"></q-icon>
+                  <q-icon v-else @click="activedOrder(props.row._id)" style="color: red;" name="toggle_off"></q-icon>
                 </q-btn>
               </td>
 
             </template>
           </q-table>
+          <div class="row justify-center q-mt-md">
+              <q-pagination v-model="pagination.page" color="grey-8" :max="pagesNumber" size="sm" />
+            </div>
         </div>
         <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
-    <q-linear-progress dark query color="green" class="q-mt-sm" />
-    <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
-  </div>
+          <q-linear-progress dark query color="green" class="q-mt-sm" />
+          <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
+        </div>
       </div>
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
     </div>
 
     <q-dialog v-model="modalPedidos">
       <q-card class="bgColorEnfasis">
-        <q-card-section>
+        <q-card-section class="bgColorEnfasis">
           <!-- <h6 class="text-black">Pedidos</h6> -->
           <span class="text-black text-h6">Pedidos</span>
           <!-- <div class="text-black">Pedidos</div> -->
 
-          <q-btn @click="modalPedidos = !modalPedidos" class="bg-red text-white float-right" label="Cerrar" />
+          <q-btn @click="modalPedidos = !modalPedidos" class="bg-red text-white float-right" label="X" />
+          <!-- <span><br><br></span> -->
         </q-card-section>
 
-        <q-card-section class="q-pt-none">
-          <q-card class="my-card d-flex">
+        <q-card-section class="bgColorEnfasis q-pt-none">
+          <q-card class="d-flex">
             <q-card-section>
               <div class="row">
                 <div class="col-5">
@@ -98,11 +109,14 @@
             </q-card-section>
             <q-separator />
 
-            <q-card-actions align="center">
+            <q-card-actions align="right">
+              <q-btn @click="modalPedidos = !modalPedidos" class="bg-red text-white" label="Cerrar" />
+
               <q-btn class="q-my-md colorEnfasis">
                 <span v-if="isAdd == true" @click="createOrder()">Crear Pedido</span>
                 <span v-else @click="changeStatus()">Modificar Pedido</span>
               </q-btn>
+
             </q-card-actions>
 
           </q-card>
@@ -114,7 +128,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { usePedidoStore } from '../../../stores/pedidos.js'
 
 const store = usePedidoStore()
@@ -132,7 +146,7 @@ let direccionEnvio = ref("")
 let optionsStatus = ref(['Proceso', 'Entregado', 'Cancelado', 'Realizado']);
 let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
 
-let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'editar'])
+let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'opciones'])
 let id = null;
 let isAdd = ref(true);
 let readonly = ref(false);
@@ -156,7 +170,7 @@ const columns = [
   { name: "nombre", align: "left", label: "Cliente", field: "customerName", sortable: true, },
   { name: "cantidad", label: "Cantidad", field: "quantityOfPanela" },
   { name: "numeroDocumento", label: "Estado", field: "orderStatus" },
-  { name: "editar", align: "center", label: "Editar", field: "Editar" },
+  { name: "opciones", align: "center", label: "Opciones", field: "Opciones" },
 ];
 
 function clean() {
@@ -172,7 +186,7 @@ async function getOrders() {
 
   const res = await store.getPedido()
   
-  console.log(res.data.pedidos);
+  // console.log(res.data.pedidos);
   if (res.status == 200) {
     rows.value = res.data.pedidos
   } else if (res.status == 403) {
@@ -235,9 +249,29 @@ async function changeStatus() {
   getOrders();
   modalPedidos.value = !modalPedidos.value;
 }
+async function inactivedOrder(id) {
+  await store.disabledOrder(id)
+  getOrders();
+}
+
+async function activedOrder(id) {
+  await store.enabledOrder(id)
+  getOrders();
+}
+
+const pagination = ref({
+  sortBy: 'desc',
+  descending: false,
+  page: 1,
+  rowsPerPage: 7
+  // rowsNumber: xx if getting data from a server
+})
+
+const pagesNumber=  computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
+console.log(pagesNumber);
 
 </script>
   
-<!-- <style scoped>
+<style scoped>
 /*_*/
-</style> -->
+</style>

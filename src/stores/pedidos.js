@@ -20,7 +20,7 @@ export const usePedidoStore = defineStore("pedido", {
         method: 'get',
         url: URLPEDIDOS,
         headers: {
-          'token' : this.$q.cookies.get('token'),
+          'token': this.$q.cookies.get('token'),
         }
       })
     },
@@ -31,7 +31,7 @@ export const usePedidoStore = defineStore("pedido", {
         url: URLPEDIDOS,
         data: reqData,
         headers: {
-          'token' : this.$q.cookies.get('token'),
+          'token': this.$q.cookies.get('token'),
         }
       })
         // .then((res) => console.log(res))
@@ -46,12 +46,39 @@ export const usePedidoStore = defineStore("pedido", {
           orderStatus: orderStatus,
         },
         headers: {
-          'token' : this.$q.cookies.get('token'),
+          'token': this.$q.cookies.get('token'),
         }
       })
         // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
+
+  async enabledOrder(id) {
+    await axios(
+      {
+        method: 'put',
+        url: `${URLPEDIDOS}activar/${id}`,
+        headers: {
+          'token': this.$q.cookies.get('token')
+        }
+      })
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
   },
+
+  async disabledOrder(id) {
+    await axios(
+      {
+        method: 'put',
+        url: `${URLPEDIDOS}desactivar/${id}`,
+        headers: {
+          'token': this.$q.cookies.get('token')
+        }
+      })
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+  }
+
+},
 
 });
