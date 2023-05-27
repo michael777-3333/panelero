@@ -5,7 +5,7 @@
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
 
-        <div class="q-ma-xs-md q-ma-lg-sm">
+        <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
           <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen usuarios!"
             :visible-columns="visibleColumns">
             <template v-slot:top="props">
@@ -36,6 +36,10 @@
           </q-table>
 
         </div>
+        <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
+          <q-linear-progress dark query color="green" class="q-mt-sm" />
+          <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
+        </div>
       </div>
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
     </div>
@@ -43,17 +47,17 @@
 
 
     <!--dialog-->
-    <q-dialog v-model="modalUser" persistent>
-      <div class="row">
+    <q-dialog class="dialog"  v-model="modalUser"  persistent>
+      <div  class="row">
         
-        
-          <q-card class="card" style="width: 1000px; height: 500px; ">
-            <q-card-section>
+      
+          <q-card class="card1" style="width: 1000px; height: 325px; ">
+            <q-card-section class="card">
               <div class="text-h6">{{ labelDialog }}</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              <q-card class="card d-flex">
+              <q-card class="card1 d-flex">
 
                 <q-card-section>
                   <div class="row">
@@ -61,30 +65,38 @@
                     <div class="col-5">
                       <div class="boton">
                         <!-- <q-input v-model="name" label="nombre" /> -->
-                        <q-input filled v-model="name" label="nombre" :dense="dense" />
+                        <q-input filled v-model="name" class="input" label="Nombre" :dense="dense" />
                       </div>
                     </div>
 
                     <div class="col-5">
                       <div class="boton">
-                        <q-select outlined v-model="roles" :options="tipoUsuario" label="tipo de usuario" />
+                        <q-select outlined v-model="roles" class="input" :options="tipoUsuario" label="tipo de usuario" />
                       </div>
                     </div>
-                  </div>
+                  
                   <div class="col-1"></div>
-
-
-                  <div class="row">
                     <div class="col-1"></div>
                     <div  v-show="validarCrear == true" class="col-5">
                       <div class="boton">
                         <!-- <q-input v-model="email" label="correo" /> -->
-                        <q-input filled v-model="email" label="Correo" :dense="dense" />
-                      </div>
-                      <div v-show="validarCrear == true" class="col-5">
-                        <q-input filled v-model="password" label="contraseña" :dense="dense" />
+                        <q-input filled v-model="email" class="input"  label="Correo" :dense="dense" />
                       </div>
                     </div>
+                      <div v-show="validarCrear == true" class="col-5">
+                        <div class="boton">
+
+                          <q-input filled v-model="password" class="input" label="contraseña" :dense="dense" />
+                        </div>
+                        </div>
+
+                      <div  v-show="validarCrear == false" class="col-12">
+                        <div class="boton">
+                        <!-- <q-input v-model="email" label="correo" /> -->
+                        <q-input filled v-model="email" class="input" label="Correo" :dense="dense" />
+                      </div>
+                      </div>
+                    
                   </div>
                     
                   
@@ -92,14 +104,15 @@
 
                 <q-separator />
                 <q-card-actions align="center">
-                  <q-btn class="q-my-md colorEnfasis">
+                  <q-btn class="q-my-md bg-green bgColorEnfasis">
                     <span v-if="isAdd == true" @click="createUser()">Crear Usuario</span>
                     <span v-else @click="modifyUser()">Modificar Usuario</span>
 
                   </q-btn>
+                  <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
 
                 </q-card-actions>
-                <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
+                
 
               </q-card>
             </q-card-section>
@@ -268,6 +281,7 @@ async function editUser(data) {
   modalUser.value = true;
   isAdd.value = false
   id = data._id
+  validarCrear=false
   // Traigo los datos a las cajas de textos
   name.value = data.name
   email.value = data.email
@@ -293,7 +307,7 @@ async function modifyUser() {
   }
 }
 function cerrarModal() {
-  validarCrear.value = true
+  validarCrear = true
   closeModal()
   // isAdd.value = false
 }
@@ -302,16 +316,9 @@ function cerrarModal() {
 
 <style>
 .boton {
-  border-radius: 30px;
+  border-radius: 50px;
   margin: 3px 3px;
 }
-
-
-/* .card { */
-/* width: 1000px; */
-/* height: 300px; */
-/* background-color: ; */
-/* } */
 
 .padingTabla {
   background-color: rgb(218, 11, 138);
@@ -324,9 +331,14 @@ function cerrarModal() {
 .rowPrincipal {
   background-color: rgb(16, 16, 122);
 }
-
-/* .dialogUsuarios{
-    display: flex;
-    width: 100%;
-  } */
+.input{
+  border-radius: 50px;
+  background-color: rgba(0, 128, 0, 0.287);
+}
+.card{
+  background-color: green;
+}
+/* .card1{
+  ma
+} */
 </style>
