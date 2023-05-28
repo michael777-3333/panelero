@@ -2,8 +2,8 @@
   <div class="justify-center items-center d-flex">
     <!--tabla-->
     <div class="row">
-      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
-      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
+      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
+      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
 
         <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
           <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen usuarios!"
@@ -41,17 +41,17 @@
           <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
         </div>
       </div>
-      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
+      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
     </div>
 
 
 
     <!--dialog-->
     <q-dialog class="dialog"  v-model="modalUser"  persistent>
-      <div  class="row">
+      <div class="row">
         
       
-          <q-card class="card1" style="width: 1000px; height: 325px; ">
+          <q-card class="" style="width: 1000px; height: 380px; ">
             <q-card-section class="card">
               <div class="text-h6">{{ labelDialog }}</div>
             </q-card-section>
@@ -104,7 +104,7 @@
 
                 <q-separator />
                 <q-card-actions align="center">
-                  <q-btn class="q-my-md bg-green bgColorEnfasis">
+                  <q-btn style="color: white;" class="q-my-md bg-green bgColorEnfasis">
                     <span v-if="isAdd == true" @click="createUser()">Crear Usuario</span>
                     <span v-else @click="modifyUser()">Modificar Usuario</span>
 
@@ -333,12 +333,14 @@ function cerrarModal() {
 }
 .input{
   border-radius: 50px;
-  background-color: rgba(0, 128, 0, 0.287);
+  /* background-color: rgba(0, 128, 0, 0.287); */
+
 }
 .card{
+  color: white;
   background-color: green;
 }
-/* .card1{
-  ma
-} */
+.card1{
+  margin-top: 30px;
+}
 </style>

@@ -1,23 +1,19 @@
 <template>
         <div class="justify-center items-center d-flex">
             <div class="row">
-                <div class="col-4"></div>
-                <div class="col-4">
-                    <div class="bgColorEnfasis borderTitle text-center">
-                        <h1 class="text-h6">Personas</h1>
-                    </div>
-                </div>
-                <div class="col-4"></div>
-            </div>
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col-6 text-center">
-                    <div class="q-pa-md q-gutter-sm">
-                        <q-btn class="colorEnfasis" @click="alert = true" glossy label="Crear Pedidos" />
-                    </div>
+                <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
+                <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
                     <div class="q-pa-md">
                         <q-table title="Personas" :rows="rows" :columns="columns" row-key="id" no-data-label="No existen datos!"
                             :visible-columns="visibleColumns">
+                            <template v-slot:top="props">
+                              <div class="col-6" align="left"><span style="font-size: 25px;">Personas</span></div>
+                              <div class="col-6" align="right">
+                                <q-btn class="" @click="alert = true" style="font-size: 14px; background:#ffffff6b ; color: white;" glossy label="Crear Pedidos" />
+
+                              </div>
+                            </template>
+                            
                             <template v-slot:body-cell-state="props">
                               <td>
                                 <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0" @click="editarEstado(props.row)" />
@@ -33,7 +29,7 @@
                         </q-table>
                     </div>
                 </div>
-                <div class="col-3"></div>
+                <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
             </div>
             <q-dialog v-model="alert" persistent>
                 <q-card class="bgColorEnfasis">
