@@ -8,7 +8,7 @@
         <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
           <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
             card-class="bg-white text-black" table-class="text-black-8" table-header-class="text-green" flat bordered
-            :visible-columns="visibleColumns" v-model:pagination="pagination" hide-pagination>
+            :visible-columns="visibleColumns" v-model:pagination="pagination">
 
             <template v-slot:top>
               <div class="col-6 " align="left">
@@ -29,16 +29,14 @@
                   <q-icon style="color: white;" name="edit"></q-icon>
                 </q-btn>
                 <q-btn class="botonEditar">
-                  <q-icon v-if="props.row.state == 1" @click="inactivedOrder(props.row._id)" style="color: green;" name="toggle_on"></q-icon>
+                  <q-icon v-if="props.row.state == 1" @click="inactivedOrder(props.row._id)" style="color: green;"
+                    name="toggle_on"></q-icon>
                   <q-icon v-else @click="activedOrder(props.row._id)" style="color: red;" name="toggle_off"></q-icon>
                 </q-btn>
               </td>
 
             </template>
           </q-table>
-          <div class="row justify-center q-mt-md">
-              <q-pagination v-model="pagination.page" color="grey-8" :max="pagesNumber" size="sm" />
-            </div>
         </div>
         <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
           <q-linear-progress dark query color="green" class="q-mt-sm" />
@@ -48,8 +46,19 @@
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
     </div>
 
-    <q-dialog v-model="modalPedidos">
-      <q-card class="bgColorEnfasis">
+    <q-dialog class="fit" v-model="modalPedidosa">
+      <div class="row" style="background-color: red;">
+        <q-card class="my-card">
+          <q-card-section>
+            <h1>fdfsffdf</h1>
+          </q-card-section>
+        </q-card>
+      </div>
+    </q-dialog>
+
+    <q-dialog v-model="modalPedidos" persistent full-width transition-show="slide-up" transition-hide="slide-down">
+      <div  class="bgColorEnfasis card q-pa-lg ">
+      <!-- <q-card class="q-pa-lg bgColorEnfasis"> -->
         <q-card-section class="bgColorEnfasis">
           <!-- <h6 class="text-black">Pedidos</h6> -->
           <span class="text-black text-h6">Pedidos</span>
@@ -63,46 +72,54 @@
           <q-card class="d-flex">
             <q-card-section>
               <div class="row">
-                <div class="col-5">
+                <div class="col-4 q-px-lg">
                   <q-input v-model="clienteMFa" label="Cliente" hint="Cliente" :dense="dense" :readonly="readonly" />
                 </div>
-                <div class="col-2"></div>
-                <div class="col-5">
+                <!-- <div class="col-1"></div> -->
+                <div class="col-4 q-px-lg">
                   <q-select filled v-model="tipoDocumentoMFa" :options="optionsDocument" label="Tipo de Documento"
                     stack-label :dense="dense" :options-dense="denseOpts" :readonly="readonly" />
                   <!-- <q-input v-model="tipoDocumentoMFa" label="Tipo de Documento" /> -->
                 </div>
-                <div class="col-5">
+                <!-- <div class="col-1"></div> -->
+                
+                <div class="col-4 q-px-lg">
                   <q-input v-model="numeroDocumentoMFa" label="Número de documento" type="number" :readonly="readonly" />
                 </div>
-                <div class="col-2"></div>
-                <div class="col-5">
+                <!-- <div class="col-2"></div>
+                <div class="col-1"></div>
+                 -->
+                 <div class="col-4 q-px-lg">
                   <q-input v-model="celularMFa" label="Celular" :readonly="readonly" />
                 </div>
+                <!-- <div class="col-1"></div> -->
+
                 <!--  -->
-                <div class="col-5">
+                <div class="col-4 q-px-lg">
                   <q-input v-model="emailMFa" label="Email" :readonly="readonly" />
                 </div>
-                <div class="col-2"></div>
-                <div class="col-5">
+                <!-- <div class="col-2"></div> -->
+                <!-- <div class="col-1"></div> -->
+
+                <div class="col-4 q-px-lg">
                   <q-input v-model="detalles" label="Descripcion de la panela" :readonly="readonly" />
                 </div>
                 <!--  -->
-                <div class="col-5">
+                <div class="col-4 q-px-lg">
                   <q-input v-model="preferencias" label="Preferencia de la panela" :readonly="readonly" />
                 </div>
-                <div class="col-2"></div>
-                <div class="col-5">
+                <!-- <div class="col-2"></div> -->
+                <div class="col-4 q-px-lg">
                   <q-select filled v-model="estado" :options="optionsStatus" label="Estado del pedido" stack-label
                     :dense="dense" :options-dense="denseOpts" />
                   <!-- <q-input v-model="" label="Estado del pedido" /> -->
                 </div>
                 <!--  -->
-                <div class="col-5">
+                <div class="col-4 q-px-lg">
                   <q-input v-model="cantidad" label="Cantidad de panela" type="number" :readonly="readonly" />
                 </div>
-                <div class="col-2"></div>
-                <div class="col-5">
+                <!-- <div class="col-2"></div> -->
+                <div class="col-4 q-px-lg">
                   <q-input v-model="direccionEnvio" label="Dirección de envio" :readonly="readonly" />
                 </div>
               </div>
@@ -122,7 +139,8 @@
           </q-card>
         </q-card-section>
 
-      </q-card>
+      <!-- </q-card> -->
+    </div>
     </q-dialog>
   </div>
 </template>
@@ -146,7 +164,7 @@ let direccionEnvio = ref("")
 let optionsStatus = ref(['Proceso', 'Entregado', 'Cancelado', 'Realizado']);
 let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
 
-let visibleColumns = ref(['nombre', 'cantidad', 'numeroDocumento', 'opciones'])
+let visibleColumns = ref(['nombre', 'cantidad', 'estado', 'opciones'])
 let id = null;
 let isAdd = ref(true);
 let readonly = ref(false);
@@ -169,7 +187,7 @@ const columns = [
 
   { name: "nombre", align: "left", label: "Cliente", field: "customerName", sortable: true, },
   { name: "cantidad", label: "Cantidad", field: "quantityOfPanela" },
-  { name: "numeroDocumento", label: "Estado", field: "orderStatus" },
+  { name: "estado", label: "Estado", field: "orderStatus", sortable: true,  },
   { name: "opciones", align: "center", label: "Opciones", field: "Opciones" },
 ];
 
@@ -188,7 +206,7 @@ async function getOrders() {
   
   // console.log(res.data.pedidos);
   if (res.status == 200) {
-    rows.value = res.data.pedidos
+    rows.value = res.data
   } else if (res.status == 403) {
     console.log("No existe token");
   } else if (res.status == 404) {
@@ -263,12 +281,13 @@ const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 7
+  rowsPerPage: 8
   // rowsNumber: xx if getting data from a server
 })
+let maximizedToggle=ref(true)
 
-const pagesNumber=  computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
-console.log(pagesNumber);
+const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
+  // console.log(pagesNumber);
 
 </script>
   
