@@ -14,6 +14,8 @@ import Marcas from '../components/modulos/mantenimiento/Marcas.vue'
 import Etapa from '../components/modulos/mantenimiento/Etapa.vue'
 import Bodega from '../components/modulos/inventario/bodega.vue'
 import HomeInventario from '../components/modulos/inventario/HomeInventario.vue'
+import Finca from '../components/modulos/mantenimiento/Finca.vue'
+
 export const routes = [
     { path:"/", component: Login },
     { path:"/body", component: Body, children: [
@@ -34,6 +36,7 @@ export const routes = [
                     { path:"personas", component: Personas},
                     { path: 'etapa', component: Etapa },
                     {path: 'marcas', component:Marcas},
+                    {path: 'finca', component:Finca}
                 ]
             },
             

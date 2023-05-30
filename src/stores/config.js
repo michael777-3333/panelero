@@ -9,5 +9,6 @@ const URLUSUARIOS = `${HOST}usuario/`;
 const URLPERSONAS = `${HOST}persona/`;
 const URLMARCAS = `${HOST}marca/`
 const URLBODEGA= `${HOST}bodega/`
+const URLFINCAS= `${HOST}granja/`
 export default HOST
   

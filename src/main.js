@@ -9,6 +9,9 @@ import { Quasar, Cookies, LocalStorage, SessionStorage, Notify} from 'quasar';
 import { routes } from './routes/routes.js';
 import App from './App.vue';
 
+import '@quasar/extras/bootstrap-icons/bootstrap-icons.css'
+import '@quasar/extras/themify/themify.css'
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: routes

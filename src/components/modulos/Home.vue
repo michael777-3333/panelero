@@ -2,11 +2,11 @@
   <div>
     <img src="../../assets/img/fondo.jpg" class="fondo">
   </div>
-  <div class="row justify-center d-flex">
+  <div class="row">
 
-    <div class="col-6" style="margin-top: 5%;">
-      <div class="row">
-        <q-card class="my-card">
+
+      <div class="card1 col-5 d-flex ">
+        <q-card class="cardHome">
           <router-link to="/body/costos/adminCostos">
             <q-img src="../../assets/img/fondo.jpg">
               <div class="absolute-bottom text-subtitle2 text-center">
@@ -15,8 +15,10 @@
             </q-img>
           </router-link>
         </q-card>
+      </div>
 
-        <q-card class="my-card">
+      <div class="card2 col-5">
+        <q-card class="cardHome">
           <router-link to="/body/mantenimiento/Usuario">
             <q-img src="../../assets/img/fondo.jpg">
               <div class="absolute-bottom text-subtitle2 text-center">
@@ -26,8 +28,10 @@
           </router-link>
         </q-card>
       </div>
-      <div class="row">
-        <q-card class="my-card">
+
+
+        <div class="card1 col-5">
+          <q-card class=" cardHome">
           <router-link to="/body/facturacion/PedidosModulos">
             <q-img src="../../assets/img/fondo.jpg">
               <div class="absolute-bottom text-subtitle2 text-center">
@@ -36,8 +40,10 @@
             </q-img>
           </router-link>
         </q-card>
-
-        <q-card class="my-card">
+        </div>
+        
+        <div class="card2 col-5">
+          <q-card class="cardHome">
           <router-link to="/body/inventario/Bodega">
             <q-img src="../../assets/img/fondo.jpg">
               <div class="absolute-bottom text-subtitle2 text-center">
@@ -45,15 +51,8 @@
               </div>
             </q-img>
           </router-link>
-        </q-card>   
-      </div>
-    </div>
-
-
-
-
-
-
+        </q-card>  
+        </div>
   </div>
 
   <!-- <div class="q-pa-md" style="margin-top: 5%;">
@@ -65,6 +64,22 @@
 <script setup>
 </script>
 
-<style ></style>  
+<style scoped >
+.cardHome{
+  width: 300px;
+  height: 200px;
+  margin: 10px;
+}
+.card1{  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card2{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+</style>  
   
     

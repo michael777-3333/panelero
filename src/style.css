@@ -52,12 +52,7 @@
     height: 40px;
     font-family: "Indie Flower";
   }
-  
-  
-  
-  
-  
-  
+
   .contenedor {
 
     background-repeat: no-repeat;
@@ -83,7 +78,7 @@
     margin: 3px 3px;
   }
   
-  .my-card-width {
+  .my-card-width{
     max-width: 600px;
   }
   

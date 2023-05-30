@@ -43,9 +43,8 @@
       
 
       <q-dialog v-model="alert" persistent>
-        <div class="row">
-          
-        </div>
+        <!-- <div class="row">
+        </div> -->
         <q-card class="dialogLotes" style="width: 1000px ; height: 380px;">
           <q-card-section class="cardLotes">
             <div style="color:  white" class="text-h6">Lotes</div>

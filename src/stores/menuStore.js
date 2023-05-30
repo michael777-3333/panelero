@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+
 export const useMenuStore = defineStore("menu", {
   state: () => ({
     // crear store para rutas
@@ -12,13 +13,13 @@ export const useMenuStore = defineStore("menu", {
         ruta: "/body/home",
       },
       {
-        icon: 'description', /**request_page */
+        icon: '\uF636', /**request_page */
         text: 'Cotos',
         ruta: "/body/costos/costosModulos",
 
       },
       {
-        icon: "send",
+        icon: "maintenance",
         text: "Mantenimiento",
         ruta: "/body/mantenimiento/usuario",
       },
@@ -67,7 +68,7 @@ export const useMenuStore = defineStore("menu", {
       },
       {
         icon: 'none',
-        text: 'etapa',
+        text: 'Etapa',
         ruta: '/body/mantenimiento/etapa',
       },
       // {
@@ -94,6 +95,11 @@ export const useMenuStore = defineStore("menu", {
         icon: "image_not_supported",
         text: "Marcas",
         ruta: "/body/mantenimiento/marcas",
+      },
+      {
+        icon: 'none',
+        text: 'Finca',
+        ruta: '/body/mantenimiento/finca',
       },
     ],
 
