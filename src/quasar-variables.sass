@@ -12,6 +12,7 @@ $info: #31CCEC
 $warning: #F2C037
 
 $dominant_color: #029127
+$dominant_color_trans: #0291276b
 
 $animate-duration : .3s !default
 $animate-delay    : .3s !default
@@ -33,11 +34,13 @@ $animate-repeat   : 1 !default
 // COLOR DEL TEXTO
 .colorEnfasis
 	color: $dark
+	
 // COLOR DEL TEXTO
 
 // COLOR DEL FONDO
 .bgColorEnfasis
-	background-color: $dominant_color
+	background: $dominant_color
+	// background-color: $dominant_color
 // COLOR DEL FONDO
 
 .botones-menuList
@@ -63,9 +66,12 @@ $animate-repeat   : 1 !default
 // 	background-color: $dominant_color
 // 	color: $white
 
-.q-table__top, .q-table__bottom, thead tr:first-child th
+.q-table__top, thead tr:first-child th
 	background-color: $dominant_color
 	color: $white
+
+// .q-table__bottom
+// 	background-color: $dominant_color
 
 // .q-select__dropdown-icon, .q-btn__content 
 // 	color: $white
@@ -74,3 +80,13 @@ $animate-repeat   : 1 !default
 // estilos modulo facturacion y pedidos 
 
 // Color dominante: color principal de la composición. Cabe señalar que esta condición no está relacionada con el hecho de que ocupe la superficie máxima del color en la composición. El color dominante hace el papel protagonista, es el color que define los valores comunicativos de la combinación cromática. Color subordinado: color visualmente más débil que funciona por contraste o que complementa una combinación cromática con un color dominante. Normalmente ocupa la máxima superficie del diseño. Color acento o color destacado: el color acento puede ser dos cosas: simpático con el color subordinado o dominante, o visualmente fuerte y llamativo. Puede parecer que compite con el color dominante porque puede proporcionar tensión dentro de la combinación cromática. También es un color que aporta un detalle visual directo. 
+
+
+// color de menu//
+.texto-menuList
+	color: $white
+	//text-anchor:
+
+.asdf
+	width:70%
+	height:50%

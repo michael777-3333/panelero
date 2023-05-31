@@ -2,8 +2,8 @@
   <div class="justify-center items-center d-flex">
 
     <div class="row">
-      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
-      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
+        <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
         <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
           <q-table class="paddingTabla" title="Lotes" :rows="rows" :columns="columns" row-key="name">
 
@@ -39,19 +39,25 @@
           <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
         </div>
       </div>
-      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
-      
 
-      <q-dialog v-model="alert" persistent>
+
+
+      <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
+
+
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <q-dialog v-model="alert" persistent>
         <!-- <div class="row">
         </div> -->
-        <q-card class="dialogLotes" style="width: 1000px ; height: 380px;">
+        <q-card class="dialogLotes" >
           <q-card-section class="cardLotes">
             <div style="color:  white" class="text-h6">Lotes</div>
           </q-card-section>
 
           <q-card-section class="q-pt-none">
-            <q-card class="lotesCard d-flex " >
+            <q-card class="lotesCard d-flex" >
               <q-card-section>
                 <div class="row">
                   <div class="col-1"></div>
@@ -106,6 +112,9 @@
           </q-card-actions> -->
         </q-card>
       </q-dialog>
+        </div>
+        <div class="col-1"></div>
+      </div>
     </div>
   </div>
 </template>

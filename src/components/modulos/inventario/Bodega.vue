@@ -10,7 +10,8 @@
 
                         <div class="col-6" align="left"><span style="font-size: 25px;">Bodega</span></div>
                         <div class="col-6" align="right">
-                            <q-btn class="colorEnfasis" style="font-size: 14px; background: #ffffff6b; color: white;" @click="alert = true" glossy label="Crear Bodega" />
+                            <q-btn class="colorEnfasis" style="font-size: 14px; background: #ffffff6b; color: white;"
+                                @click="alert = true" glossy label="Crear Bodega" />
 
                         </div>
 
@@ -25,7 +26,9 @@
 
                     <template v-slot:body-cell-editar="props">
                         <td>
-                            <q-btn class="botonEditar" @click="editarBodega(props.row)" glossy label="Editar" />
+                            <q-btn class="botonEditar" style="background-color: green;" @click="editarBodega(props.row)" glossy  >
+                                <q-icon style="color: white;" name="edit"> </q-icon>
+                            </q-btn>
                         </td>
 
                     </template>
@@ -33,29 +36,36 @@
             </div>
             <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
         </div>
+
         <q-dialog v-model="alert" persistent>
-            <q-card class="dialogCard" style="width: 1000px ; height: 380px;">
+            <q-card class="bgColorEnfasis dialogCard" style="width: 1000px ; height: 380px;">
                 <q-card-section class="cardBodegas">
-                    <div class="text-black text-h6">Bodegas</div>
-                    
+                    <span class="text-white text-h6">Bodegas</span>
+                    <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
                     <q-card class="bodegasCard d-flex">
                         <q-card-section>
                             <div class="row">
-                                <div class="col-5">
-                                    <q-input v-model="name" label="Nombre" :dense="dense" :readonly="readonly" />
+                                <div class="col-1"></div>
+                                <div class="butonBodegas col-5">
+
+                                    <q-input filled v-model="name" class="input" label="Nombre" />
+
+                                    <!-- <q-input v-model="name" label="Nombre"  :readonly="readonly" /> -->
                                 </div>
 
-                                <div class="col-2"></div>
-                                <div class="col-5">
-                                    <q-input v-model="size" label="tamaño" :readonly="readonly" />
-                                </div>
-                                <div class="col-2"></div>
-                                <div class="col-5">
-                                    <q-input v-model="farm" label="finca" :readonly="readonly" />
+                                <div class="butonBodegas col-5">
+                                    <q-input filled v-model="size" class="input" label="Tamaño" />
 
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-1"></div>
+                                <div class="col-1"></div>
+                                <div class="butonBodegas col-5">
+                                    <q-input filled v-model="farm" class="input" label="Finca" />
+                                    <!-- <q-input v-model="farm" label="finca" :readonly="readonly" /> -->
                                 </div>
 
                             </div>
@@ -63,8 +73,9 @@
                         <q-separator />
 
                         <q-card-actions align="center">
+                            <q-btn @click="createBodega()" style="background-color: green; color: white;" class="q-my-md colorEnfasis">crear Bodega</q-btn>
+
                             <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
-                            <q-btn @click="createBodega()" class="q-my-md colorEnfasis">crear Persona</q-btn>
                         </q-card-actions>
 
                     </q-card>
@@ -199,4 +210,16 @@ function cerrarModal() {
 </script>
 
 
-<style></style>
+<style>
+.cardBodegas {
+    background-color: green;
+}
+
+.bodegasCard {
+    margin-top: 30px;
+}
+
+.butonBodegas {
+    border-radius: 50px;
+    margin: 3px 3px;
+}</style>

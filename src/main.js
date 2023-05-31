@@ -1,16 +1,33 @@
-import './style.css';
-import '@quasar/extras/material-icons/material-icons.css';
-import 'quasar/src/css/flex-addon.sass';
-import 'quasar/src/css/index.sass';
+// FILE: main.js
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import quasarLang from 'quasar/lang/es'
+import 'quasar/src/css/flex-addon.sass';
 import { createRouter, createWebHashHistory } from "vue-router";
 import { Quasar, Cookies, LocalStorage, SessionStorage, Notify} from 'quasar';
 import { routes } from './routes/routes.js';
-import App from './App.vue';
 
+// Import icon libraries
+import '@quasar/extras/material-icons/material-icons.css';
+
+// Import Quasar css
+import 'quasar/src/css/flex-addon.sass';
+import 'quasar/src/css/index.sass';
+import './style.css';
+
+// icons
 import '@quasar/extras/bootstrap-icons/bootstrap-icons.css'
 import '@quasar/extras/themify/themify.css'
+
+import App from './App.vue';
+
+// A few examples for animations from Animate.css:
+import '@quasar/extras/animate/fadeIn.css'
+import '@quasar/extras/animate/fadeOut.css'
+import '@quasar/extras/animate/slideInDown.css'
+import '@quasar/extras/animate/slideInUp.css'
+import '@quasar/extras/animate/flipInX.css'
+import '@quasar/extras/animate/zoomIn.css'
 
 const router = createRouter({
   history: createWebHashHistory(),

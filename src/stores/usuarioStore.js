@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useQuasar } from "quasar";
-import HOST from "../stores/config.js";
-const URLUSUARIOS = `${HOST}usuario/`;
+import url from "../stores/config.js";
 
 export const useUsuarioStore = defineStore("usuario", {
   state: () => ({
@@ -23,7 +22,7 @@ export const useUsuarioStore = defineStore("usuario", {
       return await axios(
         {
           method: 'get',
-          url: `${URLUSUARIOS}`, //https://proyecto-panelera.onrender.com/usuario
+          url: `${url.usuario}`, //https://proyecto-panelera.onrender.com/usuario
           headers: {
             "token": this.$q.cookies.get('token')
           },
@@ -35,7 +34,7 @@ export const useUsuarioStore = defineStore("usuario", {
       return await axios(
         {
           method: 'post',
-          url: `${HOST}auth/singup`,
+          url: `${url.autenticacion}singup`,
 
           data: {
             name: data.name,
@@ -54,14 +53,15 @@ export const useUsuarioStore = defineStore("usuario", {
 
 
     async login(data) {
-      return await axios({
-        method: 'post',
-        url: `${HOST}auth/singin`,
-        data: {
-          email: data.email,
-          password: data.password
-        }
-      })
+      return await axios(
+        {
+          method: 'post',
+          url: `${url.autenticacion}singin`,
+          data: {
+            email: data.email,
+            password: data.password
+          }
+        })
         .then((res) => res)
         .catch((error) => error);
     },
@@ -70,7 +70,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url: `${URLUSUARIOS}${reqData.id}`,
+          url: `${url.usuario}${reqData.id}`,
 
           data: reqData,
           headers: {
@@ -85,7 +85,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url: `${URLUSUARIOS}desactivar/${props._id}`,
+          url: `${url.usuario}desactivar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token')
           }
@@ -98,7 +98,7 @@ export const useUsuarioStore = defineStore("usuario", {
       await axios(
         {
           method: 'put',
-          url: `${URLUSUARIOS}activar/${props._id}`,
+          url: `${url.usuario}activar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token')
           }

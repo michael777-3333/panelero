@@ -4,7 +4,7 @@
       <q-header elevated :class="$q.dark.isActive ? 'bg-secondary' : 'bg-black'">
         <q-toolbar class="header-body bgColorEnfasis">
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-          <q-toolbar-title style="font-size: 40px;">Paneleros</q-toolbar-title>
+          <q-toolbar-title style="font-size: 35px;">Paneleros</q-toolbar-title>
           <q-btn class="text-back" style="font-size: 14px; background: #ffffff6b; color: white;" @click="goLogin()" label="Salir" />
         </q-toolbar>
       </q-header>
@@ -49,7 +49,7 @@
 <script setup>
 import { ref } from "vue";
 import { useMenuStore } from "../stores/menuStore.js";
-import { useUsuarioStore } from "../stores/usuarioStore.js";
+// import { useUsuarioStore } from "../stores/usuarioStore.js";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
@@ -57,21 +57,15 @@ import { useQuasar } from "quasar";
 const $q = useQuasar();
 
 const menuStore = useMenuStore();
-
-const store = useUsuarioStore();
-
 const router = useRouter();
-
 console.log($q.cookies.get("token"));
 
 function goLogin() {
   $q.cookies.remove("token");
-
   router.push("/");
 }
 
 let drawer = ref(false);
-
 
 
 /** Menu, que es cargado al iniciar la pagina */
@@ -79,12 +73,12 @@ let menuList = ref(menuStore.menuListHome); /** Traido desde Pinia */
 
 /** Cambiamos el menu según los datos que corresponden */
 function mostrarBotones(r /**string*/) {
-  /**Dependiendo de la ruta del boton seleccinado cargo el respectivo menu */
+  /**Dependiendo de la ruta del boton seleccionado cargo el respectivo menu */
   if (r == "/body/costos/costosModulos") {
     menuList.value = menuStore.menuListCostos;
   } else if (r == "/body/mantenimiento/usuario") {
     menuList.value = menuStore.menuListMantenimiento;
-  } else if (r == "/body/facturacion/facturacionModulos") {
+  } else if (r == "/body/facturacion/pedidos") {
     menuList.value = menuStore.menuListFacturacion;
   } else if (r == "/body/inventario/bodega") {
     menuList.value = menuStore.menuListInventario;

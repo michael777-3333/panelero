@@ -2,58 +2,82 @@
   <div>
     <!-- <img src="../../assets/img/fondo.jpg" class="fondo"> -->
   </div>
-  <div class="row">
+  <div class="row" style="height: 800px;">
+    <div class="cardHome1 col-xs-auto col-sm-6 col-lg-4 ">
+      <q-card class="cardHome">
+        <router-link to="/body/costos/adminCostos">
+          <q-img src="../../assets/img/costo.png">
+            <div class="absolute-bottom text-subtitle2 text-center">
+              COSTO
+            </div>
+          </q-img>
+        </router-link>
+      </q-card>
+    </div>
+
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+      <q-card class="cardHome">
+        <router-link to="/body/mantenimiento/Usuario">
+          <q-img src="../../assets/img/mantenimiento.png">
+            <div class="absolute-bottom text-subtitle2 text-center">
+              MANTENIMIENTO
+            </div>
+          </q-img>
+        </router-link>
+      </q-card>
+    </div>
 
 
-      <div class="card1Home col-5 d-flex ">
-        <q-card class="cardHome">
-          <router-link to="/body/costos/adminCostos">
-            <q-img src="../../assets/img/fondo.jpg">
-              <div class="absolute-bottom text-subtitle2 text-center">
-                COSTO
-              </div>
-            </q-img>
-          </router-link>
-        </q-card>
-      </div>
+    <div class="cardHome1 col-xs-auto col-sm-6 col-lg-4 ">
+      <q-card class="cardHome">
+        <router-link to="/body/facturacion/Pedidos">
+          <q-img src="../../assets/img/facturacion.png">
+            <div class="absolute-bottom text-subtitle2 text-center">
+              FACTURACION
+            </div>
+          </q-img>
+        </router-link>
+      </q-card>
+    </div>
+    
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+      <q-card class="cardHome">
+        <router-link to="/body/inventario/Bodega">
+          <q-img src="../../assets/img/trasformacion.png">
+            <div class="absolute-bottom text-subtitle2 text-center">
+              TRANSFORMACION
+            </div>
+          </q-img>
+        </router-link>
+      </q-card>
+    </div>
 
-      <div class="card2Home col-5">
-        <q-card class="cardHome">
-          <router-link to="/body/mantenimiento/Usuario">
-            <q-img src="../../assets/img/fondo.jpg">
-              <div class="absolute-bottom text-subtitle2 text-center">
-                MANTENIMIENTO
-              </div>
-            </q-img>
-          </router-link>
-        </q-card>
-      </div>
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+      <q-card class="cardHome">
+        <router-link to="/body/inventario/Bodega">
+          <q-img src="../../assets/img/estadistica.png">
+            <div class="absolute-bottom text-subtitle2 text-center">
+              ESTADISTICAS
+            </div>
+          </q-img>
+        </router-link>
+      </q-card>
+    </div>
 
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+      <q-card class="cardHome">
+        <router-link to="/body/inventario/Bodega">
+          <q-img src="../../assets/img/inventario.png">
+            <div class="absolute-bottom text-subtitle2 text-center">
+              INVENTARIO
+            </div>
+          </q-img>
+        </router-link>
+      </q-card>
+    </div>
 
-        <div class="card1Home col-5">
-          <q-card class=" cardHome">
-          <router-link to="/body/facturacion/PedidosModulos">
-            <q-img src="../../assets/img/fondo.jpg">
-              <div class="absolute-bottom text-subtitle2 text-center">
-                FACTURACION
-              </div>
-            </q-img>
-          </router-link>
-        </q-card>
-        </div>
-        
-        <div class="card2Home col-5">
-          <q-card class="cardHome">
-          <router-link to="/body/inventario/Bodega">
-            <q-img src="../../assets/img/fondo.jpg">
-              <div class="absolute-bottom text-subtitle2 text-center">
-                INVENTARIO
-              </div>
-            </q-img>
-          </router-link>
-        </q-card>  
-        </div>
   </div>
+
 
   <!-- <div class="q-pa-md" style="margin-top: 5%;">
     <q-linear-progress dark query color="green" class="q-mt-sm" />
@@ -65,20 +89,30 @@
 </script>
 
 <style scoped >
-.cardHome{
+.cardHome {
   width: 300px;
   height: 200px;
   margin: 10px;
 }
-.card1Home{  
+
+.cardHome1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.cardHome2 {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.card2Home{
-  display: flex;
-  justify-content: end;
-  align-items: center;
+
+@media(max-width: 590px) {
+  .cardHome1 {
+    display: flex;
+    justify-content: end;
+  }
 }
 </style>  
   

@@ -1,9 +1,7 @@
-import {defineStore} from "pinia";
+import { defineStore } from "pinia";
 import axios from "axios";
-import { useQuasar } from "quasar"; 
-import HOST from '../stores/config.js'
-const URLFINCAS= `${HOST}granja/`;
-
+import { useQuasar } from "quasar";
+import url from '../stores/config.js'
 
 export const usefincaStore = defineStore("finca", {
   state: () => ({
@@ -11,44 +9,41 @@ export const usefincaStore = defineStore("finca", {
   }),
 
   actions: {
-    // getToken(data) {
-    //   this.token = data
-    //   console.log(this.token);
-    //   // console.log("token:", this.token)
-  // },
-
     async addfinca(reqData) {
-      await axios({
-        method: "post",
-        url: URLFINCAS,
+      await axios(
+        {
+          method: "post",
+          url: url.finca,
 
-        data: reqData,
-        headers: {
-          'token': this.$q.cookies.get('token'),
-        }
-      })
+          data: reqData,
+          headers: {
+            'token': this.$q.cookies.get('token'),
+          }
+        })
         // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
     async getfinca() {
-      return await axios({
-        method: 'get',
-        url: URLFINCAS,
-        headers: {
-          'token' : this.$q.cookies.get('token'),
-        }
-      })
+      return await axios(
+        {
+          method: 'get',
+          url: url.finca,
+          headers: {
+            'token': this.$q.cookies.get('token'),
+          }
+        })
     },
 
     async editfinca(reqData) {
-      await axios({
-        method: 'put',
-        url: `${URLFINCAS}${reqData.id}`,
-        data: reqData,
-        headers: {
-          'token' : this.$q.cookies.get('token'),
-        }
-      })
+      await axios(
+        {
+          method: 'put',
+          url: `${url.finca}${reqData.id}`,
+          data: reqData,
+          headers: {
+            'token': this.$q.cookies.get('token'),
+          }
+        })
         // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
@@ -57,7 +52,7 @@ export const usefincaStore = defineStore("finca", {
       await axios(
         {
           method: 'put',
-          url: `${URLFINCAS}activar/${props._id}`,
+          url: `${url.finca}activar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token'),
           }
@@ -70,7 +65,7 @@ export const usefincaStore = defineStore("finca", {
       await axios(
         {
           method: 'put',
-          url: `${URLFINCAS}desactivar/${props._id}`,
+          url: `${url.finca}desactivar/${props._id}`,
           headers: {
             'token': this.$q.cookies.get('token'),
           }

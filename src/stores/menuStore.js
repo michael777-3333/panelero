@@ -1,6 +1,4 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-
 
 export const useMenuStore = defineStore("menu", {
   state: () => ({
@@ -8,13 +6,13 @@ export const useMenuStore = defineStore("menu", {
     /** Defino el menu de home aqui! */
     menuListHome: [
       {
-        icon: "home",
+        icon: "grass",
         text: "Home",
         ruta: "/body/home",
       },
       {
-        icon: 'payments', /**request_page */
-        text: 'Cotos',
+        icon: 'payments',
+        text: 'Costos',
         ruta: "/body/costos/costosModulos",
 
       },
@@ -24,9 +22,9 @@ export const useMenuStore = defineStore("menu", {
         ruta: "/body/mantenimiento/usuario",
       },
       {
-        icon: 'shopping_cart', /**request_page */
+        icon: 'receipt_long', /**shopping_cart */
         text: 'Facturación',
-        ruta: "/body/facturacion/pedidosModulos",
+        ruta: "/body/facturacion/pedidos",
       },
       {
         icon: 'inventory', /**request_page */
@@ -48,13 +46,13 @@ export const useMenuStore = defineStore("menu", {
       //   ruta: "/body/costos/homeCostos",
       // },
       {
-        icon: "image_not_supported",
-        text: "costo Inventario",
+        icon: "account_balance_wallet",
+        text: "Inventario",
         ruta: "/body/costos/costosModulos",
       },
       {
-        icon: "payments",
-        text: "Costos administrativos",
+         icon: "paid", // payments
+        text: "Administrativos",
         ruta: "/body/costos/adminCostos",
       },
 
@@ -67,7 +65,7 @@ export const useMenuStore = defineStore("menu", {
         ruta: "/body/home",
       },
       {
-        icon: 'yard',
+        icon: 'segment', // yard
         text: 'Etapa',
         ruta: '/body/mantenimiento/etapa',
       },
@@ -77,27 +75,27 @@ export const useMenuStore = defineStore("menu", {
       //   ruta: "/body/mantenimiento/homeMantenimiento",
       // },
       {
-        icon: "group",
+        icon: "admin_panel_settings", //group
         text: "Usuarios",
         ruta: "/body/mantenimiento/usuario",
       },
       {
-        icon: "travel_explore",
+        icon: "grid_view", // travel_explore
         text: "Lotes",
         ruta: "/body/mantenimiento/lotes",
       },
       {
-        icon: "settings_accessibility",
+        icon: "groups",  //settings_accessibility
         text: "Personas",
         ruta: "/body/mantenimiento/personas",
       },
       {
-        icon: "verified",
+        icon: "new_releases", // verified
         text: "Marcas",
         ruta: "/body/mantenimiento/marcas",
       },
       {
-        icon: 'agriculture',
+        icon: 'gite', //agriculture
         text: 'Finca',
         ruta: '/body/mantenimiento/finca',
       },
@@ -112,14 +110,15 @@ export const useMenuStore = defineStore("menu", {
       {
         icon: 'request_page',
         text: 'Pedidos',
-        ruta: "/body/facturacion/pedidosModulos",
+        ruta: "/body/facturacion/pedidos",
       },
       {
-        icon: 'description', /**request_page */
+        icon: 'receipt_long', /**request_page */
         text: 'Facturación',
-        ruta: "/body/facturacion/facturacionModulos",
+        ruta: "/body/facturacion/facturacion",
       }
     ],
+
     menuListInventario: [
 
       {
@@ -133,7 +132,7 @@ export const useMenuStore = defineStore("menu", {
       //   ruta: "/body/inventario/homeInventario",
       // },
       {
-        icon: 'request_page',
+        icon: 'storefront',
         text: 'bodega',
         ruta: "/body/inventario/bodega",
       }

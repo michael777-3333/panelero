@@ -47,31 +47,30 @@
 
 
     <!--dialog-->
-    <q-dialog class="dialog"  v-model="modalUser"  persistent>
-      <div class="row">
+    <q-dialog style="display: flex;"  :maximized="true" v-model="modalUser"  persistent>
+      <!-- <div class="row"> -->
         
-      
-          <q-card class="" style="width: 1000px; height: 380px; ">
+      <div class="asdf">
+          <q-card style="height: 100%;" >
             <q-card-section class="card">
               <div class="text-h6">{{ labelDialog }}</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              <q-card class="card1 d-flex">
+              <!-- <q-card class="card1 d-flex"> -->
 
-                <q-card-section>
+                <!-- <q-card-section> -->
                   <div class="row">
                     <div class="col-1"></div>
                     <div class="col-5">
                       <div class="boton">
-                        <!-- <q-input v-model="name" label="nombre" /> -->
                         <q-input filled v-model="name" class="input" label="Nombre" :dense="dense" />
                       </div>
                     </div>
 
                     <div class="col-5">
                       <div class="boton">
-                        <q-select outlined v-model="roles" class="input" :options="tipoUsuario" label="tipo de usuario" />
+                        <q-select outlined v-model="roles" class="input"  :options="tipoUsuario" label="tipo de usuario" />
                       </div>
                     </div>
                   
@@ -79,7 +78,6 @@
                     <div class="col-1"></div>
                     <div  v-show="validarCrear == true" class="col-5">
                       <div class="boton">
-                        <!-- <q-input v-model="email" label="correo" /> -->
                         <q-input filled v-model="email" class="input"  label="Correo" :dense="dense" />
                       </div>
                     </div>
@@ -92,7 +90,6 @@
 
                       <div  v-show="validarCrear == false" class="col-12">
                         <div class="boton">
-                        <!-- <q-input v-model="email" label="correo" /> -->
                         <q-input filled v-model="email" class="input" label="Correo" :dense="dense" />
                       </div>
                       </div>
@@ -100,7 +97,7 @@
                   </div>
                     
                   
-                </q-card-section>
+                <!-- </q-card-section> -->
 
                 <q-separator />
                 <q-card-actions align="center">
@@ -114,11 +111,11 @@
                 </q-card-actions>
                 
 
-              </q-card>
+              <!-- </q-card> -->
             </q-card-section>
           </q-card>
-        </div>
-        
+        <!-- </div> -->
+      </div>
       
 
     </q-dialog>
@@ -195,6 +192,7 @@ async function getUsers() {
   console.log(res.data.usuarios);
   if (res.status < 300) {
     rows.value = res.data.usuarios
+    console.log(rows.value);
   } else if (res.response.status == 404) {
     console.log("No existen datos");
   } else {
@@ -246,9 +244,9 @@ function validations() {
   } else if (email.value == '') {
     showMessage('Digite el email')
   }
-  // else if (password.value == '') {
-  //   showMessage('Digite la contraseña')
-  // } 
+  else if (password.value == '' && isAdd.value) {
+    showMessage('Digite la contraseña')
+  }
   else { return true }
 }
 
@@ -261,7 +259,7 @@ function showDoneMessage(msg) {
 
 //crear usuario en la base de datos
 async function createUser() {
-  if (validations() && isAdd) {
+  if (validations() && isAdd.value) {
     // fctn de la peticion para crear usuario
     const res = await store.addUsuario({
       name: name.value,
@@ -290,13 +288,13 @@ async function editUser(data) {
 }
 
 async function modifyUser() {
-  if (validations() && !isAdd && id != null) {
+  if (validations() && !isAdd.value && id != null) {
     // fctn de la peticion para editar usuario
     const res = await store.putUsuario({
       id: id,
       name: name.value,
       email: email.value,
-      password: password.value,
+      // password: password.value,
       roles: roles.value
     });
 
@@ -309,7 +307,7 @@ async function modifyUser() {
 function cerrarModal() {
   validarCrear = true
   closeModal()
-  // isAdd.value = false
+  isAdd.value = false
 }
 
 </script>

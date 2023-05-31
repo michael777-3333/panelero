@@ -1,76 +1,70 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useQuasar } from 'quasar';
-import HOST from "../stores/config.js";
-const URLPERSONAS = `${HOST}persona/`
+import url from "../stores/config.js";
 
 export const usePersonasStore = defineStore("persona", {
 	state: () => ({
 		$q: useQuasar(),
-		//   token:null,
-		//   URL: 'http://10.202.80.188:3000/persona',
 	}),
 
 	actions: {
-		//   getToken(data){
-		//     this.token=data
-		//     },
 		async getPersona() {
-			return await axios({
-				method: 'get',
-				url: URLPERSONAS,
-				headers:
+			return await axios(
 				{
-					'token': this.$q.cookies.get('token'),
-				}
-			})
+					method: 'get',
+					url: url.persona,
+					headers:
+					{
+						'token': this.$q.cookies.get('token'),
+					}
+				})
 		},
 		async addPersona(reqData) {
-			await axios({
-				method: 'post',
-				url: URLPERSONAS,
-				data: reqData,
-				headers: {
-					'token': this.$q.cookies.get('token'),
-				}
-			})
-			.catch((error) => console.log(error));
+			await axios(
+				{
+					method: 'post',
+					url: url.persona,
+					data: reqData,
+					headers: {
+						'token': this.$q.cookies.get('token'),
+					}
+				})
+				.catch((error) => console.log(error));
 
 		},
 		async editPersona(reqData) {
 			await axios(
 				{
 					method: 'put',
-					url: `${URLPERSONAS}${reqData.id}`,
+					url: `${url.persona}${reqData.id}`,
 					data: reqData,
-					// {
-					// 	orderStatus: data.orderStatus,
-					// },
 					headers: {
 						'token': this.$q.cookies.get('token'),
 					}
 				})
-				// .then((res) => console.log(res))
+				.then(response => console.log(response))
 				.catch((error) => console.log(error));
 		},
 		async activarPersona(reqData) {
 			await axios(
 				{
 					method: 'put',
-					url: `${URLPERSONAS}activar/${reqData._id}`,
+					url: `${url.persona}activar/${reqData._id}`,
 					headers: {
 						'token': this.$q.cookies.get('token')
 					}
 				})
 				.then(response => console.log(response))
-				.catch(error => console.log(error));
+				.catch((error) => console.log(error));
+
 		},
 
 		async desactivarPersona(reqData) {
 			await axios(
 				{
 					method: 'put',
-					url: `${URLPERSONAS}desactivar/${reqData._id}`,
+					url: `${url.persona}desactivar/${reqData._id}`,
 					headers: {
 						'token': this.$q.cookies.get('token')
 					}

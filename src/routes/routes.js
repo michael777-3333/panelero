@@ -7,7 +7,7 @@ import Usuario from '../components/modulos/mantenimiento/Usuario.vue'
 import Lotes from '../components/modulos/mantenimiento/Lotes.vue'
 // import HomeCostos from '../components/modulos/costos/HomeCostos.vue'
 import AdmCostos from '../components/modulos/costos/CostoAdmin.vue'
-import Personas from '../components/modulos/mantenimiento/Personas.vue' 
+import Personas from '../components/modulos/mantenimiento/Personas.vue'
 import Facturacion from '../components/modulos/facturacion/Facturacion.vue'
 import Pedidos from '../components/modulos/facturacion/Pedidos.vue'
 import Marcas from '../components/modulos/mantenimiento/Marcas.vue'
@@ -17,41 +17,46 @@ import Bodega from '../components/modulos/inventario/bodega.vue'
 import Finca from '../components/modulos/mantenimiento/Finca.vue'
 
 export const routes = [
-    { path:"/", component: Login },
-    { path:"/body", component: Body, children: [
-            { path:"home", component: Home},
+    { path: "/", component: Login },
+    {
+        path: "/body", component: Body, children: [
+            { path: "home", component: Home },
 
             {
-                path:"costos", children: [
+                path: "costos", children: [
                     // { path:"homeCostos", component: HomeCostos},
-                    { path:"costosModulos" , component: CostosModulos},
-                    { path:"adminCostos" , component: AdmCostos},
-                ]
-            },
-            {
-                path:"mantenimiento", children: [
-                    // { path:"homeMantenimiento", component: HomeMantenimiento},
-                    { path:"usuario", component: Usuario },
-                    { path:"lotes", component: Lotes},
-                    { path:"personas", component: Personas},
-                    { path: 'etapa', component: Etapa },
-                    {path: 'marcas', component:Marcas},
-                    {path: 'finca', component:Finca}
+                    { path: "costosModulos", component: CostosModulos },
+                    { path: "adminCostos", component: AdmCostos },
                 ]
             },
             
             {
-                path:"facturacion", children: [
-                    { path:"facturacionModulos", component: Facturacion},
-                    { path:"pedidosModulos", component: Pedidos},
+                path: "mantenimiento", children: [
+                    // { path:"homeMantenimiento", component: HomeMantenimiento},
+                    { path: "usuario", component: Usuario },
+                    { path: "lotes", component: Lotes },
+                    { path: "personas", component: Personas },
+                    { path: 'etapa', component: Etapa },
+                    { path: 'marcas', component: Marcas },
+                    { path: 'finca', component: Finca }
                 ]
             },
+
             {
-                path:"inventario", children:[
-                    // {path:"homeInventario",component:HomeInventario},
-                    {path:"bodega",component:Bodega},
+                path: "facturacion", children: [
+                    { path: "facturacion", component: Facturacion },
+                    { path: "pedidos", component: Pedidos },
+                ]
+            },
+
+            {
+                path: "inventario", children: [
+                    // { path: "homeInventario", component: HomeInventario },
+                    { path: "bodega", component: Bodega },
                 ]
             }
+
         ]
     }
+
 ]

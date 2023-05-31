@@ -5,7 +5,7 @@
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
 
-        <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
+        <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm ">
           <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
             card-class="bg-white text-black" table-class="text-black-8" table-header-class="text-green" flat bordered
             :visible-columns="visibleColumns" v-model:pagination="pagination">
@@ -61,7 +61,7 @@
       <!-- <q-card class="q-pa-lg bgColorEnfasis"> -->
         <q-card-section class="bgColorEnfasis">
           <!-- <h6 class="text-black">Pedidos</h6> -->
-          <span class="text-black text-h6">Pedidos</span>
+          <span class="text-black text-h6">Pedidos</span> 
           <!-- <div class="text-black">Pedidos</div> -->
 
           <q-btn @click="modalPedidos = !modalPedidos" class="bg-red text-white float-right" label="X" />

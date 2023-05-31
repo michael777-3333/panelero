@@ -96,7 +96,6 @@
        
                 <div class="col-5">
                   <div class="buton">
-                    
                     <q-input filled v-model="residenceAddress" class="input" label="direccion de residencia" :dense="dense" />
                   </div>
 
