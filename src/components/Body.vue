@@ -4,7 +4,7 @@
       <q-header elevated :class="$q.dark.isActive ? 'bg-secondary' : 'bg-black'">
         <q-toolbar class="header-body bgColorEnfasis">
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-          <q-toolbar-title>Paneleros</q-toolbar-title>
+          <q-toolbar-title style="font-size: 40px;">Paneleros</q-toolbar-title>
           <q-btn class="text-back" style="font-size: 14px; background: #ffffff6b; color: white;" @click="goLogin()" label="Salir" />
         </q-toolbar>
       </q-header>
@@ -86,7 +86,7 @@ function mostrarBotones(r /**string*/) {
     menuList.value = menuStore.menuListMantenimiento;
   } else if (r == "/body/facturacion/facturacionModulos") {
     menuList.value = menuStore.menuListFacturacion;
-  } else if (r == "/body/inventario/homeInventario") {
+  } else if (r == "/body/inventario/bodega") {
     menuList.value = menuStore.menuListInventario;
   } else if (r == "/body/home") {
     /** Este es para regresar */
@@ -97,4 +97,10 @@ function mostrarBotones(r /**string*/) {
 
 </script>
   
-<style scoped></style>
+<style scoped>
+.texto-menuList{
+  font-family: Comic Sans MS;
+  font-size: 1.2rem;
+  color: white;
+}
+</style>

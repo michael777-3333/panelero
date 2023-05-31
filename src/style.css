@@ -1,5 +1,7 @@
   /* login */
-
+  *{
+    font-family: Comic Sans MS;
+  }
   .fondo{
     /* opacity: 0.45; */
     position: fixed;

@@ -1,50 +1,47 @@
 <template>
     <div class="justify-center d-flex">
         <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4">
-                <div class="bgColorEnfasis borderTitle text-center">
-                    <h1 class="text-h6">Bodega</h1>
-                </div>
-            </div>
-            <div class="col-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6 text-center">
-                <div class="q-pa-md q-gutter-sm">
-                    <q-btn class="colorEnfasis" @click="alert = true" glossy label="Crear Pedidos" />
-                </div>
-                <div class="q-pa-md">
-                    <q-table title="Bodegas" :rows="rows" :columns="columns" row-key="id" no-data-label="No existen datos!"
-                        :visible-columns="visibleColumns">
-                        <template v-slot:body-cell-state="props">
-                            <td>
-                                <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0"
-                                    @click="editarEstado(props.row)" />
-                            </td>
-                        </template>
+            <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
+            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
+                <q-table title="Bodegas" :rows="rows" :columns="columns" row-key="id" no-data-label="No existen datos!"
+                    :visible-columns="visibleColumns">
 
-                        <template v-slot:body-cell-editar="props">
-                            <td>
-                                <q-btn class="botonEditar" @click="editarBodega(props.row)" glossy label="Editar" />
-                            </td>
+                    <template v-slot:top="props">
 
-                        </template>
-                    </q-table>
-                </div>
+                        <div class="col-6" align="left"><span style="font-size: 25px;">Bodega</span></div>
+                        <div class="col-6" align="right">
+                            <q-btn class="colorEnfasis" style="font-size: 14px; background: #ffffff6b; color: white;" @click="alert = true" glossy label="Crear Bodega" />
+
+                        </div>
+
+                    </template>
+
+                    <template v-slot:body-cell-state="props">
+                        <td>
+                            <q-checkbox v-model="props.row.state" :true-value="1" :false-value="0"
+                                @click="editarEstado(props.row)" />
+                        </td>
+                    </template>
+
+                    <template v-slot:body-cell-editar="props">
+                        <td>
+                            <q-btn class="botonEditar" @click="editarBodega(props.row)" glossy label="Editar" />
+                        </td>
+
+                    </template>
+                </q-table>
             </div>
-            <div class="col-3"></div>
+            <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
         </div>
         <q-dialog v-model="alert" persistent>
-            <q-card class="bgColorEnfasis">
-                <q-card-section>
-                    <span class="text-black text-h6">Bodegas</span>
-                    <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
+            <q-card class="dialogCard" style="width: 1000px ; height: 380px;">
+                <q-card-section class="cardBodegas">
+                    <div class="text-black text-h6">Bodegas</div>
+                    
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
-                    <q-card class="my-card d-flex">
+                    <q-card class="bodegasCard d-flex">
                         <q-card-section>
                             <div class="row">
                                 <div class="col-5">
@@ -66,6 +63,7 @@
                         <q-separator />
 
                         <q-card-actions align="center">
+                            <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
                             <q-btn @click="createBodega()" class="q-my-md colorEnfasis">crear Persona</q-btn>
                         </q-card-actions>
 
@@ -179,7 +177,7 @@ function editarBodega(info) {
     data.value = info
     name.value = data.value.name
     size.value = data.value.size
-    farm.value= data.value.farm
+    farm.value = data.value.farm
 }
 
 async function editarEstado(props) {

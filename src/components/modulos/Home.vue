@@ -1,11 +1,11 @@
 <template>
   <div>
-    <img src="../../assets/img/fondo.jpg" class="fondo">
+    <!-- <img src="../../assets/img/fondo.jpg" class="fondo"> -->
   </div>
   <div class="row">
 
 
-      <div class="card1 col-5 d-flex ">
+      <div class="card1Home col-5 d-flex ">
         <q-card class="cardHome">
           <router-link to="/body/costos/adminCostos">
             <q-img src="../../assets/img/fondo.jpg">
@@ -17,7 +17,7 @@
         </q-card>
       </div>
 
-      <div class="card2 col-5">
+      <div class="card2Home col-5">
         <q-card class="cardHome">
           <router-link to="/body/mantenimiento/Usuario">
             <q-img src="../../assets/img/fondo.jpg">
@@ -30,7 +30,7 @@
       </div>
 
 
-        <div class="card1 col-5">
+        <div class="card1Home col-5">
           <q-card class=" cardHome">
           <router-link to="/body/facturacion/PedidosModulos">
             <q-img src="../../assets/img/fondo.jpg">
@@ -42,7 +42,7 @@
         </q-card>
         </div>
         
-        <div class="card2 col-5">
+        <div class="card2Home col-5">
           <q-card class="cardHome">
           <router-link to="/body/inventario/Bodega">
             <q-img src="../../assets/img/fondo.jpg">
@@ -70,12 +70,12 @@
   height: 200px;
   margin: 10px;
 }
-.card1{  
+.card1Home{  
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.card2{
+.card2Home{
   display: flex;
   justify-content: end;
   align-items: center;

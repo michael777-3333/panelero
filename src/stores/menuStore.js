@@ -13,25 +13,25 @@ export const useMenuStore = defineStore("menu", {
         ruta: "/body/home",
       },
       {
-        icon: '\uF636', /**request_page */
+        icon: 'payments', /**request_page */
         text: 'Cotos',
         ruta: "/body/costos/costosModulos",
 
       },
       {
-        icon: "maintenance",
+        icon: "engineering",
         text: "Mantenimiento",
         ruta: "/body/mantenimiento/usuario",
       },
       {
-        icon: 'description', /**request_page */
+        icon: 'shopping_cart', /**request_page */
         text: 'Facturación',
         ruta: "/body/facturacion/pedidosModulos",
       },
       {
-        icon: 'description', /**request_page */
+        icon: 'inventory', /**request_page */
         text: 'inventario',
-        ruta: "/body/inventario/homeInventario",
+        ruta: "/body/inventario/bodega",
       }
 
     ],
@@ -53,7 +53,7 @@ export const useMenuStore = defineStore("menu", {
         ruta: "/body/costos/costosModulos",
       },
       {
-        icon: "image_not_supported",
+        icon: "payments",
         text: "Costos administrativos",
         ruta: "/body/costos/adminCostos",
       },
@@ -67,7 +67,7 @@ export const useMenuStore = defineStore("menu", {
         ruta: "/body/home",
       },
       {
-        icon: 'none',
+        icon: 'yard',
         text: 'Etapa',
         ruta: '/body/mantenimiento/etapa',
       },
@@ -77,27 +77,27 @@ export const useMenuStore = defineStore("menu", {
       //   ruta: "/body/mantenimiento/homeMantenimiento",
       // },
       {
-        icon: "image_not_supported",
+        icon: "group",
         text: "Usuarios",
         ruta: "/body/mantenimiento/usuario",
       },
       {
-        icon: "image_not_supported",
+        icon: "travel_explore",
         text: "Lotes",
         ruta: "/body/mantenimiento/lotes",
       },
       {
-        icon: "image_not_supported",
+        icon: "settings_accessibility",
         text: "Personas",
         ruta: "/body/mantenimiento/personas",
       },
       {
-        icon: "image_not_supported",
+        icon: "verified",
         text: "Marcas",
         ruta: "/body/mantenimiento/marcas",
       },
       {
-        icon: 'none',
+        icon: 'agriculture',
         text: 'Finca',
         ruta: '/body/mantenimiento/finca',
       },
@@ -127,11 +127,11 @@ export const useMenuStore = defineStore("menu", {
         text: "Regresar",
         ruta: "/body/home",
       },
-      {
-        icon: "description",
-        text: "home",
-        ruta: "/body/inventario/homeInventario",
-      },
+      // {
+      //   icon: "description",
+      //   text: "home",
+      //   ruta: "/body/inventario/homeInventario",
+      // },
       {
         icon: 'request_page',
         text: 'bodega',
