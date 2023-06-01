@@ -1,7 +1,7 @@
 // const HOST = 'http://192.168.1.8:3000/'
 // const HOST = 'http://localhost:3000/'
-// const HOST = 'https://proyecto-panelera.onrender.com/'
-const HOST = 'http://10.202.80.99:3000/'
+const HOST = 'https://proyecto-panelera.onrender.com/'
+// const HOST = 'http://10.202.80.99:3000/'
 
 // arreglar cambio de menu desde home
 
@@ -17,6 +17,8 @@ const url = {
     pedido: `${HOST}pedido/`,
     persona: `${HOST}persona/`,
     usuario: `${HOST}usuario/`,
+    inventario: `${HOST}inventario/`,
+    etapa: `${HOST}etapa/`,
 }
 
 export default url

@@ -8,30 +8,30 @@ export const useEtapaStore = defineStore("etapa", {
 		$q: useQuasar(),
 	}),
 	actions: {
-		async getPersonaEtapa() {
-			return await axios(
-				{
-					method: 'get',
-					url: url.persona,
-					headers:
-					{
-						'token': this.$q.cookies.get('token'),
-					}
-				})
-		},
-
-		async editPersonaEtapa(reqData) {
+		async addEtapa(reqData) {
 			await axios(
-				{
-					method: 'put',
-					url: `${url.persona}${reqData.id}`,
-					data: reqData,
-					headers: {
-						'token': this.$q.cookies.get('token'),
-					}
-				})
-				.then(response => console.log(response))
-				.catch((error) => console.log(error));
-		},
+			  {
+				method: "post",
+				url: url.etapa,
+	  
+				data: reqData,
+				headers: {
+				  'token': this.$q.cookies.get('token'),
+				}
+			  })
+			  // .then((res) => console.log(res))
+			  .catch((error) => console.log(error));
+		  },
+		  async getEtapa() {
+			return await axios(
+			  {
+				method: 'get',
+				url: url.etapa,
+				headers: {
+				  'token': this.$q.cookies.get('token'),
+				}
+			  })
+		  },
+
 	}
 })

@@ -32,8 +32,6 @@
                     </q-table>
                 </div>
                 <div class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
-                    <!-- <q-linear-progress dark query color="green" class="q-mt-sm" /> -->
-                    <!-- <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" /> -->
                 </div>
             </div>
         </div>
@@ -53,13 +51,13 @@
                                 <div class="col-1"></div>
                                 <div class="col-5 input">
                                     <div class="" style="width: 400px;">
-                                        <q-input filled v-model="name" label="Nombre"   />
+                                        <q-input filled v-model="name" label="Nombre"/>
                                     </div>
                                 </div>
                                 <div class="col-5 input">
 
                                     <div class="" style="width: 400px;">
-                                        <q-select filled v-model="model" label="Lotes" multiple :options="options" />
+                                        <q-select filled v-model="lotes" label="Lotes" multiple :options="ArrayLotes" />
 
                                     </div>
 
@@ -67,8 +65,6 @@
                             </div>
                         </q-card-section>
                     </q-card>
-
-
                     <q-card class="procesosCard d-flex">
                         <div style="color: black; text-align: center;" class="text-h6"> Datos para el proceso</div>
                         <q-card-section>
@@ -82,7 +78,7 @@
                                 <div class="col-5 input">
                                     <div class="" style="width: 400px;">
                                         <div class="q-gutter-md">
-                                            <q-select filled v-model="model" label="Personal" multiple :options="options" />
+                                            <q-select filled v-model="personas" label="Personal" multiple :options="arrayPersonas" />
                                         </div>
                                     </div>
 
@@ -93,15 +89,14 @@
                                 <div class="col-5 input">
                                     <div class="" style="width: 400px;">
 
-                                        <q-select filled v-model="inventory" label="Inventario" multiple
-                                            :options="options" />
+                                        <q-select filled v-model="inventario" label="Inventario" multiple :options="arrayInventario" />
 
                                     </div>
                                 </div>
 
                                 <div class="col-5 input">
                                     <div class="" style="width: 400px;">
-                                        <q-input filled v-model="state" label="Estado"   />
+                                        <q-input filled v-model="estado" label="Estado"   />
                                     </div>
                                 </div>
 
@@ -113,6 +108,7 @@
 
 
                 <q-card-actions align="right" class="bg-white text-teal">
+                    <q-btn  @click="createEtapa()"> </q-btn>
                     <q-btn flat label="OK" v-close-popup />
                 </q-card-actions>
             </q-card>
@@ -123,45 +119,131 @@
 <script setup>
 import { ref } from 'vue';
 import { usePersonasStore } from '../../../stores/personasStore.js'
-import { useUsuarioStore } from "../../../stores/usuarioStore";
+import { useUsuarioStore } from "../../../stores/usuarioStore.js";
+import {useInventarioStore} from "../../../stores/inventarioStore.js"
+import { useLoteStore } from "../../../stores/lotesStore";
+import {useEtapaStore} from '../../../stores/etapaStore.js'
+
 import { storeToRefs } from "pinia";
 import { useQuasar } from 'quasar'
 
+const storeEtapa=useEtapaStore()
 const store = usePersonasStore()
+const storeI= useInventarioStore()
+const storeE=useLoteStore()
 const storeUser = useUsuarioStore();
 const $q = useQuasar();
 const hasItToken = $q.cookies.has('token')
 
 
 let fullWidth = ref(false)
-let model = ref(null)
-let lotes = ref()
+let inventario = ref()
+let personas=ref()
+let lotes=ref()
+let estado=ref()
+let activity=ref()
+let rows = ref([]);
 
-let options = ref(['lote1', 'lote2', 'lote3', 'lote4'])
-
+let arrayPersonas = ref([])
+let arrayInventario=ref([])
+let ArrayLotes=ref([])
 function abrirModal() {
-    console.log(lotes.value);
-    console.log(options.value);
     fullWidth.value = true
 }
 
-async function ordenarPersona() {
+const columns = [
+  { name: "state", label: "Estado", align: "center" },
+  {
+    label: "Nombre",
+    align: "center",
+    field: (row) => row.name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+
+  { name: "inventario", align: "center", label: "inventario", field: "inventario" },
+  { name: "personas", align: "center", label: "personas", field: "personas" },
+  {
+    name: "lotes",
+    align: "center",
+    label: "lotes",
+    field: "lotes",
+  },
+  {
+    name: "estado",
+    align: "center",
+    label: "estado",
+    field: "estado",
+  },
+  {
+    name: "activity",
+    align: "center",
+    label: "activity",
+    field: "activity",
+  },
+  { name: "editar", align: "center", label: "editar" },
+];
+
+async function ordenarEtapas() {
+    const resI = await storeI.getInventario()
     const res = await store.getPersona()
+    const resE= await storeE.getLote()
+    const resEtapa=await storeEtapa.getEtapa()
     if (res.status == 200) {
         let dataP = res.data.personas
         for (let index = 0; index < dataP.length; index++) {
             console.log(dataP[index]['name']);
-            // const element = array[index];
-            
+            arrayPersonas.value.push(dataP[index]['name'])
         }
-        // console.log(res.data.personas);
+        let dataI=resI.data.inventario
+        for (let index = 0; index < dataI.length; index++) {
+            console.log(dataI[index]['name']);
+            arrayInventario.value.push(dataI[index]['name'])
+            console.log(arrayInventario.value); 
+        }
+        let dataE=resE.data.lotes
+        for (let index = 0; index < dataE.length; index++) {
+            console.log(dataE[index]['name']);
+            ArrayLotes.value.push(dataE[index]['name']);
+        }
+
+        rows.value=resEtapa.data.etapas
+
     } else if (res.status == 404) {
         console.log("No existen datos");
+
     } else {
         console.log(res.status);
     }
 }
-ordenarPersona()
+ordenarEtapas()
+
+async function createEtapa() {
+    console.log( inventario.value,personas.value,lotes.value, activity.value);
+    await storeEtapa.addEtapa({
+
+        
+        // inventario:inventario.value,
+        // personas:personas.value, 
+        // lotes:lotes.value,
+        // activity:activity.value,
+        // estado:estado.value
+        
+    name: "etapa 3",
+    allotment:"64758b6f6d98981af63d71fc",
+    process: [
+        {
+            workers: ["6475fcad3aef607c22467bfa"],
+            elements: ["6477c9e859545308d31062ce"],
+            state: 1,
+            activity: "nuevaa2",
+            stateActivity: "por 22",
+        }
+    ]
+
+    })
+    ordenarPersona()
+}
 
 
 

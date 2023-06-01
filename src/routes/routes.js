@@ -12,9 +12,11 @@ import Facturacion from '../components/modulos/facturacion/Facturacion.vue'
 import Pedidos from '../components/modulos/facturacion/Pedidos.vue'
 import Marcas from '../components/modulos/mantenimiento/Marcas.vue'
 import Etapa from '../components/modulos/mantenimiento/Etapa.vue'
-import Bodega from '../components/modulos/inventario/bodega.vue'
+import Bodega from '../components/modulos/inventario/Bodega.vue'
 // import HomeInventario from '../components/modulos/inventario/HomeInventario.vue'
 import Finca from '../components/modulos/mantenimiento/Finca.vue'
+import Inventario from '../components/modulos/inventario/Inventario.vue'
+
 
 export const routes = [
     { path: "/", component: Login },
@@ -53,6 +55,7 @@ export const routes = [
                 path: "inventario", children: [
                     // { path: "homeInventario", component: HomeInventario },
                     { path: "bodega", component: Bodega },
+                    {path: 'inventario', component: Inventario}
                 ]
             }
 

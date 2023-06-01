@@ -126,11 +126,11 @@ export const useMenuStore = defineStore("menu", {
         text: "Regresar",
         ruta: "/body/home",
       },
-      // {
-      //   icon: "description",
-      //   text: "home",
-      //   ruta: "/body/inventario/homeInventario",
-      // },
+      {
+        icon: "description",
+        text: "Inventario",
+        ruta: "/body/inventario/inventario",
+      },
       {
         icon: 'storefront',
         text: 'bodega',
