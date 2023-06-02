@@ -191,23 +191,26 @@ async function ordenarEtapas() {
     const resEtapa=await storeEtapa.getEtapa()
     if (res.status == 200) {
         let dataP = res.data.personas
+
+        
         for (let index = 0; index < dataP.length; index++) {
-            console.log(dataP[index]['name']);
+            // console.log(dataP[index]['name']);
             arrayPersonas.value.push(dataP[index]['name'])
         }
         let dataI=resI.data.inventario
         for (let index = 0; index < dataI.length; index++) {
-            console.log(dataI[index]['name']);
+            // console.log(dataI[index]['name']);
             arrayInventario.value.push(dataI[index]['name'])
-            console.log(arrayInventario.value); 
+            // console.log(arrayInventario.value); 
         }
         let dataE=resE.data.lotes
         for (let index = 0; index < dataE.length; index++) {
-            console.log(dataE[index]['name']);
+            // console.log(dataE[index]['name']);
             ArrayLotes.value.push(dataE[index]['name']);
         }
 
         rows.value=resEtapa.data.etapas
+        console.log(rows.value);
 
     } else if (res.status == 404) {
         console.log("No existen datos");
@@ -227,7 +230,7 @@ async function createEtapa() {
         // personas:personas.value, 
         // lotes:lotes.value,
         // activity:activity.value,
-        // estado:estado.value
+        // estado:estado.value,
         
     name: "etapa 3",
     allotment:"64758b6f6d98981af63d71fc",
@@ -242,7 +245,7 @@ async function createEtapa() {
     ]
 
     })
-    ordenarPersona()
+    ordenarEtapas()
 }
 
 
