@@ -40,6 +40,7 @@
       </q-page-container>
       <q-footer elevated >
         <q-toolbar class="bgColorEnfasis">
+          
           <q-toolbar-title>Proyecto Panelero MEAW ⚪</q-toolbar-title>
         </q-toolbar>
       </q-footer>
@@ -70,6 +71,7 @@ let drawer = ref(false);
 
 /** Menu, que es cargado al iniciar la pagina */
 let menuList = ref(menuStore.menuListHome); /** Traido desde Pinia */
+// alert(location.href);
 
 /** Cambiamos el menu según los datos que corresponden */
 function mostrarBotones(r /**string*/) {
@@ -78,7 +80,7 @@ function mostrarBotones(r /**string*/) {
     menuList.value = menuStore.menuListCostos;
   } else if (r == "/body/mantenimiento/usuario") {
     menuList.value = menuStore.menuListMantenimiento;
-  } else if (r == "/body/facturacion/pedidos") {
+  } else if (r == "/body/facturacion/pedidos" ) {
     menuList.value = menuStore.menuListFacturacion;
   } else if (r == "/body/inventario/bodega") {
     menuList.value = menuStore.menuListInventario;
@@ -89,11 +91,24 @@ function mostrarBotones(r /**string*/) {
 
 }
 
+function mostrarBotonesUrl() {
+  if (location.hash == "#/body/facturacion/pedidos" ) {
+    menuList.value = menuStore.menuListFacturacion;
+  } else if (location.hash == "#/body/facturacion/facturacion" ) {
+    menuList.value = menuStore.menuListFacturacion;
+  } else {
+  router.push("#/body/facturacion/");
+
+  }
+}
+
+mostrarBotonesUrl()
+
 </script>
   
 <style scoped>
 .texto-menuList{
-  font-family: Comic Sans MS;
+  /* font-family: Comic Sans MS; */
   font-size: 1.2rem;
   color: white;
 }

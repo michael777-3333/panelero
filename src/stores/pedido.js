@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import axios from "axios";
 import { useQuasar } from 'quasar';
+import axios from "axios";
 import url from "../stores/config.js";
 
 export const usePedidoStore = defineStore("pedido", {
@@ -37,14 +37,12 @@ export const usePedidoStore = defineStore("pedido", {
         .catch((error) => console.log(error));
     },
 
-    async editPedido({ id, orderStatus }) {
+    async editPedido(reqData) {
       await axios(
         {
           method: 'put',
-          url: `${url.pedido}${id}`,
-          data: {
-            orderStatus: orderStatus,
-          },
+          url: `${url.pedido}${reqData.id}`,
+          data: reqData,
           headers: {
             'token': this.$q.cookies.get('token'),
           }

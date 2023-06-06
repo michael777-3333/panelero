@@ -5,20 +5,22 @@
   "type": "module",
   "scripts": {
     "s": "vite --host --port 2222",
+    "start": "vite --host",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.3",
+    "@quasar/extras": "^1.16.4",
     "axios": "^1.3.6",
     "pinia": "^2.0.34",
-    "quasar": "^2.11.10",
+    "quasar": "^2.12.0",
+    "sweetalert2": "^11.7.10",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@quasar/vite-plugin": "^1.3.1",
+    "@quasar/vite-plugin": "^1.3.3",
     "@vitejs/plugin-vue": "^4.1.0",
     "sass": "^1.32.12",
     "vite": "^4.2.0"

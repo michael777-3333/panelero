@@ -4,7 +4,7 @@
             <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
                 <div class="q-ma-xs-md q-ma-lg-sm">
-                    <q-table class="paddingTabla" title="Lotes" :rows="rows" :columns="columns" row-key="name">
+                    <q-table class="paddingTabla" title="Lotes" :rows="rowsI" :columns="columns" row-key="name">
                         <template v-slot:top="props">
                             <div class="col-5" align="left"><span style="font-size: 25px;">Etapas</span></div>
                             <div class="col-5" align="right">
@@ -150,18 +150,19 @@ let ArrayLotes=ref([])
 function abrirModal() {
     fullWidth.value = true
 }
+let rowsI = ref([])
 
 const columns = [
   { name: "state", label: "Estado", align: "center" },
   {
     label: "Nombre",
     align: "center",
-    field: (row) => row.name,
+    // field: (rowsI) => rowsI.name,
     format: (val) => `${val}`,
     sortable: true,
   },
 
-  { name: "inventario", align: "center", label: "inventario", field: "inventario" },
+  { name: "inventario", align: "center", label: "inventario", field: "inventario", field: (rowsI) => rowsI.name, },
   { name: "personas", align: "center", label: "personas", field: "personas" },
   {
     name: "lotes",
@@ -183,7 +184,6 @@ const columns = [
   },
   { name: "editar", align: "center", label: "editar" },
 ];
-
 async function ordenarEtapas() {
     const resI = await storeI.getInventario()
     const res = await store.getPersona()
@@ -198,19 +198,23 @@ async function ordenarEtapas() {
             arrayPersonas.value.push(dataP[index]['name'])
         }
         let dataI=resI.data.inventario
+        rowsI.value = resI.data.inventario
+        console.log({a:rowsI.value});
         for (let index = 0; index < dataI.length; index++) {
             // console.log(dataI[index]['name']);
             arrayInventario.value.push(dataI[index]['name'])
             // console.log(arrayInventario.value); 
         }
+        // console.log(arrayInventario.value);
         let dataE=resE.data.lotes
         for (let index = 0; index < dataE.length; index++) {
             // console.log(dataE[index]['name']);
             ArrayLotes.value.push(dataE[index]['name']);
         }
 
-        rows.value=resEtapa.data.etapas
-        console.log(rows.value);
+        // rows.value=resEtapa.data.etapas
+        // console.log(rows.value);
+        console.log(resEtapa.data.etapas);
 
     } else if (res.status == 404) {
         console.log("No existen datos");

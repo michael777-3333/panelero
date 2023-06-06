@@ -5,7 +5,8 @@
           <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
           <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
-            <q-table class="paddingTabla" title="Lotes" :rows="rows" :columns="columns" row-key="name">
+            <q-table class="paddingTabla" title="Lotes" :rows="rows" :columns="columns" row-key="name" no-data-label="No existen datos!"
+                    :visible-columns="visibleColumns">>
   
   
               <template v-slot:top="props">
@@ -86,12 +87,20 @@
                     
                     <div class="col-5">
                       <div class="buton">
-                        <q-select filled v-model="mark" label="Bodega" multiple :options="arrayMarcas" />
+                        <q-select filled v-model="mark" label="Marca" multiple :options="arrayMarcas" />
   
                       </div>
                     </div>
                     <div class="col-1"></div>
+
+                    <div class="col-5">
+                      <div class="buton">
+                        <q-select filled v-model="category" label="Categoria" :options="arrayCatgoria" />
+  
+                      </div>
+                    </div>
                   </div>
+
                   
                   
                  
@@ -118,6 +127,8 @@
   import axios from "axios";
   import { useInventarioStore } from "../../../stores/inventarioStore.js";
   import { useUsuarioStore } from "../../../stores/usuarioStore";
+  import { useBodegaStore } from '../../../stores/BodegaStore.js';
+  import { useMarcasStore } from '../../../stores/marcasStore.js'
 
   import { storeToRefs } from "pinia";
   
@@ -125,7 +136,9 @@
   
   const store = useInventarioStore();
   const storeUser = useUsuarioStore();
+  const storeBodega = useBodegaStore()
 
+  const storeMarca = useMarcasStore()
   // const stateUser = storeToRefs(storeUser);
   const $q = useQuasar();
   const hasItToken = $q.cookies.has('token')
@@ -135,11 +148,15 @@
   let rows = ref([]);
   let quantity = ref("");
   let bodegas = ref("");
+  let arrayCatgoria=ref('Herramientas', 'Maquinaria', 'Insumos')
   let validarEditar = ref(true)
+  let category=ref("")
   let mark = ref("");
   let data = ref(null)
   let id = ref(null)
-  
+  let optionesBodegas=ref([])
+  let optionesMarcas=ref([])
+  let visibleColumns = ref(['state', 'nombre', 'bodegas', 'cantidad','categoria','marca', 'editar'])
   function vaciarModal() {
      quantity.value=''
       bodegas.value='' 
@@ -147,16 +164,33 @@
   }
   
   async function ordenarInventario() {
-    const res = await store.getInventario();
-    if (res.status == 200) {
-      rows.value = res.data.inventario;
-      console.log(rows.value);
-      console.log('ll');
-    } else if (res.status == 404) {
+    try{
+      let res={}
+      res.inventario= await store.getInventario();
+      res.bodegas=await storeBodega.getBodega()
+      res.marcas=await storeMarca.getMarcas()
+      optionesBodegas.value=res["bodegas"].data.bodegas.map((e)=>({
+        label: e.name,
+        value: e._id
+      }))
+
+      optionesMarcas.value=res["marcas"].data.marcas.map((i)=>({
+        label: i.name,
+        value: i._id
+      }))
+
+    if (res['inventario'].status == 200) {
+      rows.value = res['inventario'].data;
+      console.log(res['inventario'].data, ' s');
+    } else if (res['inventario'].status == 404) {
       console.log("No existen datos");
     } else {
-      console.log(res.status);
+      console.log(res.status); 
     }
+    }catch(error){
+      console.log("Error al obtener las peticiones ", error);
+    }
+    
   }
   ordenarInventario();
   
@@ -222,22 +256,36 @@
   const columns = [
     { name: "state", label: "Estado", align: "center" },
     {
-      label: "Nombre",
+      label: "nombre",
       align: "center",
       field: (row) => row.name,
       format: (val) => `${val}`,
       sortable: true,
     },
   
-    { name: "quantity", align: "center", label: "cantidad", field: "quantity" },
-    { name: "store", align: "center", label: "bodegas", field: "store" },
+    { name: "cantidad",
+      align: "center", 
+      label: "cantidad",
+      field: "quantity"
+     },
+
+    { name: "bodegas",
+      align: "center",
+      label: "bodegas", 
+      field: (row) => row.store, 
+      format: (val)=> `${val.name}`
+    },
     {
-      name: "mark",
+      name: "marca",
       align: "center",
       label: "marca",
-      field: "mark",
+      field: (row) => row.mark, 
+      format: (val)=> `${val.name}`
     },
-    { name: "editar", align: "center", label: "editar" },
+    { name: "estado",
+     align: "center", 
+     label: "editar" 
+    },
   ];
   
   function abrirModal() {

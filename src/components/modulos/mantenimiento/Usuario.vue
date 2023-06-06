@@ -189,9 +189,9 @@ function getRol(arrayRoles) {
 async function getUsers() {
 
   const res = await store.getUsuario()
-  console.log(res.data.usuarios);
+  console.log(res.data);
   if (res.status < 300) {
-    rows.value = res.data.usuarios
+    rows.value = res.data
     console.log(rows.value);
   } else if (res.response.status == 404) {
     console.log("No existen datos");

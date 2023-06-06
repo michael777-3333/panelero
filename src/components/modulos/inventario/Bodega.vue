@@ -89,12 +89,14 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useBodegaStore } from '../../../stores/BodegaStore.js'
+import { useBodegaStore } from '../../../stores/BodegaStore.js';
 import { useUsuarioStore } from "../../../stores/usuarioStore";
+import { usefincaStore } from '../../../stores/fincaStore.js';
 import { storeToRefs } from "pinia";
 import { useQuasar } from 'quasar'
 
 const store = useBodegaStore()
+const storeFinca=usefincaStore()
 const storeUser = useUsuarioStore()
 const $q = useQuasar();
 const hasItToken = $q.cookies.has('token')
@@ -107,6 +109,7 @@ let size = ref("");
 let farm = ref("");
 let visibleColumns = ref(['state', 'nombre', 'tamaño', 'finca', 'editar'])
 let _id = null;
+let optionsFinca=ref([])
 let rows = ref([]);
 
 const columns = [
@@ -120,22 +123,51 @@ const columns = [
     },
     { name: "nombre", align: "left", label: "nombre", field: "name", sortable: true, },
     { name: "tamaño", label: "tamaño", field: "size" },
-    { name: "finca", label: "finca", field: "farm" },
-    { name: "editar", align: "center", label: "Editar", field: "Editar" },
+    { name: "finca", label: "finca",
+    field: (row) => row.farm,
+    format: (val) => {
+        if (val) {
+            return val.name
+        } else {
+            return "nada"
+        }
+    },},
+    // { name: "editar", align: "center", label: "Editar", field: (row)=> row.farm, format: (val)=> `${val.name}` },
 ];
 
 
+
 async function ordenarBodega() {
-    const res = await store.getBodega()
-    if (res.status == 200) {
-        console.log(res.data);
-        rows.value = res.data.bodegas
+    try{
+        let res = {}
+        res.fincas = await storeFinca.getfinca()
+        res.bodegas = await store.getBodega()
+
+        optionsFinca.value = res.fincas.data.granjas.map((element)=>({
+            label:element.name,
+            value: element._id,
+            
+        }))
+        
+        // for (let index = 0; index < optionsFinca.value.length; index++) {
+            
+            
+        // }
+
+    if (res.bodegas.status == 200) {
+        console.log(res.bodegas.data);
+        rows.value = res.bodegas.data.bodegas
         console.log(rows.value);
-    } else if (res.status == 404) {
+        // console.log(optionsFinca.value, ' l');
+    } else if (res.bodegas.status == 404) {
         console.log("No existen datos");
     } else {
-        console.log(res.status);
+        console.log(res.bodegas.status);
+    }  
+    }catch(error){
+        console.log('Error al traer los datos', error);
     }
+    
 }
 ordenarBodega()
 

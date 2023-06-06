@@ -1,3 +1,4 @@
+<!-- no usar -->
 <template>
     <div>
         <h1>Soy Home inventario</h1>

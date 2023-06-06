@@ -16,9 +16,11 @@ import Bodega from '../components/modulos/inventario/Bodega.vue'
 // import HomeInventario from '../components/modulos/inventario/HomeInventario.vue'
 import Finca from '../components/modulos/mantenimiento/Finca.vue'
 import Inventario from '../components/modulos/inventario/Inventario.vue'
+import errorf from '../components/404.vue'
 
 
 export const routes = [
+    // TODO: Hacer que el login este en una ruta /login
     { path: "/", component: Login },
     {
         path: "/body", component: Body, children: [
@@ -60,6 +62,8 @@ export const routes = [
             }
 
         ]
-    }
+    },
+    // { patch: '/:catchAll(.*)*', component: errorf}
+    // { patch: '/:catchAll(.*)',  redirect: "/body",}
 
 ]

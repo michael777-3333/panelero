@@ -46,7 +46,7 @@
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
     </div>
 
-    <q-dialog class="fit" v-model="modalPedidosa">
+    <!-- <q-dialog class="fit" v-model="modalPedidosa">
       <div class="row" style="background-color: red;">
         <q-card class="my-card">
           <q-card-section>
@@ -54,7 +54,7 @@
           </q-card-section>
         </q-card>
       </div>
-    </q-dialog>
+    </q-dialog> -->
 
     <q-dialog v-model="modalPedidos" persistent full-width transition-show="slide-up" transition-hide="slide-down">
       <div  class="bgColorEnfasis card q-pa-lg ">
@@ -147,7 +147,8 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { usePedidoStore } from '../../../stores/pedidos.js'
+import { usePedidoStore, usePersonasStore } from "../../../stores/index.js";
+// import { usePedidoStore } from '../../../stores/pedidos.js'
 
 const store = usePedidoStore()
 
