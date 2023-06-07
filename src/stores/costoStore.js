@@ -1,45 +1,41 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from 'quasar';
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
-export const useCostoInvStores = defineStore("invecost", {
-    state: () => ({
-        $q: useQuasar(),
-    }),
+export const useCosto = defineStore("costo", {
+    state: () => ({ }),
 
     actions: {
 
         async addInvecost(reqData) {
-            await axios(
+            await instanceAxios(
                 {
                     method: 'post',
-                    url: url.invecost,
+                    url: url.costo,
                     data: reqData,
                     headers: {
-                        'token': this.$q.cookies.get('token')
+                        'token': token
                     }
                 })
                 // .then((res) => console.log(res))
                 .catch((error) => console.log(error));
         },
         async getInvecost() {
-            return await axios(
+            return await instanceAxios(
                 {
                     method: 'get',
-                    url: url.invecost,
+                    url: url.costo,
                     headers: {
-                        'token ': this.$q.cookies.get('token'),
+                        'token ': token,
                     }
                 })
         },
         async editInvecost(reqData) {
-            await axios({
+            await instanceAxios({
                 method: 'put',
-                url: `${url.invecost}${reqData.id}`,
+                url: `${url.costo}${reqData.id}`,
                 data: reqData,
                 headers: {
-                    'token': this.$q.cookies.get('token'),
+                    'token': token,
                 }
             })
                 // .then((res) => console.log(res))

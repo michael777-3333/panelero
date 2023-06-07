@@ -1,56 +1,52 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from 'quasar';
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
 export const useMarcasStore = defineStore("marca", {
-    state: () => ({
-        $q: useQuasar(),
-    }),
+    state: () => ({ }),
     actions: {
         async getMarcas() {
-            return await axios(
+            return await instanceAxios(
                 {
                     method: 'get',
                     url: url.marca,
                     headers: {
-                        'token': this.$q.cookies.get('token'),
+                        'token': token,
                     }
                 })
         },
         async addMarca(reqData) {
-            return await axios(
+            return await instanceAxios(
                 {
                     method: 'post',
                     url: url.marca,
 
                     data: reqData,
                     headers: {
-                        'token': this.$q.cookies.get('token')
+                        'token': token
                     }
                 })
                 // .then((res) => console.log(res))
                 .catch((error) => console.log(error));
         },
         async editMarca(reqData) {
-            await axios(
+            await instanceAxios(
                 {
                     method: 'put',
                     url: `${url.marca}${reqData.id}`,
                     data: reqData,
                     headers: {
-                        'token': this.$q.cookies.get('token'),
+                        'token': token,
                     }
                 })
                 .catch((error) => console.log(error));
         },
         async activarMarca(reqData) {
-            await axios(
+            await instanceAxios(
                 {
                     method: 'put',
                     url: `${url.marca}activar/${reqData._id}`,
                     headers: {
-                        'token': this.$q.cookies.get('token')
+                        'token': token
                     }
                 })
                 .then(response => console.log(response))
@@ -58,12 +54,12 @@ export const useMarcasStore = defineStore("marca", {
         },
 
         async desactivarMarca(reqData) {
-            await axios(
+            await instanceAxios(
                 {
                     method: 'put',
                     url: `${url.marca}desactivar/${reqData._id}`,
                     headers: {
-                        'token': this.$q.cookies.get('token')
+                        'token': token
                     }
                 })
                 .then(response => console.log(response))

@@ -297,17 +297,6 @@ const columns = [
     label: "fecha",
     field: "date",
   },
-  {
-    name: "nombre",
-    align: "center",
-    label: "nombre",
-    field: "name",
-  },
-  { 
-    name: "editar", 
-    align: "center", 
-    label: "editar" 
-  },
 ];
 
 function abrirModal() {

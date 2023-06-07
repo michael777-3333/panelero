@@ -1,12 +1,11 @@
 <template>
-  <!-- <div class="justify-center items-center d-flex absolute-full"> -->
-
+  <!-- DIV ROW CENTRAL -->
   <div class="row justify-center d-flex items-center h-2">
-
+    <!-- DIV COLS RESPPNSIVOS -->
     <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
 
     <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
-
+      <!-- SECCION SEGUNDA TABLA -->
       <div v-show="pedidosFormr" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Pedidos</span>
@@ -28,7 +27,7 @@
 
           <template v-slot:item="props">
             <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
-              :style="props.selected ? 'transform: scale(0.95);' : '' ">
+              :style="props.selected ? 'transform: scale(0.95);' : ''">
               <q-card bordered flat :class="props.selected ? ($q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2') : ''">
                 <q-card-section>
                   <q-checkbox dense v-model="props.selected" :label="props.row.element.name" />
@@ -50,7 +49,9 @@
 
         </q-table>
       </div>
+      <!-- SECCION SEGUNDA TABLA -->
 
+      <!-- SECCION FORMULARIO -->
       <div v-show="pedidosForm" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Pedidos</span>
@@ -59,6 +60,7 @@
           <!-- <span><br><br></span> -->
         </q-card-section>
 
+        <!-- FORMULARIO -->
         <q-card-section class="bgColorEnfasis q-pt-none">
           <q-card class="d-flex">
             <q-card-section>
@@ -137,8 +139,11 @@
             </q-btn>
           </div>
         </q-card-section>
+        <!-- FORMULARIO -->
       </div>
+      <!-- SECCION FORMULARIO -->
 
+      <!-- SECCION PRIMERA TABLA -->
       <div v-if="rows.length > 0" v-show="!pedidosForm && !pedidosFormr" transition-show="slide-up"
         transition-hide="slide-down" class="q-ma-xs-md q-ma-lg-sm animated zoomIn ">
         <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
@@ -176,16 +181,18 @@
           </template>
         </q-table>
       </div>
+      <!-- SECCION PRIMERA TABLA -->
+      <!-- ANIMACION DE CARGA -->
       <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
         <q-linear-progress dark query color="green" class="q-mt-sm" />
         <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
       </div>
-
+      <!-- ANIMACION DE CARGA -->
     </div>
     <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
+    <!-- DIV COLS RESPPNSIVOS -->
   </div>
-
-  <!-- </div> -->
+  <!-- DIV ROW CENTRAL -->
 </template>
 
 <script setup>
@@ -217,7 +224,7 @@ const pagination = ref({
 // const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
 // console.log(pagesNumber);
 let ids = {
-  order:"",
+  order_id:"",
   // customer:""
 }
 
@@ -342,7 +349,7 @@ function editOrder(ObjectOrder) {
   pedidosForm.value = !pedidosForm.value
   isAdd.value = false
   readonly.value = true
-  ids["order"] =         ObjectOrder._id
+  ids["order_id"] =         ObjectOrder._id
   cliente.value =        ObjectOrder.customer.name
   direccionEnvio.value = ObjectOrder.sendAddress
   estado.value =         ObjectOrder.orderStatus
@@ -353,7 +360,7 @@ function editOrder(ObjectOrder) {
 async function savedChanges() {
   if (ids) {
     await pedidoStore.editPedido({
-      id: ids["order"],
+      id: ids["order_id"],
       customer: cliente.value["value"],
       sendAddress: direccionEnvio.value,
       orderStatus: estado.value
@@ -384,24 +391,27 @@ async function activedOrder(id) {
 // });
 
 
-onBeforeMount(() => {
-  // getDataUsers();
-  // alert("onBeforeMount")
-  setTimeout(() => {
-    // btnState.value = false
-    getOrders();
-  }, 1000)
+// onBeforeMount(() => {
+//   // getDataUsers();
+//   // alert("onBeforeMount")
+//   setTimeout(() => {
+//     // btnState.value = false
+//     getOrders();
+//   }, 1000)
 
-});
+// });
 
 // https://vuejs.org/api/composition-api-lifecycle.html#onserverprefetch
 
-// onBeforeUnmount(() => {
-//   // getDataUsers();
-//   alert("onBeforeUnmount")
-//   // getOrders();
-
-// });
+onBeforeMount(() => {
+    // getDataUsers();
+    // alert("onBeforeMount")
+    setTimeout(() => {
+      // btnState.value = false
+      getOrders();
+    }, 1000)
+  
+  });
 
 function showDetailsOrder(ObjectOrder) {
   pedidosFormr.value = !pedidosFormr.value
@@ -413,14 +423,11 @@ function showDetailsOrder(ObjectOrder) {
 </script>
   
 <!-- /*_*/ -->
-<style scoped>
-.grid-style-transition{
+
+<!-- /*_*/ -->
+<style lang="sass" scoped>
+.grid-style-transition
   transition: transform .28s, background-color .28s
-}
-.botonEditar{
-  margin: 10px;
-}
-  
-
-
+botonEditar
+    margin: 10px
 </style>

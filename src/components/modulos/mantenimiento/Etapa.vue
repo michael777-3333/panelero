@@ -6,7 +6,8 @@
 
 
                 <div class="q-ma-xs-md q-ma-lg-sm">
-                    <q-table class="paddingTabla" title="Lotes" :rows="rowsI" :columns="columns" row-key="name">
+                    <q-table class="paddingTabla" title="Etapas" :rows="rows" :columns="columns" row-key="name"
+                    :visible-columns="visibleColumns">
                         <template v-slot:top="props">
                             <div class="col-5" align="left"><span style="font-size: 25px;">Etapas</span></div>
                             <div class="col-5" align="right">
@@ -52,7 +53,7 @@
                                 <div class="col-1"></div>
                                 <div class="col-5 input">
                                     <div class="" style="width: 400px;">
-                                        <q-input filled v-model="name" label="Nombre"/>
+                                        <q-input filled v-model="nombre" label="Nombre"/>
                                     </div>
                                 </div>
                                 <div class="col-5 input">
@@ -119,25 +120,28 @@
     
 <script setup>
 import { ref } from 'vue';
-import { usePersonasStore } from '../../../stores/personasStore.js'
-import { useUsuarioStore } from "../../../stores/usuarioStore.js";
-import {useInventarioStore} from "../../../stores/inventarioStore.js"
-import { useLoteStore } from "../../../stores/lotesStore";
-import {useEtapaStore} from '../../../stores/etapaStore.js'
+// import { usePersonasStore } from '../../../stores/personasStore.js'
+// import { useUsuarioStore } from "../../../stores/usuarioStore.js";
+// import {useInventarioStore} from "../../../stores/inventarioStore.js"
+// import { useLoteStore } from "../../../stores/lotesStore";
+// import {useEtapaStore} from '../../../stores/etapaStore.js'
+import { useUsuarioStore,useInventarioStore, useEtapaStore, useLoteStore, usePersonasStore } from "../../../stores/index.js";
 
-import { storeToRefs } from "pinia";
+
+// import { storeToRefs } from "pinia";
 import { useQuasar } from 'quasar'
 
 const storeEtapa=useEtapaStore()
-const store = usePersonasStore()
-const storeI= useInventarioStore()
-const storeE=useLoteStore()
+const storePersona = usePersonasStore()
+const storeInventario= useInventarioStore()
+const storeLotes=useLoteStore()
 const storeUser = useUsuarioStore();
 const $q = useQuasar();
 const hasItToken = $q.cookies.has('token')
 
 
 let fullWidth = ref(false)
+let nombre =ref('')
 let inventario = ref()
 let personas=ref()
 let lotes=ref()
@@ -151,78 +155,76 @@ let ArrayLotes=ref([])
 function abrirModal() {
     fullWidth.value = true
 }
-let rowsI = ref([])
+let visibleColumns =ref(['state', 'nombre','inventario', 'personas', 'lotes', 'estado', 'activity', 'editar' ])
 
 const columns = [
-  { name: "state", label: "Estado", align: "center" },
-  {
+{ 
+    name: "state",
+    label: "Estado",
+    align: "center" 
+},
+{
+    name:'nombre',
     label: "Nombre",
     align: "center",
-    // field: (rowsI) => rowsI.name,
-    format: (val) => `${val}`,
+    field: 'name',
     sortable: true,
-  },
+},
 
-  { name: "inventario", align: "center", label: "inventario", field: "inventario", field: (rowsI) => rowsI.name, },
-  { name: "personas", align: "center", label: "personas", field: "personas" },
-  {
+{ 
+    name: "inventario", 
+    align: "center",
+    label: "inventario", 
+    field: "inventario", 
+    field: (rows) => rows.name, 
+},
+{ 
+    name: "personas",
+    align: "center", 
+    label: "personas", 
+    field: "personas" 
+},
+{
     name: "lotes",
     align: "center",
     label: "lotes",
     field: "lotes",
-  },
-  {
+},
+{
     name: "estado",
     align: "center",
     label: "estado",
     field: "estado",
-  },
-  {
+},
+{
     name: "activity",
     align: "center",
     label: "activity",
     field: "activity",
-  },
+},
   { name: "editar", align: "center", label: "editar" },
 ];
 async function ordenarEtapas() {
-    const resI = await storeI.getInventario()
-    const res = await store.getPersona()
-    const resE= await storeE.getLote()
-    const resEtapa=await storeEtapa.getEtapa()
-    if (res.status == 200) {
-        let dataP = res.data.personas
+    try{
+        let res ={}
+        res.inventario = await storeInventario.getInventario();
+        res.personas = await storePersona.getPersona()
+        res.lotes= await storeLotes.getLote()
+        res.etapa=await storeEtapa.getEtapa()
+         
+        if (res['etapa'].status == 200) {
+            rows.value= res['etapa'].data.etapas
+            console.log(rows.value);
+        } else if (res['etapas'].status == 404) {
+            console.log("No existen datos");
 
-        
-        for (let index = 0; index < dataP.length; index++) {
-            // console.log(dataP[index]['name']);
-            arrayPersonas.value.push(dataP[index]['name'])
-        }
-        let dataI=resI.data.inventario
-        rowsI.value = resI.data.inventario
-        console.log({a:rowsI.value});
-        for (let index = 0; index < dataI.length; index++) {
-            // console.log(dataI[index]['name']);
-            arrayInventario.value.push(dataI[index]['name'])
-            // console.log(arrayInventario.value); 
-        }
-        // console.log(arrayInventario.value);
-        let dataE=resE.data.lotes
-        for (let index = 0; index < dataE.length; index++) {
-            // console.log(dataE[index]['name']);
-            ArrayLotes.value.push(dataE[index]['name']);
-        }
-
-        // rows.value=resEtapa.data.etapas
-        // console.log(rows.value);
-        console.log(resEtapa.data.etapas);
-
-    } else if (res.status == 404) {
-        console.log("No existen datos");
-
-    } else {
+        } else {
         console.log(res.status);
     }
+    }catch(error){
+        console.log("Error al obtener las peticiones ", error);
+    }
+    
 }
 ordenarEtapas()
 

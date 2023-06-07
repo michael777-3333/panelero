@@ -1,45 +1,41 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from 'quasar';
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
 export const useAdminCostStore = defineStore("admincost", {
-    state: () => ({
-        $q: useQuasar(),
-    }),
+    state: () => ({ }),
 
     actions: {
         async addAdmincost(reqData) {
-            await axios(
+            await instanceAxios(
                 {
                     method: 'post',
                     url: url.admincost,
                     data: reqData,
                     headers: {
-                        'token': this.$q.cookies.get('token')
+                        'token': token
                     }
                 })
                 // .then((res) => console.log(res))
                 .catch((error) => console.log(error));
         },
         async getAdmincost() {
-            return await axios(
+            return await instanceAxios(
                 {
                     method: 'get',
                     url: url.admincost,
                     headers: {
-                        'token ': this.$q.cookies.get('token'),
+                        'token ': token,
                     }
                 })
         },
         async editAdmincost(reqData) {
-            await axios(
+            await instanceAxios(
                 {
                     method: 'put',
                     url: `${url.admincost}${repData.id}`,
                     data: reqData,
                     headers: {
-                        'token': this.$q.cookies.get('token'),
+                        'token': token,
                     }
                 })
                 // .then((res) => console.log(res))

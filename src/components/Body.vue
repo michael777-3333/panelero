@@ -96,10 +96,11 @@ function mostrarBotonesUrl() {
     menuList.value = menuStore.menuListFacturacion;
   } else if (location.hash == "#/body/facturacion/facturacion" ) {
     menuList.value = menuStore.menuListFacturacion;
-  } else {
-  router.push("#/body/facturacion/");
+  } 
+  // else {
+  // router.push("#/body/facturacion/");
 
-  }
+  // }
 }
 
 mostrarBotonesUrl()

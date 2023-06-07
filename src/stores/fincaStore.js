@@ -1,47 +1,44 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from "quasar";
-import url from '../stores/config.js'
+import url, { instanceAxios, token}  from "../stores/config.js";
+
 
 export const usefincaStore = defineStore("finca", {
-  state: () => ({
-    $q: useQuasar(),
-  }),
+  state: () => ({ }),
 
   actions: {
     async addfinca(reqData) {
-      await axios(
+      await instanceAxios(
         {
           method: "post",
           url: url.finca,
 
           data: reqData,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
         // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
     async getfinca() {
-      return await axios(
+      return await instanceAxios(
         {
           method: 'get',
           url: url.finca,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
     },
 
     async editfinca(reqData) {
-      await axios(
+      await instanceAxios(
         {
           method: 'put',
           url: `${url.finca}${reqData.id}`,
           data: reqData,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
         // .then((res) => console.log(res))
@@ -49,12 +46,12 @@ export const usefincaStore = defineStore("finca", {
     },
 
     async activarfinca(props) {
-      await axios(
+      await instanceAxios(
         {
           method: 'put',
           url: `${url.finca}activar/${props._id}`,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
         .then(response => console.log(response))
@@ -62,12 +59,12 @@ export const usefincaStore = defineStore("finca", {
     },
 
     async desactivarfinca(props) {
-      await axios(
+      await instanceAxios(
         {
           method: 'put',
           url: `${url.finca}desactivar/${props._id}`,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
         .then(response => console.log(response))

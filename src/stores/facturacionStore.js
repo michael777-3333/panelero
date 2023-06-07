@@ -1,34 +1,29 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from 'quasar';
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
 export const useBillingStore = defineStore("pedido", {
-  state: () => ({
-    $q: useQuasar(),
-    // token: null,
-  }),
+  state: () => ({ }),
 
   actions: {
     async getBilling() {
-      return await axios(
+      return await instanceAxios(
         {
         method: 'get',
         url: url.facturacion,
         headers: {
-          'token': this.$q.cookies.get('token'),
+          'token': token,
         }
       })
     },
 
     async addBilling(reqData) {
-      await axios(
+      await instanceAxios(
         {
         method: 'post',
         url: url.facturacion,
         data: reqData,
         headers: {
-          'token': this.$q.cookies.get('token'),
+          'token': token,
         }
       })
         // .then((res) => console.log(res))
@@ -36,7 +31,7 @@ export const useBillingStore = defineStore("pedido", {
     },
 
     async editBilling({ id, orderStatus }) {
-      await axios(
+      await instanceAxios(
         {
         method: 'put',
         url: `${url.facturacion}${id}`,
@@ -44,7 +39,7 @@ export const useBillingStore = defineStore("pedido", {
           orderStatus: orderStatus,
         },
         headers: {
-          'token': this.$q.cookies.get('token'),
+          'token': token,
         }
       })
         // .then((res) => console.log(res))
@@ -52,12 +47,12 @@ export const useBillingStore = defineStore("pedido", {
     },
 
   async enabledBilling(id) {
-    await axios(
+    await instanceAxios(
       {
         method: 'put',
         url: `${url.facturacion}activar/${id}`,
         headers: {
-          'token': this.$q.cookies.get('token')
+          'token': token
         }
       })
       .then(response => console.log(response))
@@ -65,12 +60,12 @@ export const useBillingStore = defineStore("pedido", {
   },
 
   async disabledBilling(id) {
-    await axios(
+    await instanceAxios(
       {
         method: 'put',
         url: `${url.facturacion}desactivar/${id}`,
         headers: {
-          'token': this.$q.cookies.get('token')
+          'token': token
         }
       })
       .then(response => console.log(response))

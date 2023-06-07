@@ -140,10 +140,8 @@
   
 <script setup>
 import { ref } from "vue";
+import { useUsuarioStore, usePersonasStore } from "../../../stores/index.js";
 
-import { usePersonasStore } from '../../../stores/personasStore.js'
-import { useUsuarioStore } from "../../../stores/usuarioStore";
-import { storeToRefs } from "pinia";
 import { useQuasar } from 'quasar'
 
 const store = usePersonasStore()

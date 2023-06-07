@@ -1,58 +1,54 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from 'quasar';
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
 export const usePersonasStore = defineStore("persona", {
-	state: () => ({
-		$q: useQuasar(),
-	}),
+	state: () => ({ }),
 
 	actions: {
 		async getPersona() {
-			return await axios(
+			return await instanceAxios(
 				{
 					method: 'get',
 					url: url.persona,
 					headers:
 					{
-						'token': this.$q.cookies.get('token'),
+						'token': token,
 					}
 				})
 		},
 		async addPersona(reqData) {
-			await axios(
+			await instanceAxios(
 				{
 					method: 'post',
 					url: url.persona,
 					data: reqData,
 					headers: {
-						'token': this.$q.cookies.get('token'),
+						'token': token,
 					}
 				})
 				.catch((error) => console.log(error));
 
 		},
 		async editPersona(reqData) {
-			await axios(
+			await instanceAxios(
 				{
 					method: 'put',
 					url: `${url.persona}${reqData.id}`,
 					data: reqData,
 					headers: {
-						'token': this.$q.cookies.get('token'),
+						'token': token,
 					}
 				})
 				.then(response => console.log(response))
 				.catch((error) => console.log(error));
 		},
 		async activarPersona(reqData) {
-			await axios(
+			await instanceAxios(
 				{
 					method: 'put',
 					url: `${url.persona}activar/${reqData._id}`,
 					headers: {
-						'token': this.$q.cookies.get('token')
+						'token': token
 					}
 				})
 				.then(response => console.log(response))
@@ -61,12 +57,12 @@ export const usePersonasStore = defineStore("persona", {
 		},
 
 		async desactivarPersona(reqData) {
-			await axios(
+			await instanceAxios(
 				{
 					method: 'put',
 					url: `${url.persona}desactivar/${reqData._id}`,
 					headers: {
-						'token': this.$q.cookies.get('token')
+						'token': token
 					}
 				})
 				.then(response => console.log(response))

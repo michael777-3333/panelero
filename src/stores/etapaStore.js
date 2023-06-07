@@ -1,34 +1,30 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from 'quasar';
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
 export const useEtapaStore = defineStore("etapa", {
-	state: () => ({
-		$q: useQuasar(),
-	}),
+	state: () => ({ }),
 	actions: {
 		async addEtapa(reqData) {
-			await axios(
+			await instanceAxios(
 			  {
 				method: "post",
 				url: url.etapa,
 	  
 				data: reqData,
 				headers: {
-				  'token': this.$q.cookies.get('token'),
+				  'token': token,
 				}
 			  })
 			  // .then((res) => console.log(res))
 			  .catch((error) => console.log(error));
 		  },
 		  async getEtapa() {
-			return await axios(
+			return await instanceAxios(
 			  {
 				method: 'get',
 				url: url.etapa,
 				headers: {
-				  'token': this.$q.cookies.get('token'),
+				  'token': token,
 				}
 			  })
 		  },

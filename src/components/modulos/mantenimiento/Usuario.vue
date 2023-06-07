@@ -100,6 +100,7 @@
                 <!-- </q-card-section> -->
 
                 <q-separator />
+
                 <q-card-actions align="center">
                   <q-btn style="color: white;" class="q-my-md bg-green bgColorEnfasis">
                     <span v-if="isAdd == true" @click="createUser()">Crear Usuario</span>
@@ -125,7 +126,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useUsuarioStore } from '../../../stores/usuarioStore.js';
+import { useUsuarioStore } from "../../../stores/index.js";
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();

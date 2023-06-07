@@ -1,23 +1,37 @@
+import axios from 'axios';
+import { Cookies } from 'quasar'
+
+// outside of a Vue file
+const cookies = Cookies.getAll()
+export const token = cookies.token
+
 // const HOST = 'http://10.202.80.99:3000/'
-// const HOST = 'http://10.202.80.171:3000/'
+const HOST = 'http://10.202.80.171:3000/'
 // const HOST = 'http://192.168.1.6:3000/'
-const HOST = 'http://localhost:3000/'
+// const HOST = 'http://localhost:3000/'
 // const HOST = 'https://proyecto-panelera.onrender.com/'
 
 const url = {
-    admincost:     `${HOST}admincost/`,
-    autenticacion: `${HOST}auth/`,
-    bodega:        `${HOST}bodega/`,
-    etapa:         `${HOST}etapa/`,
-    facturacion:   `${HOST}facturacion/`,
-    finca:         `${HOST}granja/`,
-    invecost:      `${HOST}invecost/`,
-    inventario:    `${HOST}inventario/`,
-    lote:          `${HOST}lote/`,
-    marca:         `${HOST}marca/`,
-    pedido:        `${HOST}pedido/`,
-    persona:       `${HOST}persona/`,
-    usuario:       `${HOST}usuario/`,
+    autenticacion: 'auth/',
+    bodega:        'bodega/',
+    costo:         'costo/',
+    etapa:         'etapa/',
+    facturacion:   'facturacion/',
+    finca:         'granja/',
+    inventario:    'inventario/',
+    lote:          'lote/',
+    marca:         'marca/',
+    pedido:        'pedido/',
+    persona:       'persona/',
+    usuario:       'usuario/',
 }
+
+export const instanceAxios = axios.create({
+    baseURL: HOST,
+    // headers: {
+    //     "token": Cookies.get('token')
+    // }
+});
+
 
 export default url

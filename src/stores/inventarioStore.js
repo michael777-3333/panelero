@@ -1,47 +1,43 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { useQuasar } from 'quasar';
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
 export const useInventarioStore = defineStore("inventario", {
-    state: () => ({
-      $q: useQuasar(),
-    }),
+    state: () => ({ }),
   
     actions: {
   
       async addInventario(reqData) {
-        await axios(
+        await instanceAxios(
           {
             method: "post",
             url: url.inventario,
             data: reqData,
             headers: {
-              'token': this.$q.cookies.get('token'),
+              'token': token,
             }
           })
           // .then((res) => console.log(res))
           .catch((error) => console.log(error));
       },
       async getInventario() {
-        return await axios(
+        return await instanceAxios(
           {
             method: 'get',
             url: url.inventario,
             headers: {
-              'token': this.$q.cookies.get('token'),
+              'token': token,
             }
           })
       },
   
       async editInventario(reqData) {
-        await axios(
+        await instanceAxios(
           {
             method: 'put',
             url: `${url.inventario}${reqData.id}`,
             data: reqData,
             headers: {
-              'token': this.$q.cookies.get('token'),
+              'token': token,
             }
           })
           // .then((res) => console.log(res))
@@ -49,12 +45,12 @@ export const useInventarioStore = defineStore("inventario", {
       },
   
       async activarInventario(props) {
-        await axios(
+        await instanceAxios(
           {
             method: 'put',
             url: `${url.inventario}activar/${props._id}`,
             headers: {
-              'token': this.$q.cookies.get('token'),
+              'token': token,
             }
           })
           .then(response => console.log(response))
@@ -62,12 +58,12 @@ export const useInventarioStore = defineStore("inventario", {
       },
   
       async desactivarInventario(props) {
-        await axios(
+        await instanceAxios(
           {
             method: 'put',
             url: `${url.lote}desactivar/${props._id}`,
             headers: {
-              'token': this.$q.cookies.get('token'),
+              'token': token,
             }
           })
           .then(response => console.log(response))

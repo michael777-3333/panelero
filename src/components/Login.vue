@@ -14,7 +14,7 @@
         <q-input filled type="password" v-model="password" label="Ingrese su contraseña" class="card-input  q-mt-lg" />
 
         <div class="q-mt-lg">
-          <q-btn @click="showLoading()" label="INGRESAR" type="submit" :disable="btnState" class="bg-white text-black" />
+          <q-btn label="INGRESAR" type="submit" :disable="btnState" class="bg-white text-black" />
         </div>
       </q-form>
     </div>
@@ -33,9 +33,6 @@ const router = useRouter();
 const store = useUsuarioStore();
 const $q = useQuasar();
 
-let timer
-let ver = ref(false)
-let verd = ref(false)
 
 // onBeforeMount(() => {
 //   // getDataUsers();
@@ -48,7 +45,7 @@ let verd = ref(false)
 
 // });
 
-onMounted(() => {
+// onMounted(() => {
   // getDataUsers();
   // alert("onBeforeMount")
   // setTimeout(() => {
@@ -65,7 +62,7 @@ onMounted(() => {
 
   // }, 2000)
 
-});
+// });
 
 // onBeforeUnmount(() => {
 //       if (timer !== void 0) {
@@ -74,7 +71,7 @@ onMounted(() => {
 //       }
 //     });
 
-function showLoading() {
+// function showLoading() {
   // $q.loading.show({
   //   spinner: QSpinnerFacebook,
   //   spinnerColor: 'yellow',
@@ -92,10 +89,8 @@ function showLoading() {
 
   // }, 1000)
   // // }, 3000)
-}
+// }
 
-
-// const email = ref('andres@meaw.co');
 const email = ref('');
 email.value = 'edinson@meaw.co';
 const password = ref('1q2w.');
@@ -120,21 +115,22 @@ async function sesion() {
   if (isValid) {
 
     $q.loading.show({
-    spinner: QSpinnerFacebook,
-    spinnerColor: 'yellow',
-    spinnerSize: 140,
-    backgroundColor: 'purple',
-    message: 'Some important process is in progress. Hang on...',
-    messageColor: 'black'
-  })
+      spinner: QSpinnerFacebook,
+      spinnerColor: 'yellow',
+      spinnerSize: 140,
+      backgroundColor: 'black',
+      message: 'Some important process is in progress. Hang on...',
+      messageColor: 'black'
+    })
+
     const res = await store.login({
       email: email.value,
       password: password.value
     });
+
     $q.loading.hide()
 
     if (res.data) {
-      // falta hacer uso de cookies
       $q.cookies.set(
         'token',
         res.data.token,
@@ -147,16 +143,8 @@ async function sesion() {
       showAlert(msg)
 
     }
-
   }
-
-
-
 }
-
-
-
-
 </script>
 
 <style></style>

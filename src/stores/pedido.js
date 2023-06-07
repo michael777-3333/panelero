@@ -1,36 +1,31 @@
 import { defineStore } from "pinia";
-import { useQuasar } from 'quasar';
-import axios from "axios";
-import url from "../stores/config.js";
+import url, { instanceAxios, token}  from "../stores/config.js";
 
 export const usePedidoStore = defineStore("pedido", {
-  state: () => ({
-    $q: useQuasar(),
-  }),
+  state: () => ({ }),
 
   actions: {
-
     // getToken(tk) { this.token = tk },
 
     async getPedido() {
-      return await axios(
+      return await instanceAxios(
         {
           method: 'get',
           url: url.pedido,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
     },
 
     async addPedido(reqData) {
-      await axios(
+      await instanceAxios(
         {
           method: 'post',
           url: url.pedido,
           data: reqData,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
         // .then((res) => console.log(res))
@@ -38,13 +33,13 @@ export const usePedidoStore = defineStore("pedido", {
     },
 
     async editPedido(reqData) {
-      await axios(
+      await instanceAxios(
         {
           method: 'put',
           url: `${url.pedido}${reqData.id}`,
           data: reqData,
           headers: {
-            'token': this.$q.cookies.get('token'),
+            'token': token,
           }
         })
         // .then((res) => console.log(res))
@@ -52,12 +47,12 @@ export const usePedidoStore = defineStore("pedido", {
     },
 
     async enabledOrder(id) {
-      await axios(
+      await instanceAxios(
         {
           method: 'put',
           url: `${url.pedido}activar/${id}`,
           headers: {
-            'token': this.$q.cookies.get('token')
+            'token': token
           }
         })
         .then(response => console.log(response))
@@ -65,12 +60,12 @@ export const usePedidoStore = defineStore("pedido", {
     },
 
     async disabledOrder(id) {
-      await axios(
+      await instanceAxios(
         {
           method: 'put',
           url: `${url.pedido}desactivar/${id}`,
           headers: {
-            'token': this.$q.cookies.get('token')
+            'token': token
           }
         })
         .then(response => console.log(response))

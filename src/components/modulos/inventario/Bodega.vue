@@ -92,7 +92,6 @@ import { ref } from 'vue'
 import { useBodegaStore } from '../../../stores/BodegaStore.js';
 import { useUsuarioStore } from "../../../stores/usuarioStore";
 import { usefincaStore } from '../../../stores/fincaStore.js';
-import { storeToRefs } from "pinia";
 import { useQuasar } from 'quasar'
 
 const store = useBodegaStore()
@@ -149,13 +148,11 @@ async function ordenarBodega() {
             
         }))
         
-        // for (let index = 0; index < optionsFinca.value.length; index++) {
-            
-            
-        // }
+        console.log(optionsFinca.value)
+      
 
     if (res.bodegas.status == 200) {
-        console.log(res.bodegas.data);
+        console.log(res.bodegas.data.bodegas);
         rows.value = res.bodegas.data.bodegas
         console.log(rows.value);
         // console.log(optionsFinca.value, ' l');
@@ -169,7 +166,10 @@ async function ordenarBodega() {
     }
     
 }
+
 ordenarBodega()
+
+// console.log(store.getBodega())
 
 async function createBodega() {
     if (name.value == '') {
