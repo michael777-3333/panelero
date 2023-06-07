@@ -80,14 +80,16 @@
                     <div class="col-1"></div>
                     <div class="col-5">
                       <div class="buton">
-                        <q-select filled v-model="bodegas" label="Bodega" multiple :options="arrayBodegas" />
+                        <q-select filled v-model="bodegas" label="Bodegas" :options="optionesBodegas" stack-label
+                                  :dense="dense" :options-dense="denseOpts" />
            
                       </div>
                     </div>
                     
                     <div class="col-5">
                       <div class="buton">
-                        <q-select filled v-model="mark" label="Marca" multiple :options="arrayMarcas" />
+                        <q-select filled v-model="mark" label="Marca" :options="optionesMarcas" stack-label
+                    :dense="dense" :options-dense="denseOpts" />
   
                       </div>
                     </div>
@@ -95,7 +97,8 @@
 
                     <div class="col-5">
                       <div class="buton">
-                        <q-select filled v-model="category" label="Categoria" :options="arrayCatgoria" />
+                        <q-select filled v-model="category" label="Categoria" :options="optionCategorias" stack-label
+                    :dense="dense" :options-dense="denseOpts"  />
   
                       </div>
                     </div>
@@ -148,12 +151,14 @@
   let rows = ref([]);
   let quantity = ref("");
   let bodegas = ref("");
-  let arrayCatgoria=ref('Herramientas', 'Maquinaria', 'Insumos')
+  let optionCategorias=ref(['Herramientas', 'Maquinaria', 'Insumos'])
   let validarEditar = ref(true)
   let category=ref("")
   let mark = ref("");
   let data = ref(null)
   let id = ref(null)
+
+
   let optionesBodegas=ref([])
   let optionesMarcas=ref([])
   let visibleColumns = ref(['state', 'nombre', 'bodegas', 'cantidad','categoria','marca', 'editar'])
@@ -161,6 +166,7 @@
      quantity.value=''
       bodegas.value='' 
       name.value=''
+      category.value=''
   }
   
   async function ordenarInventario() {
@@ -181,7 +187,7 @@
 
     if (res['inventario'].status == 200) {
       rows.value = res['inventario'].data;
-      console.log(res['inventario'].data, ' s');
+      // console.log(res['inventario'].data, ' s');
     } else if (res['inventario'].status == 404) {
       console.log("No existen datos");
     } else {
@@ -214,12 +220,17 @@
     } else if (bodegas.value == "") {
       $q.notify({
         type: "negative",
-        message: "digite el dueño ",
+        message: "digite la bodega ",
       });
     }
     else if (validarEditar.value == true) {
-      await store.addLote({
-        quantity: quantity.value, bodegas: bodegas.value, name: name.value, mark:mark.value
+      console.log( bodegas.value["value"],  quantity.value, name.value, mark.value["value"], category.value, ' dd');
+      await store.addInventario({
+        quantity: quantity.value,
+        bodegas: bodegas.value["value"], 
+        name: name.value,
+        category: category.value,
+        mark:mark.value["value"]
       });
       ordenarInventario();
       console.log(rows.value);
@@ -281,6 +292,13 @@
       label: "marca",
       field: (row) => row.mark, 
       format: (val)=> `${val.name}`
+    },
+    {
+      name: "categoria",
+      align: "center",
+      label: "categoria",
+      field: "category", 
+      
     },
     { name: "estado",
      align: "center", 

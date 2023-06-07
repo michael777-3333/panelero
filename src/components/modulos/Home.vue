@@ -3,7 +3,7 @@
     <!-- <img src="../../assets/img/fondo.jpg" class="fondo"> -->
   </div>
   <div class="row" style="height: 800px;">
-    <div class="cardHome1 col-xs-auto col-sm-6 col-lg-4 ">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
         <router-link to="/body/costos/adminCostos">
           <q-img src="../../assets/img/costo.png">
@@ -28,7 +28,7 @@
     </div>
 
 
-    <div class="cardHome1 col-xs-auto col-sm-6 col-lg-4 ">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
         <router-link to="/body/facturacion/Pedidos">
           <q-img src="../../assets/img/facturacion.png">
@@ -90,8 +90,8 @@
 
 <style scoped >
 .cardHome {
-  width: 300px;
-  height: 200px;
+  width: 400px;
+  height: 150px;
   margin: 10px;
 }
 
@@ -108,12 +108,12 @@
   align-items: center;
 }
 
-@media(max-width: 590px) {
+/* @media(max-width: 590px) {
   .cardHome1 {
     display: flex;
     justify-content: end;
   }
-}
+} */
 </style>  
   
     

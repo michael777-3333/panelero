@@ -3,9 +3,9 @@
 
   <div class="row justify-center d-flex items-center h-2">
 
-    <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
+    <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
 
-    <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
 
       <div v-show="pedidosFormr" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
         <q-card-section class="bgColorEnfasis">
@@ -28,7 +28,7 @@
 
           <template v-slot:item="props">
             <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
-              :style="props.selected ? 'transform: scale(0.95);' : ''">
+              :style="props.selected ? 'transform: scale(0.95);' : '' ">
               <q-card bordered flat :class="props.selected ? ($q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2') : ''">
                 <q-card-section>
                   <q-checkbox dense v-model="props.selected" :label="props.row.element.name" />
@@ -182,7 +182,7 @@
       </div>
 
     </div>
-    <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
+    <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
   </div>
 
   <!-- </div> -->

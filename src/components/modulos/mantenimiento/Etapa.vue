@@ -3,6 +3,8 @@
         <div class="row">
             <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
+
+
                 <div class="q-ma-xs-md q-ma-lg-sm">
                     <q-table class="paddingTabla" title="Lotes" :rows="rowsI" :columns="columns" row-key="name">
                         <template v-slot:top="props">
@@ -12,15 +14,12 @@
                                     @click="abrirModal()" glossy label="Crear Etapa" />
                             </div>
                         </template>
-
-
                         <template v-slot:body-cell-state="props">
                             <td>
                                 <q-checkbox v-model="props.row.state" color="green" :true-value="1" :false-value="0"
                                     @click="editarEstado(props.row)" />
                             </td>
                         </template>
-
                         <template v-slot:body-cell-editar="props">
                             <td>
                                 <q-btn class="botonEditar" style="background-color:#029127 ;" @click="loteEditar(props.row)"
@@ -31,6 +30,8 @@
                         </template>
                     </q-table>
                 </div>
+
+
                 <div class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
                 </div>
             </div>
