@@ -5,7 +5,61 @@
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
 
-        <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm">
+              <!-- SECCION FORMULARIO -->
+      <div v-show="modalUser" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
+        <q-card-section class="bgColorEnfasis">
+          <span class="text-black text-h6">{{ labelDialog }}</span>
+
+          <q-btn @click="modalUser = !modalUser" class="bg-red text-white float-right" label="X" />
+          <!-- <span><br><br></span> -->
+        </q-card-section>
+
+        <!-- FORMULARIO -->
+        <q-card-section class="bgColorEnfasis q-pt-none">
+          <q-card class="d-flex">
+            <q-card-section>
+              <div class="row">
+                <!-- <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                    <q-input v-model="cliente" label="Cliente" :dense="dense" :readonly="readonly" />
+                  </div> -->
+                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                  <q-select filled v-model="roles" :options="tipoUsuario" label="tipo de usuario" stack-label
+                    :dense="dense" :options-dense="denseOpts" />
+                  <!-- <q-input v-model="" label="Estado del pedido" /> -->
+                </div>
+
+                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                  <q-input v-model="email" label="Correo" :readonly="readonly" />
+                </div>
+
+                <div v-show="isAdd" class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                  <q-input v-model="password" label="Contraseña" :readonly="readonly" />
+                </div>
+
+
+              </div>
+            </q-card-section>
+            <q-separator />
+
+
+
+          </q-card>
+          <!-- </q-card-section>
+          <q-card-section> -->
+          <div align="right" class="q-mt-md">
+            <q-btn @click="modalUser = !modalUser" class="bg-red text-white q-mx-sm" label="Cerrar" />
+
+            <q-btn class="bg-white">
+              <span v-if="isAdd == true" @click="createUser()">Crear Pedido</span>
+              <span v-else @click="modifyUser()">Modificar Pedido</span>
+            </q-btn>
+          </div>
+        </q-card-section>
+        <!-- FORMULARIO -->
+      </div>
+      <!-- SECCION FORMULARIO -->
+
+        <div v-if="rows.length > 0" v-show="!modalUser" class="q-ma-xs-md q-ma-lg-sm">
           <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen usuarios!"
             :visible-columns="visibleColumns">
             <template v-slot:top="props">
@@ -47,74 +101,6 @@
 
 
     <!--dialog-->
-    <q-dialog style="display: flex;"  :maximized="true" v-model="modalUser"  persistent>
-      <!-- <div class="row"> -->
-        
-      <div class="asdf">
-          <q-card style="height: 100%;" >
-            <q-card-section class="card">
-              <div class="text-h6">{{ labelDialog }}</div>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              <!-- <q-card class="card1 d-flex"> -->
-
-                <!-- <q-card-section> -->
-                  <div class="row">
-                    <div class="col-1"></div>
-
-                    <div class="col-10">
-                      <div class="boton">
-                        <q-select outlined v-model="roles" class="input"  :options="tipoUsuario" label="tipo de usuario" />
-                      </div>
-                    </div>
-                  
-                  <div class="col-1"></div>
-                    <div class="col-1"></div>
-                    <div  v-show="validarCrear == true" class="col-5">
-                      <div class="boton">
-                        <q-input filled v-model="email" class="input"  label="Correo" :dense="dense" />
-                      </div>
-                    </div>
-                      <div v-show="validarCrear == true" class="col-5">
-                        <div class="boton">
-
-                          <q-input filled v-model="password" class="input" label="contraseña" :dense="dense" />
-                        </div>
-                        </div>
-
-                      <div  v-show="validarCrear == false" class="col-12">
-                        <div class="boton">
-                        <q-input filled v-model="email" class="input" label="Correo" :dense="dense" />
-                      </div>
-                      </div>
-                    
-                  </div>
-                    
-                  
-                <!-- </q-card-section> -->
-
-                <q-separator />
-
-                <q-card-actions align="center">
-                  <q-btn style="color: white;" class="q-my-md bg-green bgColorEnfasis">
-                    <span v-if="isAdd == true" @click="createUser()">Crear Usuario</span>
-                    <span v-else @click="modifyUser()">Modificar Usuario</span>
-
-                  </q-btn>
-                  <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
-
-                </q-card-actions>
-                
-
-              <!-- </q-card> -->
-            </q-card-section>
-          </q-card>
-        <!-- </div> -->
-      </div>
-      
-
-    </q-dialog>
   </div>
 </template>
 
@@ -123,6 +109,7 @@
 import { ref } from 'vue';
 import { useUsuarioStore } from "../../../stores/index.js";
 import { useQuasar } from 'quasar';
+import { showAlert } from '../../../modules/sweetalert.js';
 
 const $q = useQuasar();
 const store = useUsuarioStore();
@@ -158,7 +145,7 @@ const columns = [
 let labelDialog = ref('Crear usuario');
 
 function getRol(arrayRoles) {
-  let rol = '-'
+  let rol = ['-']
   let _roles = []
 
   if (arrayRoles.length > 0) {
@@ -168,11 +155,11 @@ function getRol(arrayRoles) {
     }
 
     if (_roles.includes('admin')) {
-      rol = 'admin'
+      rol[0] = 'admin'
     } else if (_roles.includes('moderator')) {
-      rol = 'moderator'
+      rol[0] = 'moderator'
     } else if (_roles.includes('user')) {
-      rol = 'user'
+      rol[0] = 'user'
     }
   }
 
@@ -223,30 +210,18 @@ function addUser() {
 }
 
 function validations() {
-  function showMessage(msg) {
-    $q.notify({
-      type: 'negative',
-      message: msg
-    })
-  }
 
   if (roles.value == '') {
-    showMessage('Seleccione le tipo de usuario')
+    showAlert('Seleccione el tipo de usuario')
   } else if (email.value == '') {
-    showMessage('Digite el email')
+    showAlert('Digite el email')
   }
   else if (password.value == '' && isAdd.value) {
-    showMessage('Digite la contraseña')
+    showAlert('Digite la contraseña')
   }
   else { return true }
 }
 
-function showDoneMessage(msg) {
-  $q.notify({
-    type: 'positive',
-    message: msg
-  })
-}
 
 //crear usuario en la base de datos
 async function createUser() {
@@ -258,8 +233,8 @@ async function createUser() {
       roles: roles.value,
     });
 
-    if (res.status == 200) {
-      showDoneMessage(res.data.msj)
+    if (res.status == 201) {
+      showAlert(res.data.msj, 'success')
     }
     closeModal()
   }
@@ -279,10 +254,12 @@ async function editUser(data) {
 async function modifyUser() {
   if (validations() && !isAdd.value && id != null) {
     // fctn de la peticion para editar usuario
+    // console.log(roles.value);
+
     const res = await store.putUsuario({
       id: id,
       email: email.value,
-      roles: roles.value
+      roles: [roles.value]
     });
 
     if (res.status == 200) {

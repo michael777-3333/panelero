@@ -197,7 +197,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount} from "vue";
-import { usePedidoStore, usePersonasStore } from "../../../stores/index.js";
+import { usePedidoStore, usePersonasStore, useInventarioStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
 // import { usePedidoStore } from '../../../stores/pedidos.js'
 // import { usePersonasStore } from '../../../stores/personasStore'

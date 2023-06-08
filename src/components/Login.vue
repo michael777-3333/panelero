@@ -119,8 +119,8 @@ async function sesion() {
       spinnerColor: 'yellow',
       spinnerSize: 140,
       backgroundColor: 'black',
-      message: 'Some important process is in progress. Hang on...',
-      messageColor: 'black'
+      message: 'Cargando, Por favor espere...',
+      messageColor: 'White'
     })
 
     const res = await store.login({

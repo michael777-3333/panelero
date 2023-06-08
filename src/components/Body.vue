@@ -67,7 +67,7 @@ if(!$q.cookies.get("token")){
 
 function goLogin() {
   $q.cookies.remove("token");
-  router.push("/");
+  router.replace("/");
 }
 
 let drawer = ref(false);
@@ -96,7 +96,7 @@ let menuList = ref([
   {
     icon: 'receipt_long', /**shopping_cart */
     text: 'Facturación',
-    ruta: "/body/facturacion/facturacion",
+    ruta: "/body/facturacion/pedido",
   },
       
   {
@@ -114,6 +114,7 @@ function mostrarBotones(r /**string*/) {
   // if (r == "/body/costos/costosModulos") {
   //   menuList.value = menuStore.menuListCostos;
   // } else 
+  console.log(r)
   if (r == "/body/mantenimiento/usuario") {
     menuList.value = [
       {
@@ -283,7 +284,7 @@ function mostrarBotonesUrl() {
   // }
 }
 
-mostrarBotonesUrl()
+// mostrarBotonesUrl()
 
 </script>
   

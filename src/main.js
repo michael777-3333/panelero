@@ -25,14 +25,14 @@ import './style.css';
 import App from './App.vue';
 
 // A few examples for animations from Animate.css:
-import '@quasar/extras/animate/fadeIn.css'
-import '@quasar/extras/animate/fadeOut.css'
-import '@quasar/extras/animate/slideInDown.css'
-import '@quasar/extras/animate/slideInUp.css'
-import '@quasar/extras/animate/flipInX.css'
-import '@quasar/extras/animate/zoomIn.css'
 import '@quasar/extras/animate/bounceIn.css'
 import '@quasar/extras/animate/bounceOut.css'
+import '@quasar/extras/animate/fadeIn.css'
+import '@quasar/extras/animate/fadeOut.css'
+import '@quasar/extras/animate/flipInX.css'
+import '@quasar/extras/animate/slideInDown.css'
+import '@quasar/extras/animate/slideInUp.css'
+import '@quasar/extras/animate/zoomIn.css'
 
 const router = createRouter({
   history: createWebHashHistory(),
