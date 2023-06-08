@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-center items-center d-flex">
+  <div class="justify-center d-flex">
     <!--tabla-->
     <div class="row">
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
@@ -62,13 +62,8 @@
                 <!-- <q-card-section> -->
                   <div class="row">
                     <div class="col-1"></div>
-                    <div class="col-5">
-                      <div class="boton">
-                        <q-input filled v-model="name" class="input" label="Nombre" :dense="dense" />
-                      </div>
-                    </div>
 
-                    <div class="col-5">
+                    <div class="col-10">
                       <div class="boton">
                         <q-select outlined v-model="roles" class="input"  :options="tipoUsuario" label="tipo de usuario" />
                       </div>
@@ -132,7 +127,6 @@ import { useQuasar } from 'quasar';
 const $q = useQuasar();
 const store = useUsuarioStore();
 
-let name = ref('');
 let email = ref('');
 let password = ref('');
 let roles = ref('');
@@ -143,7 +137,7 @@ let id = null;
 let isAdd = ref(true);
 let modalUser = ref(false);
 let rows = ref([]);
-let visibleColumns = ref(['state', 'nombre', 'email', 'roles', 'editar'])
+let visibleColumns = ref(['state', 'email', 'roles', 'editar'])
 const columns = [
   {
     name: "id",
@@ -152,7 +146,6 @@ const columns = [
     format: (val) => `${val}`,
   },
   { name: 'state', label: 'Estado', field: "state", align: "left", sortable: true, },
-  { name: 'nombre', align: 'center', label: 'Nombre', field: 'name', sortable: true, },
   { name: 'email', align: 'center', label: 'Email', field: 'email' },
   {
     name: 'roles', align: 'center', label: 'Rol',
@@ -160,7 +153,6 @@ const columns = [
     format: (val) => getRol(val)
   },
   { name: 'editar', align: 'center', label: 'Opciones' },
-
 ]
 
 let labelDialog = ref('Crear usuario');
@@ -205,7 +197,7 @@ getUsers();
 
 function closeModal() { // Cierro el modal
   function limpiarCajas() { // Vacio los formularios
-    name.value = email.value = roles.value = password.value = ''
+    email.value = roles.value = password.value = ''
   }
   id = null
   getUsers(); // Actualizo la tabla
@@ -238,9 +230,7 @@ function validations() {
     })
   }
 
-  if (name.value == '') {
-    showMessage('digite el nombre')
-  } else if (roles.value == '') {
+  if (roles.value == '') {
     showMessage('Seleccione le tipo de usuario')
   } else if (email.value == '') {
     showMessage('Digite el email')
@@ -263,7 +253,6 @@ async function createUser() {
   if (validations() && isAdd.value) {
     // fctn de la peticion para crear usuario
     const res = await store.addUsuario({
-      name: name.value,
       email: email.value,
       password: password.value,
       roles: roles.value,
@@ -282,7 +271,6 @@ async function editUser(data) {
   id = data._id
   validarCrear=false
   // Traigo los datos a las cajas de textos
-  name.value = data.name
   email.value = data.email
   password.value = ''
   roles.value = getRol(data.roles)
@@ -293,9 +281,7 @@ async function modifyUser() {
     // fctn de la peticion para editar usuario
     const res = await store.putUsuario({
       id: id,
-      name: name.value,
       email: email.value,
-      // password: password.value,
       roles: roles.value
     });
 
@@ -313,7 +299,7 @@ function cerrarModal() {
 
 </script>
 
-<style>
+<style scope>
 .boton {
   border-radius: 50px;
   margin: 3px 3px;

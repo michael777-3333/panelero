@@ -5,7 +5,7 @@
   <div class="row" style="height: 800px;">
     <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
-        <router-link to="/body/costos/adminCostos">
+        <router-link to="/body/home">
           <q-img src="../../assets/img/costo.png">
             <div class="absolute-bottom text-subtitle2 text-center">
               COSTO
@@ -17,7 +17,7 @@
 
     <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
-        <router-link to="/body/mantenimiento/Usuario">
+        <router-link to="/body/mantenimiento/usuario">
           <q-img src="../../assets/img/mantenimiento.png">
             <div class="absolute-bottom text-subtitle2 text-center">
               MANTENIMIENTO
@@ -30,7 +30,7 @@
 
     <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
-        <router-link to="/body/facturacion/Pedidos">
+        <router-link to="/body/facturacion/facturacion">
           <q-img src="../../assets/img/facturacion.png">
             <div class="absolute-bottom text-subtitle2 text-center">
               FACTURACION
@@ -42,7 +42,7 @@
     
     <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
-        <router-link to="/body/inventario/Bodega">
+        <router-link to="/body/home">
           <q-img src="../../assets/img/trasformacion.png">
             <div class="absolute-bottom text-subtitle2 text-center">
               TRANSFORMACION
@@ -54,7 +54,7 @@
 
     <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
-        <router-link to="/body/inventario/Bodega">
+        <router-link to="/body/home">
           <q-img src="../../assets/img/estadistica.png">
             <div class="absolute-bottom text-subtitle2 text-center">
               ESTADISTICAS
@@ -66,7 +66,7 @@
 
     <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
       <q-card class="cardHome">
-        <router-link to="/body/inventario/Bodega">
+        <router-link to="/body/inventario/inventario">
           <q-img src="../../assets/img/inventario.png">
             <div class="absolute-bottom text-subtitle2 text-center">
               INVENTARIO
@@ -115,5 +115,3 @@
   }
 } */
 </style>  
-  
-    

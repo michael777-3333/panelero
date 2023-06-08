@@ -11,7 +11,6 @@
 
       <!-- style="background-color: hsla(32, 87%, 57%, 0.61)" -->
       <q-drawer class="bgColorEnfasis" v-model="drawer">
-        <!-- overlay -->
         <q-scroll-area class="fit">
           <q-list>
             <router-link v-for="(menuItem, index) in menuList" :key="index" :to="menuItem.ruta"
@@ -47,19 +46,24 @@
     </q-layout>
   </div>
 </template>
+
 <script setup>
 import { ref } from "vue";
-import { useMenuStore } from "../stores/menuStore.js";
-// import { useUsuarioStore } from "../stores/usuarioStore.js";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
 
 const $q = useQuasar();
 
-const menuStore = useMenuStore();
 const router = useRouter();
 console.log($q.cookies.get("token"));
+
+// validar usuario login
+if(!$q.cookies.get("token")){
+  router.push('/');
+}
+
+// router.push('/body/home');
 
 function goLogin() {
   $q.cookies.remove("token");
@@ -68,38 +72,214 @@ function goLogin() {
 
 let drawer = ref(false);
 
-
 /** Menu, que es cargado al iniciar la pagina */
-let menuList = ref(menuStore.menuListHome); /** Traido desde Pinia */
+let menuList = ref([
+  {
+    icon: "grass",
+    text: "Home",
+    ruta: "/body/home",
+  },
+  
+  // {
+  //   icon: 'payments',
+  //   text: 'Costos',
+  //   ruta: "/body/costos/costosModulos",
+
+  // },
+  
+  {
+    icon: "engineering",
+    text: "Mantenimiento",
+    ruta: "/body/mantenimiento/usuario",
+  },
+  
+  {
+    icon: 'receipt_long', /**shopping_cart */
+    text: 'Facturación',
+    ruta: "/body/facturacion/facturacion",
+  },
+      
+  {
+    icon: 'inventory', /**request_page */
+    text: 'Inventario',
+    ruta: "/body/inventario/bodega",
+  },
+]);
+
 // alert(location.href);
 
 /** Cambiamos el menu según los datos que corresponden */
 function mostrarBotones(r /**string*/) {
   /**Dependiendo de la ruta del boton seleccionado cargo el respectivo menu */
-  if (r == "/body/costos/costosModulos") {
-    menuList.value = menuStore.menuListCostos;
-  } else if (r == "/body/mantenimiento/usuario") {
-    menuList.value = menuStore.menuListMantenimiento;
-  } else if (r == "/body/facturacion/pedidos" ) {
-    menuList.value = menuStore.menuListFacturacion;
+  // if (r == "/body/costos/costosModulos") {
+  //   menuList.value = menuStore.menuListCostos;
+  // } else 
+  if (r == "/body/mantenimiento/usuario") {
+    menuList.value = [
+      {
+        icon: "keyboard_backspace",
+        text: "Regresar",
+        ruta: "/body/home",
+      },
+
+      {
+        icon: "admin_panel_settings", //group
+        text: "Usuarios",
+        ruta: "/body/mantenimiento/usuario",
+      },
+
+      
+      {
+        icon: "grid_view", // travel_explore
+        text: "Lotes",
+        ruta: "/body/mantenimiento/lote",
+      },
+
+      {
+        icon: "groups",  //settings_accessibility
+        text: "Personas",
+        ruta: "/body/mantenimiento/persona",
+      },
+
+      {
+        icon: 'segment', // yard
+        text: 'Etapa',
+        ruta: '/body/mantenimiento/etapa',
+      },
+
+      {
+        icon: "new_releases", // verified
+        text: "Marcas",
+        ruta: "/body/mantenimiento/marca",
+      },
+
+      {
+        icon: 'gite', //agriculture
+        text: 'Finca',
+        ruta: '/body/mantenimiento/finca',
+      },
+    ];
+  } else if (r == "/body/facturacion/facturacion" ) {
+    menuList.value = [
+      {
+        icon: "keyboard_backspace",
+        text: "Regresar",
+        ruta: "/body/home",
+      },
+
+      {
+        icon: 'receipt_long', /**request_page */
+        text: 'Facturación',
+        ruta: "/body/facturacion/facturacion",
+      },
+
+      {
+        icon: 'request_page',
+        text: 'Pedidos',
+        ruta: "/body/facturacion/pedido",
+      },
+    ];
   } else if (r == "/body/inventario/bodega") {
-    menuList.value = menuStore.menuListInventario;
+    menuList.value = [
+      {
+        icon: "keyboard_backspace",
+        text: "Regresar",
+        ruta: "/body/home",
+      },
+      
+
+      {
+        icon: 'storefront',
+        text: 'Bodega',
+        ruta: "/body/inventario/bodega",
+      },
+
+      {
+        icon: "description",
+        text: "Inventario",
+        ruta: "/body/inventario/inventario",
+      },
+    ];
   } else if (r == "/body/home") {
     /** Este es para regresar */
-    menuList.value = menuStore.menuListHome;
-  }
+    menuList.value = [
+      {
+        icon: "grass",
+        text: "Home",
+        ruta: "/body/home",
+      },
+  
+    // {
+    //   icon: 'payments',
+    //   text: 'Costos',
+    //   ruta: "/body/costos/costosModulos",
 
+    // },
+  
+      {
+        icon: "engineering",
+        text: "Mantenimiento",
+        ruta: "/body/mantenimiento/usuario",
+      },
+  
+      {
+        icon: 'receipt_long', /**shopping_cart */
+        text: 'Facturación',
+        ruta: "/body/facturacion/facturacion",
+      },
+      
+      {
+        icon: 'inventory', /**request_page */
+        text: 'Inventario',
+        ruta: "/body/inventario/bodega",
+      },
+    ];
+  }
 }
 
 function mostrarBotonesUrl() {
-  if (location.hash == "#/body/facturacion/pedidos" ) {
-    menuList.value = menuStore.menuListFacturacion;
-  } else if (location.hash == "#/body/facturacion/facturacion" ) {
-    menuList.value = menuStore.menuListFacturacion;
-  } 
-  // else {
-  // router.push("#/body/facturacion/");
+  if (location.hash == "#/body/facturacion/pedido" ) {
+    menuList.value = [
+      {
+        icon: "keyboard_backspace",
+        text: "Regresar",
+        ruta: "/body/home",
+      },
 
+      {
+        icon: 'receipt_long', /**request_page */
+        text: 'Facturación',
+        ruta: "/body/facturacion/facturacion",
+      },
+
+      {
+        icon: 'request_page',
+        text: 'Pedidos',
+        ruta: "/body/facturacion/pedido",
+      },
+    ];
+  } else if (location.hash == "#/body/facturacion/facturacion" ) {
+    menuList.value = [
+      {
+        icon: "keyboard_backspace",
+        text: "Regresar",
+        ruta: "/body/home",
+      },
+
+      {
+        icon: 'receipt_long', /**request_page */
+        text: 'Facturación',
+        ruta: "/body/facturacion/facturacion",
+      },
+
+      {
+        icon: 'request_page',
+        text: 'Pedidos',
+        ruta: "/body/facturacion/pedido",
+      },
+    ];
+  }// else {
+  //   router.push("#/body/facturacion/");
   // }
 }
 

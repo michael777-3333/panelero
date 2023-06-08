@@ -15,7 +15,6 @@ export const useUsuarioStore = defineStore("usuario", {
           headers: {
             "token": token
           },
-
         })
     },
 
@@ -26,7 +25,6 @@ export const useUsuarioStore = defineStore("usuario", {
           url: `${url.autenticacion}singup`,
 
           data: {
-            name: data.name,
             email: data.email,
             password: data.password,
             roles: [data.roles],
@@ -38,8 +36,6 @@ export const useUsuarioStore = defineStore("usuario", {
         // .then((res) => console.log(res))
         .catch((error) => console.log(error));
     },
-
-
 
     async login(data) {
       return await instanceAxios(

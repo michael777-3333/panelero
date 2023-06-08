@@ -1,7 +1,7 @@
-import AdmCostos from '../components/modulos/costos/CostoAdmin.vue'
+// import AdmCostos from '../components/modulos/costos/CostoAdmin.vue'
 import Bodega from '../components/modulos/inventario/Bodega.vue'
 import Body from "../components/Body.vue"
-import CostosModulos from "../components/modulos/costos/CostosModulos.vue"
+// import CostosModulos from "../components/modulos/costos/CostosModulos.vue"
 import errorf from '../components/404.vue'
 import Etapa from '../components/modulos/mantenimiento/Etapa.vue'
 import Facturacion from '../components/modulos/facturacion/Facturacion.vue'
@@ -20,22 +20,23 @@ export const routes = [
     { path: "/", component: Login },
     {
         path: "/body", component: Body, children: [
+
             { path: "home", component: Home },
 
-            {
-                path: "costos", children: [
-                    { path: "costosModulos", component: CostosModulos },
-                    { path: "adminCostos", component: AdmCostos },
-                ]
-            },
+            // {
+                // path: "costos", children: [
+                //     { path: "costosModulos", component: CostosModulos },
+                //     { path: "adminCostos", component: AdmCostos },
+                // ]
+            // },
             
             {
                 path: "mantenimiento", children: [
                     { path: "usuario", component: Usuario },
-                    { path: "lotes", component: Lotes },
-                    { path: "personas", component: Personas },
+                    { path: "lote", component: Lotes },
+                    { path: "persona", component: Personas },
                     { path: 'etapa', component: Etapa },
-                    { path: 'marcas', component: Marcas },
+                    { path: 'marca', component: Marcas },
                     { path: 'finca', component: Finca }
                 ]
             },
@@ -43,7 +44,7 @@ export const routes = [
             {
                 path: "facturacion", children: [
                     { path: "facturacion", component: Facturacion },
-                    { path: "pedidos", component: Pedidos },
+                    { path: "pedido", component: Pedidos },
                 ]
             },
 

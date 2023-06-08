@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { Cookies } from 'quasar'
+import { Cookies } from 'quasar';
 
 // outside of a Vue file
 const cookies = Cookies.getAll()
 export const token = cookies.token
 
 // const HOST = 'http://10.202.80.99:3000/'
-const HOST = 'http://10.202.80.171:3000/'
+// const HOST = 'http://10.202.80.171:3000/'
 // const HOST = 'http://192.168.1.6:3000/'
 // const HOST = 'http://localhost:3000/'
-// const HOST = 'https://proyecto-panelera.onrender.com/'
+const HOST = 'https://proyecto-panelera.onrender.com/'
 
 const url = {
     autenticacion: 'auth/',
@@ -28,9 +28,6 @@ const url = {
 
 export const instanceAxios = axios.create({
     baseURL: HOST,
-    // headers: {
-    //     "token": Cookies.get('token')
-    // }
 });
 
 

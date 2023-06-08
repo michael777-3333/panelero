@@ -24,7 +24,7 @@
   
 <script setup>
 import { useQuasar, QSpinnerFacebook } from "quasar";
-import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
+import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from "vue-router";
 import { useUsuarioStore } from '../stores/usuarioStore.js';
 import { showAlert } from '../modules/sweetalert.js';
