@@ -194,8 +194,8 @@ async function ordenarInventario() {
     }))
 
     if (res['inventario'].status == 200) {
-      rows.value = res['inventario'].data;
-      console.log(res['inventario'].data, ' s');
+      rows.value = res['inventario'].data.inventario;
+
     } else if (res['inventario'].status == 404) {
       console.log("No existen datos");
     } else {

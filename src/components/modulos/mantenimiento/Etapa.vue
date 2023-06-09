@@ -9,8 +9,8 @@
                     <q-table class="paddingTabla" title="Etapas" :rows="rows" :columns="columns" row-key="name"
                     :visible-columns="visibleColumns">
                         <template v-slot:top="props">
-                            <div class="col-5" align="left"><span style="font-size: 25px;">Etapas</span></div>
-                            <div class="col-5" align="right">
+                            <div class="col-6" align="left"><span style="font-size: 25px;">Etapas</span></div>
+                            <div class="col-6" align="right">
                                 <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;"
                                     @click="abrirModal()" glossy label="Crear Etapa" />
                             </div>
@@ -126,18 +126,19 @@ import { ref } from 'vue';
 // import { useLoteStore } from "../../../stores/lotesStore";
 // import {useEtapaStore} from '../../../stores/etapaStore.js'
 import { useUsuarioStore,useInventarioStore, useEtapaStore, useLoteStore, usePersonasStore } from "../../../stores/index.js";
+import { showAlert } from '../../../modules/sweetalert.js';
 
 
 // import { storeToRefs } from "pinia";
-import { useQuasar } from 'quasar'
+// import { useQuasar } from 'quasar'
 
 const storeEtapa=useEtapaStore()
 const storePersona = usePersonasStore()
 const storeInventario= useInventarioStore()
 const storeLotes=useLoteStore()
-const storeUser = useUsuarioStore();
-const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
+// const storeUser = useUsuarioStore();
+// const $q = useQuasar();
+// const hasItToken = $q.cookies.has('token')
 
 
 let fullWidth = ref(false)
@@ -175,8 +176,9 @@ const columns = [
     name: "inventario", 
     align: "center",
     label: "inventario", 
-    field: "inventario", 
-    field: (rows) => rows.name, 
+    field: (row) => row.process[0].elements
+[0],
+    format: (val) => `${val.name}`,
 },
 { 
     name: "personas",
@@ -211,6 +213,23 @@ async function ordenarEtapas() {
         res.personas = await storePersona.getPersona()
         res.lotes= await storeLotes.getLote()
         res.etapa=await storeEtapa.getEtapa()
+
+        arrayInventario.value= res.inventario.data.inventario.map((e)=>({
+            label:e.name,
+            value:e._id
+        }))
+
+        arrayPersonas.value= res.personas.data.personas.map((e)=>({
+            label:e.name,
+            value:e._id
+        }))
+
+        ArrayLotes.value= res.lotes.data.lotes.map((e)=>({
+            label:e.name,
+            value:e._id
+        }))
+
+        console.log( ArrayLotes.value);
          
         if (res['etapa'].status == 200) {
             rows.value= res['etapa'].data.etapas

@@ -108,16 +108,16 @@
 <script setup>
 import { ref } from 'vue';
 import { useUsuarioStore } from "../../../stores/index.js";
-import { useQuasar } from 'quasar';
+// import { useQuasar } from 'quasar';
 import { showAlert } from '../../../modules/sweetalert.js';
 
-const $q = useQuasar();
+// const $q = useQuasar();
 const store = useUsuarioStore();
 
 let email = ref('');
 let password = ref('');
 let roles = ref('');
-let validarCrear = ref(true);
+// let validarCrear = ref(true);
 
 let tipoUsuario = ['admin', 'moderator', 'user'];
 let id = null;
@@ -171,7 +171,7 @@ async function getUsers() {
   const res = await store.getUsuario()
   console.log(res.data);
   if (res.status < 300) {
-    rows.value = res.data
+    rows.value = res.data.usuarios
     console.log(rows.value);
   } else if (res.response.status == 404) {
     console.log("No existen datos");

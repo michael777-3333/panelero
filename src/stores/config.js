@@ -6,10 +6,10 @@ const cookies = Cookies.getAll()
 export const token = cookies.token
 
 // const HOST = 'http://10.202.80.99:3000/'
-const HOST = 'http://10.202.80.34:3000/'
+// const HOST = 'http://10.202.80.34:3000/'
 // const HOST = 'http://192.168.1.6:3000/'
 // const HOST = 'http://localhost:3000/'
-// const HOST = 'https://proyecto-panelera.onrender.com/'
+const HOST = 'https://proyecto-panelera.onrender.com/'
 
 const url = {
     autenticacion: 'auth/',
@@ -32,3 +32,4 @@ export const instanceAxios = axios.create({
 
 
 export default url
+// Michael a mi me funciona!
