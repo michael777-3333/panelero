@@ -80,12 +80,12 @@ let menuList = ref([
     ruta: "/body/home",
   },
   
-  // {
-  //   icon: 'payments',
-  //   text: 'Costos',
-  //   ruta: "/body/costos/costosModulos",
+  {
+    icon: 'payments',
+    text: 'Costos',
+    ruta: "/body/costos",
 
-  // },
+  },
   
   {
     icon: "engineering",
@@ -159,6 +159,11 @@ function mostrarBotones(r /**string*/) {
         text: 'Finca',
         ruta: '/body/mantenimiento/finca',
       },
+      {
+        icon: 'gite', //agriculture
+        text: 'Labores',
+        ruta: '/body/mantenimiento/labores',
+      },
     ];
   } else if (r == "/body/facturacion/facturacion" ) {
     menuList.value = [
@@ -187,14 +192,11 @@ function mostrarBotones(r /**string*/) {
         text: "Regresar",
         ruta: "/body/home",
       },
-      
-
       {
         icon: 'storefront',
         text: 'Bodega',
         ruta: "/body/inventario/bodega",
       },
-
       {
         icon: "description",
         text: "Inventario",
@@ -210,12 +212,12 @@ function mostrarBotones(r /**string*/) {
         ruta: "/body/home",
       },
   
-    // {
-    //   icon: 'payments',
-    //   text: 'Costos',
-    //   ruta: "/body/costos/costosModulos",
+    {
+      icon: 'payments',
+      text: 'Costos',
+      ruta: "/body/costos",
 
-    // },
+    },
   
       {
         icon: "engineering",

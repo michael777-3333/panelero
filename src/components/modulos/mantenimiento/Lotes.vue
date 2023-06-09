@@ -80,7 +80,7 @@
                   <div class="col-1"></div>
                   <div class="col-5">
                     <div class="buton">
-                      <q-input filled v-model="owner" class="input"  label="Dueño" :dense="dense" />
+                      <q-select filled v-model="granja" class="input"  label="granja" :options="optionsGranja" />
 
                       <!-- <q-input v-model="owner" label="Dueño" /> -->
                     </div>
@@ -88,11 +88,13 @@
                   
                   <div class="col-5">
                     <div class="buton">
-                      <q-input filled v-model="createdAt" class="input"  label="Fecha" :dense="dense" />
+                      <q-input filled v-model="createdAt" class="input" type="date"  label="Fecha" :dense="dense" />
 
                       <!-- <q-input v-model="createdAt" label="fecha" /> -->
                     </div>
                   </div>
+
+                  
 
                 </div>
                 
@@ -121,44 +123,80 @@
   
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
-import { useLoteStore } from "../../../stores/lotesStore.js";
-import { useUsuarioStore } from "../../../stores/usuarioStore";
-import { storeToRefs } from "pinia";
+// import axios from "axios";
+// import { useLoteStore } from "../../../stores/lotesStore.js";
+// import { useUsuarioStore } from "../../../stores/usuarioStore";
+import { useUsuarioStore, useLoteStore , usefincaStore } from "../../../stores/index.js";
+import { showAlert } from '../../../modules/sweetalert.js';
+
+// import { storeToRefs } from "pinia";
 
 import { useQuasar } from "quasar";
 
 const store = useLoteStore();
 const storeUser = useUsuarioStore();
+const storeGranja = usefincaStore()
 // const stateUser = storeToRefs(storeUser);
 const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
+// const hasItToken = $q.cookies.has('token')
 
 let alert = ref(false);
+let granja =ref("")
 let name = ref("");
 let rows = ref([]);
 let size = ref("");
-let owner = ref("");
 let validarEditar = ref(true)
-let createdAt = ref("");
+let createdAt = ref();
 let data = ref(null)
+let optionsGranja=ref([])
 let id = ref(null)
 
 function vaciarModal() {
-   size.value=''
-    owner.value='' 
-    name.value=''
+  size.value=''
+  name.value=''
+  granja.value=''
+
 }
 
 async function ordenarLotes() {
-  const res = await store.getLote();
-  if (res.status == 200) {
-    rows.value = res.data.lotes;
-  } else if (res.status == 404) {
-    console.log("No existen datos");
-  } else {
-    console.log(res.status);
+  try {
+
+    let res = {}
+    
+    res.lotes = await store.getLote();
+    res.farm = await storeGranja.getfinca()
+
+    if (res["lotes"].status == 200) {
+      rows.value = res['lotes'].data;
+
+      if (res['lotes'].data.length === 0) {
+        showAlert('No se encontraron registros', 'info')
+        console.log("No se encontraron registros");
+      }
+
+    } else if (res['lotes'].status == 403) {
+      console.log("No existe token");
+      showAlert("No existe token", 'info')
+    } else {
+      console.log(res.status);
+    }
+
+    if (res['farm'].status == 200) {
+      if (res['farm'].data.length === 0) {
+        showAlert('No se encontraron registros', 'info')
+        console.log("No se encontraron registros");
+      } else {
+        optionsGranja.value = res['farm'].data.map((element) => ({
+          label: element.name,
+          value: element._id
+        }));
+      }
+    }
+
+  } catch (error) {
+    console.log("Error al obtener las peticiones", error);
   }
+
 }
 ordenarLotes();
 
@@ -174,20 +212,30 @@ async function editarEstado(props) {
 }
 
 async function createAllotment() {
-  if (size.value == "") {
+  if (name.value == "") {
     $q.notify({
       type: "negative",
       message: "digite el tamaño",
     });
-  } else if (owner.value == "") {
+  } else if (granja.value == "") {
     $q.notify({
       type: "negative",
-      message: "digite el dueño ",
+      message: "digite la granja ",
+    });
+  }else if (size.value == "") {
+    $q.notify({
+      type: "negative",
+      message: "digite el tamaño ",
+    });
+  }else if (createdAt.value == "") {
+    $q.notify({
+      type: "negative",
+      message: "digite la fecha ",
     });
   }
   else if (validarEditar.value == true) {
     await store.addLote({
-      size: size.value, owner: owner.value, name: name.value,
+      size: size.value, name: name.value, farm: granja.value["value"]
     });
     ordenarLotes();
     console.log(rows.value);
@@ -200,7 +248,11 @@ async function createAllotment() {
   else if (validarEditar.value == false) {
     console.log(data.value);
     await store.editLote({
-      id: data.value._id, name: name.value, size: size.value, owner: owner.value,
+      id: data.value._id,
+      name: name.value, 
+      size: size.value, 
+      farm: granja.value["value"], 
+      createdAt: createdAt.value
     });
     ordenarLotes();
     $q.notify({
@@ -217,8 +269,9 @@ function loteEditar(info) {
   data.value = info
   console.log("e", data.value);
   size.value = data.value.size
-  owner.value = data.value.owner
   name.value = data.value.name
+  granja.value= info.farm.name
+  createdAt.value=data.value.createdAt
 }
 const columns = [
   { name: "state", label: "Estado", align: "center" },
@@ -231,12 +284,18 @@ const columns = [
   },
 
   { name: "size", align: "center", label: "tamaño", field: "size" },
-  { name: "owner", align: "center", label: "dueño", field: "owner" },
   {
     name: "createdAt",
     align: "center",
     label: "fecha creacion",
     field: "createdAt",
+  },
+  {
+    name: "granja",
+    align: "center",
+    label: "granja",
+    field: (row)=> row.farm,
+    format: (val)=>`${val.name}`
   },
   { name: "editar", align: "center", label: "editar" },
 ];

@@ -28,6 +28,45 @@ export const useEtapaStore = defineStore("etapa", {
 				}
 			  })
 		  },
+		  async editEtapa(reqData) {
+			await instanceAxios(
+			  {
+				method: 'put',
+				url: `${url.etapa}${reqData.id}`,
+				data: reqData,
+				headers: {
+				  'token': token,
+				}
+			  })
+			  // .then((res) => console.log(res))
+			  .catch((error) => console.log(error));
+		  },
+	  
+		  async activarEtapa(props) {
+			await instanceAxios(
+			  {
+				method: 'put',
+				url: `${url.etapa}activar/${props._id}`,
+				headers: {
+				  'token': token,
+				}
+			  })
+			  .then(response => console.log(response))
+			  .catch(error => console.log(error));
+		  },
+	  
+		  async desactivarEtapa(props) {
+			await instanceAxios(
+			  {
+				method: 'put',
+				url: `${url.etapa}desactivar/${props._id}`,
+				headers: {
+				  'token': token,
+				}
+			  })
+			  .then(response => console.log(response))
+			  .catch(error => console.log(error));
+		  }
 
 	}
 })

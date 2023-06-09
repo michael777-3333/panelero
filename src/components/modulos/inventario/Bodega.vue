@@ -89,16 +89,14 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useBodegaStore } from '../../../stores/BodegaStore.js';
-import { useUsuarioStore } from "../../../stores/usuarioStore";
-import { usefincaStore } from '../../../stores/fincaStore.js';
+import { useBodegaStore, usefincaStore  } from "../../../stores/index.js";
+import { showAlert } from '../../../modules/sweetalert.js';
+
 import { useQuasar } from 'quasar'
 
 const store = useBodegaStore()
 const storeFinca=usefincaStore()
-const storeUser = useUsuarioStore()
 const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
 
 let validarEditar = ref(true)
 let data = ref(null)
@@ -139,21 +137,23 @@ const columns = [
 async function ordenarBodega() {
     try{
         let res = {}
-        res.fincas = await storeFinca.getfinca()
-        res.bodegas = await store.getBodega()
+        res['fincas'] = await storeFinca.getfinca()
+        res['bodegas'] = await store.getBodega()
 
-        optionsFinca.value = res.fincas.data.granjas.map((element)=>({
-            label:element.name,
+        if (res.fincas.data.granjas){
+
+        optionsFinca.value = res['fincas'].data.granjas.map((element)=>({
+            label: element.name,
             value: element._id,
             
         }))
         
-        console.log(optionsFinca.value)
+        console.log(optionsFinca.value)}
       
 
     if (res.bodegas.status == 200) {
-        console.log(res.bodegas.data.bodegas);
-        rows.value = res.bodegas.data.bodegas
+        console.log(res.bodegas.data);
+        rows.value = res.bodegas.data
         console.log(rows.value);
         // console.log(optionsFinca.value, ' l');
     } else if (res.bodegas.status == 404) {

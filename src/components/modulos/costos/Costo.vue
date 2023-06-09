@@ -6,11 +6,11 @@
 
     <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
       <!-- SECCION SEGUNDA TABLA -->
-      <div v-show="pedidosFormr" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
+      <div v-show="costosFormr" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Pedidos</span>
 
-          <q-btn @click="pedidosFormr = !pedidosFormr" class="bg-red text-white float-right" label="X" />
+          <q-btn @click="costosFormr = !costosFormr" class="bg-red text-white float-right" label="X" />
           <!-- <span><br><br></span> -->
         </q-card-section>
         <h1 label="Aqui se vera los items de pedios"></h1>
@@ -52,11 +52,11 @@
       <!-- SECCION SEGUNDA TABLA -->
 
       <!-- SECCION FORMULARIO -->
-      <div v-show="pedidosForm" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
+      <div v-show="costosForm" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Pedidos</span>
 
-          <q-btn @click="pedidosForm = !pedidosForm" class="bg-red text-white float-right" label="X" />
+          <q-btn @click="costosForm = !costosForm" class="bg-red text-white float-right" label="X" />
           <!-- <span><br><br></span> -->
         </q-card-section>
 
@@ -65,28 +65,46 @@
           <q-card class="d-flex">
             <q-card-section>
               <div class="row">
+
                 <!-- <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                    <q-input v-model="cliente" label="Cliente" :dense="dense" :readonly="readonly" />
-                  </div> -->
+                    <q-select filled v-model="cliente" :options="optionsCustomers" label="Cliente" stack-label
+                      :dense="dense" :options-dense="denseOpts" /> -->
+                <!-- <q-input v-model="" label="Estado del pedido" /> -->
+                <!-- </div>
+
+                  <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                    <q-select filled v-model="estado" :options="optionsStatus" label="Estado del pedido" stack-label
+                      :dense="dense" :options-dense="denseOpts" /> -->
+                <!-- <q-input v-model="" label="Estado del pedido" /> -->
+                <!-- </div> -->
+
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-select filled v-model="cliente" :options="optionsCustomers" label="Cliente" stack-label
-                    :dense="dense" :options-dense="denseOpts" />
-                  <!-- <q-input v-model="" label="Estado del pedido" /> -->
+                  <q-input v-model="name" label="Nombre" :readonly="readonly" />
                 </div>
-                
+
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-select filled v-model="estado" :options="optionsStatus" label="Estado del pedido" stack-label
-                    :dense="dense" :options-dense="denseOpts" />
-                  <!-- <q-input v-model="" label="Estado del pedido" /> -->
+                  <q-input v-model="code" label="Codigo" :readonly="readonly" />
                 </div>
-                <!--  -->
-                <!-- <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                    <q-input v-model="cantidad" label="Cantidad de panela" type="number" :readonly="readonly" />
-                  </div> -->
-                <!-- <div class="col-2"></div> -->
+
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-input v-model="direccionEnvio" label="Dirección de envio" :readonly="readonly" />
+                  <q-input v-model="quantity" label="Cantidad" :readonly="readonly" />
                 </div>
+
+                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                  <q-input v-model="costs" label="Valor" :readonly="readonly" />
+                </div>
+
+
+                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                  <q-input v-model="date" label="Fecha" :readonly="readonly" />
+                </div>
+
+
+                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                  <q-input v-model="detail" label="Detalles" :readonly="readonly" />
+                </div>
+
+
               </div>
             </q-card-section>
             <q-separator />
@@ -95,9 +113,9 @@
 
           </q-card>
           <!-- </q-card-section>
-          <q-card-section> -->
+            <q-card-section> -->
           <div align="right" class="q-mt-md">
-            <q-btn @click="pedidosForm = !pedidosForm" class="bg-red text-white q-mx-sm" label="Cerrar" />
+            <q-btn @click="costosForm = !costosForm" class="bg-red text-white q-mx-sm" label="Cerrar" />
 
             <q-btn class="bg-white">
               <span v-if="isAdd == true" @click="createOrder()">Crear Pedido</span>
@@ -110,7 +128,7 @@
       <!-- SECCION FORMULARIO -->
 
       <!-- SECCION PRIMERA TABLA -->
-      <div v-if="rows.length > 0" v-show="!pedidosForm && !pedidosFormr" transition-show="slide-up"
+      <div v-if="rows.length > 0" v-show="!costosForm && !costosFormr" transition-show="slide-up"
         transition-hide="slide-down" class="q-ma-xs-md q-ma-lg-sm animated zoomIn ">
         <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
           card-class="bg-white text-black" table-class="text-black-8" table-header-class="text-green" flat bordered
@@ -160,16 +178,23 @@
   </div>
   <!-- DIV ROW CENTRAL -->
 </template>
-
+  
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount} from "vue";
-import { usePedidoStore, usePersonasStore, useInventarioStore } from "../../../stores/index.js";
+import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount } from "vue";
+import { useCostoStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
 // import { usePedidoStore } from '../../../stores/pedidos.js'
 // import { usePersonasStore } from '../../../stores/personasStore'
 
-const personaStore = usePersonasStore()
-const pedidoStore = usePedidoStore()
+const costoStore = useCostoStore()
+
+let name = ref()
+let code = ref()
+let quantity = ref()
+let costs = ref()
+let date = ref()
+let detail = ref()
+
 
 let cliente = ref();
 let estado = ref()
@@ -190,18 +215,18 @@ const pagination = ref({
 // const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
 // console.log(pagesNumber);
 let ids = {
-  order_id:"",
+  order_id: "",
   // customer:""
 }
 
 // let 
 
 let isAdd = ref(true); // Estoy Añadiendo?
-let readonly = ref(false); // hablita la edicion de los inputs
+let readonly = ref(false); // habilita la edicion de los inputs
 let dense = ref(!true);
 let denseOpts = ref(true);
-let pedidosForm = ref(false);
-let pedidosFormr = ref(false);
+let costosForm = ref(false);
+let costosFormr = ref(false);
 let rows = ref([]);
 const columns = [
   {
@@ -215,15 +240,15 @@ const columns = [
     // sortOrder: 'ad', // or 'da'
     required: false
   },
-  {
-    align: "left",
-    field: (row) => row.customer,
-    format: (val) => `${val.name}`,
-    label: "Cliente",
-    name: "nombre",
-    sortable: true,
-  },
-  { name: "cantidad", label: "Direccion", field: "sendAddress" },
+  // {
+  //   align: "left",
+  //   field: (row) => row.customer,
+  //   format: (val) => `${val.name}`,
+  //   label: "Cliente",
+  //   name: "nombre",
+  //   sortable: true,
+  // },
+  { name: "cantidad", label: "Nombre", field: "sendAddress" },
   { name: "estado", label: "Estado", field: "orderStatus", sortable: true, },
   { name: "opciones", align: "center", label: "Opciones", field: "Opciones" },
 ];
@@ -232,8 +257,8 @@ const columns = [
 const columnss = ref([
   { name: 'calories', align: 'center', label: 'Valor', field: 'worth', sortable: true },
   { name: 'fat', label: 'Cantidad', field: 'quantity', sortable: true },
-//   { name: 'fat', label: 'Fat (g)', field: (row) => row.element
-// , format: (val) => `${val.name}`, sortable: true },
+  //   { name: 'fat', label: 'Fat (g)', field: (row) => row.element
+  // , format: (val) => `${val.name}`, sortable: true },
 
   // { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
   // { name: 'protein', label: 'Protein (g)', field: 'protein' },
@@ -243,16 +268,16 @@ const columnss = ref([
 ])
 
 const rowss = ref([])
-let filter= ref('')
-let selected= ref([])
+let filter = ref('')
+let selected = ref([])
 
 function clean() {
   cliente.value = direccionEnvio.value = estado.value = ''
 }
 
 function addOrder() {
-  // pedidosForm.value = isAdd.value = true
-  pedidosForm.value  = true
+  // costosForm.value = isAdd.value = true
+  costosForm.value = true
   readonly.value = false
 }
 
@@ -260,46 +285,33 @@ async function getOrders() {
   try {
     let res = {}
 
-    res['pedido'] = await pedidoStore.getPedido()
-    res['persona'] = await personaStore.getPersona()
+    res['costo'] = await costoStore.getCost()
 
 
-    if (res['pedido'].status == 200) {
-      rows.value = res['pedido'].data
-      if (res['pedido'].data.length === 0) { 
-        showAlert('No se encontraron registros', 'info') 
+    if (res['costo'].status == 200) {
+      rows.value = res['costo'].data
+      if (res['costo'].data.length === 0) {
+        showAlert('No se encontraron registros', 'info')
         console.log("No se encontraron registros");
       }
-    } else if (res['pedido'].status == 403) {
+    } else if (res['costo'].status == 403) {
       console.log("No existe token");
       showAlert("No existe token", 'info')
     } else {
       console.log(res.status);
     }
 
-    if (res['persona'].status == 200) {
-      if (res['persona'].data.length === 0) {
-        showAlert('No se encontraron registros', 'info')
-        console.log("No se encontraron registros");
-      } else {
-        optionsCustomers.value = res['persona'].data.map((element) => ({
-          label: element.name,
-          value: element._id
-        }));
-      }
-    }
-
-    if (res['farm'].status == 200) {
-      if (res['farm'].data.length === 0) {
-        showAlert('No se encontraron registros', 'info')
-        console.log("No se encontraron registros");
-      } else {
-        optionsGranja.value = res['farm'].data.map((element) => ({
-          label: element.name,
-          value: element._id
-        }));
-      }
-    }
+    //   if (res['persona'].status == 200) {
+    //     if (res['persona'].data.length === 0) {
+    //       showAlert('No se encontraron registros', 'info')
+    //       console.log("No se encontraron registros");
+    //     } else {
+    //       optionsCustomers.value = res['persona'].data.map((element) => ({
+    //         label: element.name,
+    //         value: element._id
+    //       }));
+    //     }
+    //   }
 
   } catch (error) {
     console.log("Error al obtener las peticiones", error);
@@ -310,11 +322,11 @@ async function getOrders() {
 
 async function createOrder() {
   // TODO: mostrar cargando en esta parte, Michael encontro un bug aqui si la conecion esta leta creo mas de 6 ordenes con vario click solo añadiendo uno
-  pedidosForm.value = !pedidosForm.value;
+  costosForm.value = !costosForm.value;
   await pedidoStore.addPedido({
-    customer:     cliente.value["value"],
-    orderStatus:  estado.value,
-    sendAddress:  direccionEnvio.value,
+    customer: cliente.value["value"],
+    orderStatus: estado.value,
+    sendAddress: direccionEnvio.value,
     // descriptionOfPanela: detalles.value,
     // documentNumber:      numeroDocumentoMFa.value,
     // documentType:        tipoDocumentoMFa.value,
@@ -327,21 +339,21 @@ async function createOrder() {
 
   getOrders();
   clean();
- 
+
 }
 
 function editOrder(ObjectOrder) {
   // console.log(typeof(ObjectOrder));
 
-  pedidosForm.value = !pedidosForm.value
+  costosForm.value = !costosForm.value
   isAdd.value = false
   readonly.value = true
-  ids["order_id"] =         ObjectOrder._id
-  cliente.value =        ObjectOrder.customer.name
+  ids["order_id"] = ObjectOrder._id
+  cliente.value = ObjectOrder.customer.name
   direccionEnvio.value = ObjectOrder.sendAddress
-  estado.value =         ObjectOrder.orderStatus
+  estado.value = ObjectOrder.orderStatus
   // ids["customer"] = ObjectOrder.customer._id
-  
+
 }
 
 async function savedChanges() {
@@ -357,7 +369,7 @@ async function savedChanges() {
   }
 
   getOrders();
-  pedidosForm.value = !pedidosForm.value;
+  costosForm.value = !costosForm.value;
 }
 
 async function inactivedOrder(id) {
@@ -371,9 +383,9 @@ async function activedOrder(id) {
 }
 
 // onMounted(() => {
-  // getDataUsers();
-  // alert("onmounted")
-  // getOrders();
+// getDataUsers();
+// alert("onmounted")
+// getOrders();
 
 // });
 
@@ -391,30 +403,30 @@ async function activedOrder(id) {
 // https://vuejs.org/api/composition-api-lifecycle.html#onserverprefetch
 
 onBeforeMount(() => {
-    // getDataUsers();
-    // alert("onBeforeMount")
-    setTimeout(() => {
-      // btnState.value = false
-      getOrders();
-    }, 1000)
-  
-  });
+  // getDataUsers();
+  // alert("onBeforeMount")
+  setTimeout(() => {
+    // btnState.value = false
+    getOrders();
+  }, 1000)
+
+});
 
 function showDetailsOrder(ObjectOrder) {
-  pedidosFormr.value = !pedidosFormr.value
+  costosFormr.value = !costosFormr.value
   rowss.value = ObjectOrder.products
   console.log(ObjectOrder.products);
 
 }
 
 </script>
+    
+  <!-- /*_*/ -->
   
-<!-- /*_*/ -->
-
-<!-- /*_*/ -->
+  <!-- /*_*/ -->
 <style lang="sass" scoped>
 .grid-style-transition
   transition: transform .28s, background-color .28s
-botonEditar
-    margin: 10px
+.botonEditar
+  margin: 10px
 </style>

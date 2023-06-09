@@ -4,6 +4,10 @@ import { useUsuarioStore } from './usuarioStore.js'
 import { useLoteStore } from './lotesStore.js'
 import { useInventarioStore } from './inventarioStore.js'
 import { useEtapaStore } from './etapaStore.js'
+import { useMarcasStore } from "./marcasStore.js";
+import { useBodegaStore  } from "./bodegaStore.js";
+import { usefincaStore  } from "./fincaStore.js";
+import { useCostoStore  } from "./costoStore.js";
 
 export {
     usePedidoStore,
@@ -11,6 +15,9 @@ export {
     useUsuarioStore,
     useLoteStore,
     useInventarioStore,
-    useEtapaStore
-
+    useEtapaStore,
+    useMarcasStore,
+    useBodegaStore,
+    usefincaStore,
+    useCostoStore
 }

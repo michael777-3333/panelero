@@ -4,7 +4,7 @@
     <div class="row" style="margin-top: 10%;">
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
-        
+        <!-- <div v-if="rows.length > 0" class="q-ma-xs-md q-ma-lg-sm"> -->
           <q-table class="paddingTabla" title="Costos" :rows="rows" :columns="columns" row-key="name">
 
 
@@ -32,6 +32,7 @@
               </td>
             </template>
           </q-table>
+        <!-- </div> -->
         <!-- <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
           <q-linear-progress dark query color="green" class="q-mt-sm" />
           <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
@@ -119,6 +120,8 @@ import { ref } from "vue";
 // import axios from "axios";
 // import { useadmincostStore } from "../../../stores/admincostStore.js";
 import { useCostoStore } from "../../../stores/index.js";
+import { showAlert } from '../../../modules/sweetalert.js';
+
 
 // import { storeToRefs } from "pinia";
 
@@ -128,7 +131,7 @@ const store = useCostoStore();
 // const storeUser = useadmincostStore();
 // const stateUser = storeToRefs(storeUser);
 const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
+// const hasItToken = $q.cookies.has('token')
 
 let alert = ref(false);
 let name = ref("");
@@ -153,20 +156,32 @@ function vaciarModal() {
 }
 
 async function ordenarCostos() {
-  const res = await store.getInvecost();
-  if (res.status == 200) {
-    rows.value = res.data.costos;
-  } else if (res.status == 404) {
-    console.log("No existen datos");
-  } else {
-    console.log(res.status);
+  try {
+    let res = {}
+    console.log("hola");
+
+    res['costo'] = await store.getInveCost();
+    // console.log(res['costo'].status);
+
+    if (res['costo'].status == 200) {
+      rows.value = res['costo'].data;
+      if (res['costo'].data.length === 0) { showAlert('No se encontraron registros', 'info') }
+      console.log("No se encontraron registros");
+    } else {
+      console.log(res['costo'].status);
+    }
+
+  } catch (error) {
+    console.log("Error al obtener las peticiones", error);
+
   }
+
 }
 ordenarCostos();
 
 async function editarEstado(props) {
-  console.log("hola");
-  console.log(props);
+  // console.log("hola");
+  // console.log(props);
   if (props.state == 1) {
     await store.activarAdmincost(props);
   } else if (props.state == 0) {
@@ -310,20 +325,3 @@ function cerrarModal() {
 }
 </script>
 
-
-<style>
-.cardcos{
-  background-color: green ;
-}
-.input{
-  border-radius: 50px;
-}
-.buton{
-  border-radius: 50px;
-  margin: 3px 3px;
-}
-.lotesCard{
-  margin-top: 30px;
-}
-
-</style>

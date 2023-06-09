@@ -129,24 +129,26 @@
     
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
-import { useInventarioStore } from "../../../stores/inventarioStore.js";
-import { useUsuarioStore } from "../../../stores/usuarioStore";
-import { useBodegaStore } from '../../../stores/BodegaStore.js';
-import { useMarcasStore } from '../../../stores/marcasStore.js'
+// import axios from "axios";
+// import { useInventarioStore } from "../../../stores/inventarioStore.js";
+// import { useUsuarioStore } from "../../../stores/usuarioStore";
+// import { useBodegaStore } from '../../../stores/BodegaStore.js';
+// import { useMarcasStore } from '../../../stores/marcasStore.js'
+import { useInventarioStore, useUsuarioStore, useBodegaStore, useMarcasStore } from "../../../stores/index.js";
 
-import { storeToRefs } from "pinia";
+
+// import { storeToRefs } from "pinia";
 
 import { useQuasar } from "quasar";
 
 const store = useInventarioStore();
-const storeUser = useUsuarioStore();
+// const storeUser = useUsuarioStore();
 const storeBodega = useBodegaStore()
 
 const storeMarca = useMarcasStore()
 // const stateUser = storeToRefs(storeUser);
 const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
+// const hasItToken = $q.cookies.has('token')
 
 let alert = ref(false);
 let name = ref("");
@@ -160,11 +162,9 @@ let mark = ref("");
 let data = ref(null)
 let id = ref(null)
 
-
 let optionesBodegas = ref([])
 let optionesMarcas = ref([])
 let visibleColumns = ref(['state', 'nombre', 'bodegas', 'cantidad', 'categoria', 'marca', 'editar'])
-
 
 function vaciarModal() {
   quantity.value = ''
@@ -180,21 +180,22 @@ async function ordenarInventario() {
   try {
     let res = {}
     res.inventario = await store.getInventario();
-    // console.log(await store.getInventario());
+
     res.bodegas = await storeBodega.getBodega()
     res.marcas = await storeMarca.getMarcas()
-    optionesBodegas.value = res["bodegas"].data.bodegas.map((e) => ({
+
+    optionesBodegas.value = res["bodegas"].data.map((e) => ({
       label: e.name,
       value: e._id
     }))
 
-    optionesMarcas.value = res["marcas"].data.marcas.map((i) => ({
+    optionesMarcas.value = res["marcas"].data.map((i) => ({
       label: i.name,
       value: i._id
     }))
 
     if (res['inventario'].status == 200) {
-      rows.value = res['inventario'].data.inventario;
+      rows.value = res['inventario'].data;
 
     } else if (res['inventario'].status == 404) {
       console.log("No existen datos");
@@ -233,7 +234,7 @@ async function createInventory() {
   }
   else if (validarEditar.value == true) {
     // console.log( bodegas.value["value"],  quantity.value, name.value, mark.value["value"], category.value, ' dd');
-    console.log([{ name: category.value }],);
+    console.log( bodegas.value);
     await store.addInventario({
       quantity: quantity.value,
       store: bodegas.value["value"],

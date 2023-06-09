@@ -147,7 +147,7 @@ import { useQuasar } from 'quasar'
 const store = usePersonasStore()
 const storeUser = useUsuarioStore();
 const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
+// const hasItToken = $q.cookies.has('token')
 
 let name = ref("");
 let numberIdentification = ref("");
@@ -190,7 +190,7 @@ const columns = [
 async function ordenarPersona() {
   const res = await store.getPersona()
   if (res.status == 200) {
-    rows.value = res.data.personas
+    rows.value = res.data
   } else if (res.status == 404) {
     console.log("No existen datos");
   } else {

@@ -1,11 +1,21 @@
 import { defineStore } from "pinia";
-import url, { instanceAxios, token}  from "../stores/config.js";
+import url, { instanceAxios, token } from "../stores/config.js";
 
-export const useCosto = defineStore("costo", {
-    state: () => ({ }),
+export const useCostoStore = defineStore("costo", {
+    state: () => ({}),
 
     actions: {
-
+        async getCost() {
+            return await instanceAxios(
+                {
+                    method: 'get',
+                    url: url.costo,
+                    headers: {
+                        'token ': token,
+                    }
+                })
+        },
+        
         async addInvecost(reqData) {
             await instanceAxios(
                 {
@@ -19,16 +29,7 @@ export const useCosto = defineStore("costo", {
                 // .then((res) => console.log(res))
                 .catch((error) => console.log(error));
         },
-        async getInvecost() {
-            return await instanceAxios(
-                {
-                    method: 'get',
-                    url: url.costo,
-                    headers: {
-                        'token ': token,
-                    }
-                })
-        },
+
         async editInvecost(reqData) {
             await instanceAxios({
                 method: 'put',

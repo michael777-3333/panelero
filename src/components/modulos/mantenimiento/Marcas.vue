@@ -99,8 +99,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useMarcasStore } from '../../../stores/marcasStore.js'
-import { useUsuarioStore } from "../../../stores/usuarioStore";
+// import { useMarcasStore } from '../../../stores/marcasStore.js'
+// import { useUsuarioStore } from "../../../stores/usuarioStore";
+import { useUsuarioStore, useMarcasStore } from "../../../stores/index.js";
 import { storeToRefs } from "pinia";
 import { useQuasar } from 'quasar'
 
@@ -138,7 +139,7 @@ const columns = [
 async function ordenarMarcas() {
   const res = await store.getMarcas()
   if (res.status == 200) {
-    rows.value = res.data.marcas
+    rows.value = res.data
   } else if (res.status == 404) {
     console.log("No existen datos");
   } else {

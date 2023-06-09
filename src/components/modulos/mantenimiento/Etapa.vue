@@ -4,7 +4,6 @@
             <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
 
-
                 <div class="q-ma-xs-md q-ma-lg-sm">
                     <q-table class="paddingTabla" title="Etapas" :rows="rows" :columns="columns" row-key="name"
                     :visible-columns="visibleColumns">
@@ -23,7 +22,7 @@
                         </template>
                         <template v-slot:body-cell-editar="props">
                             <td>
-                                <q-btn class="botonEditar" style="background-color:#029127 ;" @click="loteEditar(props.row)"
+                                <q-btn class="botonEditar" style="background-color:#029127 ;" @click="etapaEditar(props.row)"
                                     glossy>
                                     <q-icon style="color: white;" name="edit"></q-icon>
                                 </q-btn>
@@ -59,58 +58,19 @@
                                 <div class="col-5 input">
 
                                     <div class="" style="width: 400px;">
-                                        <q-select filled v-model="lotes" label="Lotes" multiple :options="ArrayLotes" />
+                                        <q-select filled v-model="lotes" label="Lotes"  :options="optionsLote" />
 
                                     </div>
 
                                 </div>
                             </div>
-                        </q-card-section>
-                    </q-card>
-                    <q-card class="procesosCard d-flex">
-                        <div style="color: black; text-align: center;" class="text-h6"> Datos para el proceso</div>
-                        <q-card-section>
-                            <div class="row">
-                                <div class="col-1"></div>
-                                <div class="col-5 input">
-                                    <div class="" style="width: 400px;">
-                                        <q-input filled v-model="activity" label="Actividad"   />
-                                    </div>
-                                </div>
-                                <div class="col-5 input">
-                                    <div class="" style="width: 400px;">
-                                        <div class="q-gutter-md">
-                                            <q-select filled v-model="personas" label="Personal" multiple :options="arrayPersonas" />
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-1"></div>
-                                <div class="col-5 input">
-                                    <div class="" style="width: 400px;">
-
-                                        <q-select filled v-model="inventario" label="Inventario" multiple :options="arrayInventario" />
-
-                                    </div>
-                                </div>
-
-                                <div class="col-5 input">
-                                    <div class="" style="width: 400px;">
-                                        <q-input filled v-model="estado" label="Estado"   />
-                                    </div>
-                                </div>
-
-                            </div>
-
                         </q-card-section>
                     </q-card>
                 </q-card-section>
 
 
                 <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn  @click="createEtapa()"> </q-btn>
+                    <q-btn style="color: black;" @click="createEtapa()"> Crear Etapa </q-btn>
                     <q-btn flat label="OK" v-close-popup />
                 </q-card-actions>
             </q-card>
@@ -120,43 +80,26 @@
     
 <script setup>
 import { ref } from 'vue';
-// import { usePersonasStore } from '../../../stores/personasStore.js'
-// import { useUsuarioStore } from "../../../stores/usuarioStore.js";
-// import {useInventarioStore} from "../../../stores/inventarioStore.js"
-// import { useLoteStore } from "../../../stores/lotesStore";
-// import {useEtapaStore} from '../../../stores/etapaStore.js'
+
 import { useUsuarioStore,useInventarioStore, useEtapaStore, useLoteStore, usePersonasStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
 
 
-// import { storeToRefs } from "pinia";
-// import { useQuasar } from 'quasar'
-
 const storeEtapa=useEtapaStore()
-const storePersona = usePersonasStore()
-const storeInventario= useInventarioStore()
 const storeLotes=useLoteStore()
-// const storeUser = useUsuarioStore();
-// const $q = useQuasar();
-// const hasItToken = $q.cookies.has('token')
 
 
 let fullWidth = ref(false)
 let nombre =ref('')
-let inventario = ref()
-let personas=ref()
-let lotes=ref()
-let estado=ref()
-let activity=ref()
+let lotes=ref("")
 let rows = ref([]);
-
-let arrayPersonas = ref([])
-let arrayInventario=ref([])
-let ArrayLotes=ref([])
+let data =ref()
+let optionsLote=ref([])
+let validarEditar=ref(true)
 function abrirModal() {
     fullWidth.value = true
 }
-let visibleColumns =ref(['state', 'nombre','inventario', 'personas', 'lotes', 'estado', 'activity', 'editar' ])
+let visibleColumns =ref(['state', 'nombre', 'lotes', 'editar' ])
 
 const columns = [
 { 
@@ -171,112 +114,119 @@ const columns = [
     field: 'name',
     sortable: true,
 },
-
-{ 
-    name: "inventario", 
-    align: "center",
-    label: "inventario", 
-    field: (row) => row.process[0].elements
-[0],
-    format: (val) => `${val.name}`,
-},
-{ 
-    name: "personas",
-    align: "center", 
-    label: "personas", 
-    field: "personas" 
-},
 {
     name: "lotes",
     align: "center",
     label: "lotes",
-    field: "lotes",
+    field: (row)=> row.allotment,
+    format:(val)=> {
+        if (val) return val.name
+        return ''
+    }
 },
-{
-    name: "estado",
-    align: "center",
-    label: "estado",
-    field: "estado",
-},
-{
-    name: "activity",
-    align: "center",
-    label: "activity",
-    field: "activity",
-},
+// {
+//     name: "estado",
+//     align: "center",
+//     label: "estado",
+//     field: (row)=> row.process[0],
+//     format: (val)=> `${val.stateActivity}`
+// },
+// {
+//     name: "activity",
+//     align: "center",
+//     label: "activity",
+//     field: (row)=> row.process[0],
+//     format: (val)=> `${val.activity}`
+// },
   { name: "editar", align: "center", label: "editar" },
 ];
+
 async function ordenarEtapas() {
-    try{
-        let res ={}
-        res.inventario = await storeInventario.getInventario();
-        res.personas = await storePersona.getPersona()
-        res.lotes= await storeLotes.getLote()
-        res.etapa=await storeEtapa.getEtapa()
+    try {
+        let res = {}
 
-        arrayInventario.value= res.inventario.data.inventario.map((e)=>({
-            label:e.name,
-            value:e._id
-        }))
+        res.lote = await storeLotes.getLote()
+        res.etapa = await storeEtapa.getEtapa()
 
-        arrayPersonas.value= res.personas.data.personas.map((e)=>({
-            label:e.name,
-            value:e._id
-        }))
-
-        ArrayLotes.value= res.lotes.data.lotes.map((e)=>({
-            label:e.name,
-            value:e._id
-        }))
-
-        console.log( ArrayLotes.value);
-         
         if (res['etapa'].status == 200) {
-            rows.value= res['etapa'].data.etapas
+            rows.value = res['etapa'].data
             console.log(rows.value);
-        } else if (res['etapas'].status == 404) {
-            console.log("No existen datos");
-
+            if (res['etapa'].data.length === 0) {
+                showAlert('No se encontraron registros', 'info')
+                console.log("No se encontraron registros");
+            }
+        } else if (res['etapa'].status == 403) {
+            console.log("No existe token");
+            showAlert("No existe token", 'info')
         } else {
-        console.log(res.status);
-    }
-    }catch(error){
+            console.log(res.status);
+        }
+
+        if (res['lote'].status == 200) {
+            if (res['lote'].data.length === 0) {
+                showAlert('No se encontraron registros', 'info')
+                console.log("No se encontraron registros");
+            } else {
+                optionsLote.value = res['lote'].data.map((element) => ({
+                    label: element.name,
+                    value: element._id
+                }));
+            }
+        }
+
+    } catch (error) {
         console.log("Error al obtener las peticiones ", error);
     }
-    
+
 }
+
 ordenarEtapas()
 
 async function createEtapa() {
-    console.log( inventario.value,personas.value,lotes.value, activity.value);
-    await storeEtapa.addEtapa({
-
-        
-        // inventario:inventario.value,
-        // personas:personas.value, 
-        // lotes:lotes.value,
-        // activity:activity.value,
-        // estado:estado.value,
-        
-    name: "etapa 3",
-    allotment:"64758b6f6d98981af63d71fc",
-    process: [
-        {
-            workers: ["6475fcad3aef607c22467bfa"],
-            elements: ["6477c9e859545308d31062ce"],
-            state: 1,
-            activity: "nuevaa2",
-            stateActivity: "por 22",
-        }
-    ]
-
+    abrirModal()
+    if (nombre.value == "") {
+    $q.notify({
+      type: "negative",
+      message: "digite el nombre",
+    });
+  } else if (lotes.value == "") {
+    $q.notify({
+      type: "negative",
+      message: "digite el lote",
+    });
+  }
+    else if (validarEditar.value==true) {
+        await storeEtapa.addEtapa({
+        name: nombre.value,
+        allotment:lotes.value["value"]
     })
     ordenarEtapas()
+    }else if (validarEditar==false) {
+        await storeEtapa.editEtapa({
+            id: data.value._id,
+            name: nombre.value,
+            allotment:lotes.value["value"]
+        })
+    ordenarEtapas();
+    }
+    
 }
-
-
-
-
+ async function etapaEditar(info) {
+    fullWidth.value = true
+    validarEditar=false
+    data.value =info
+    console.log(data.value);
+    nombre.value = data.value.name
+    lotes.value= info.allotment.name
+ }
+ async function editarEstado(props) {
+    if (props.state==1) {
+        await storeEtapa.activarEtapa(props)
+    }else if (props.state==0) {
+        await storeEtapa.desactivarEtapa(props)
+    }
+    ordenarEtapas();
+ }
 
 
 
@@ -300,4 +250,5 @@ async function createEtapa() {
     margin: 4px;
     display: flex;
     justify-content: center;
-}</style>
+}
+</style>
