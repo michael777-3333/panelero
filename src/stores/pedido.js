@@ -1,19 +1,24 @@
 import { defineStore } from "pinia";
 import url, { instanceAxios, token}  from "../stores/config.js";
+// import getToken from '../composables/UseAuthUser.js'
+import { useQuasar } from 'quasar'
 
 export const usePedidoStore = defineStore("pedido", {
-  state: () => ({ }),
+  state: () => ({ 
+    $q: useQuasar(),
+  }),
 
   actions: {
     // getToken(tk) { this.token = tk },
 
     async getPedido() {
+      console.log(this.token);
       return await instanceAxios(
         {
           method: 'get',
           url: url.pedido,
           headers: {
-            'token': token,
+            'token': this.$q.cookies.get('token'),
           }
         })
     },
