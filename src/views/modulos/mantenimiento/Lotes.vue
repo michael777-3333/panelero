@@ -201,20 +201,18 @@ async function createAllotment() {
     });
   }
   else if (validarEditar.value == true) {
-    await store.addLote({
+    await allotmentService.addAllotment({
       size: size.value, name: name.value, farm: granja.value["value"]
     });
     ordenarLotes();
     console.log(rows.value);
     alert.value = false;
-    $q.notify({
-      type: "positive",
-      message: "el lote ha sido creado correctamente",
-    });
+    showAlert("el lote ha sido creado correctamente", 'success')
+
   }
   else if (validarEditar.value == false) {
     console.log(data.value);
-    await store.editLote({
+    await allotmentService.editAllotment({
       id: data.value._id,
       name: name.value, 
       size: size.value, 
@@ -222,10 +220,8 @@ async function createAllotment() {
       createdAt: createdAt.value
     });
     ordenarLotes();
-    $q.notify({
-      type: "positive",
-      message: "el lote ha sido actualizado correctamente",
-    });
+    showAlert("el lote ha sido actualizado correctamente", 'success')
+
     alert.value = false
     validarEditar.value = true;
   }

@@ -108,11 +108,7 @@
 <script setup>
 import { ref } from 'vue';
 import { userService } from "../../../api/";
-
-// import { useUsuarioStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
-
-// const store = useUsuarioStore();
 
 let email = ref('');
 let password = ref('');
@@ -120,8 +116,6 @@ let roles = ref('');
 let dense = ref(!true);
 let denseOpts = ref(true);
 let readonly = ref(false);
-
-// let validarCrear = ref(true);
 
 let tipoUsuario = ['admin', 'moderator', 'user'];
 let id = null;

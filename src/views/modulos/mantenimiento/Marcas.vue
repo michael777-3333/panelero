@@ -101,14 +101,16 @@
 import { ref } from 'vue'
 // import { useMarcasStore } from '../../../stores/marcasStore.js'
 // import { useUsuarioStore } from "../../../stores/usuarioStore";
-import { useUsuarioStore, useMarcasStore } from "../../../stores/index.js";
-import { storeToRefs } from "pinia";
+import { markService } from "../../../api/";
+
+// import { useUsuarioStore, useMarcasStore } from "../../../stores/index.js";
+// import { storeToRefs } from "pinia";
 import { useQuasar } from 'quasar'
 
-const store = useMarcasStore()
-const storeUser = useUsuarioStore()
+// const store = useMarcasStore()
+// const storeUser = useUsuarioStore()
 const $q = useQuasar();
-const hasItToken = $q.cookies.has('token')
+// const hasItToken = $q.cookies.has('token')
 
 let validarEditar = ref(true)
 let data = ref(null)
@@ -137,14 +139,22 @@ const columns = [
 
 
 async function ordenarMarcas() {
-  const res = await store.getMarcas()
-  if (res.status == 200) {
-    rows.value = res.data
-  } else if (res.status == 404) {
-    console.log("No existen datos");
-  } else {
-    console.log(res.status);
+  try {
+    let res = {}
+
+    res['marca'] = await markService.getMark();
+
+    rows.value = res['marca']
+    if (res['marca'].length === 0) {
+      showAlert('No se encontraron registros', 'info')
+      console.log("No se encontraron registros");
+    }
+
+
+  } catch (error) {
+    console.error("Error al obtener las peticiones", error);
   }
+  
 }
 ordenarMarcas()
 
@@ -160,7 +170,7 @@ async function createMarca() {
       message: "digite el proveedor",
     });
   } else if (validarEditar.value == true) {
-    await store.addMarca(
+    await markService.addMark(
       {
         name: name.value,
         ownerCompany: ownerCompany.value
@@ -173,7 +183,7 @@ async function createMarca() {
     });
     validarEditar.value = true
   } else if (validarEditar.value == false) {
-    await store.editMarca(
+    await markService.editMark(
       {
         id: data.value._id, name: name.value,
         name: name.value,
@@ -199,11 +209,11 @@ function editarMarca(info) {
 
 async function editarEstado(props) {
   // console.log("hola");
-  console.log(props);
+  // console.log(props);
   if (props.state == 1) {
-    await store.activarMarca(props);
+    await markService.enabledMark(props._id);
   } else if (props.state == 0) {
-    await store.desactivarMarca(props);
+    await markService.disabledMark(props._id);
   }
   ordenarMarcas();
 }

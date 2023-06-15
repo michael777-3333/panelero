@@ -6,7 +6,7 @@
 
     <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
       <!-- SECCION SEGUNDA TABLA -->
-      <!-- <div v-show="laboresFormr" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
+      <div v-show="laboresFormr" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Labores</span>
 
@@ -39,6 +39,7 @@
                     </q-item-section>
                     <q-item-section side>
                       <q-item-label caption>{{ col.value }}</q-item-label>
+                      
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -46,7 +47,7 @@
             </div>
           </template>
         </q-table>
-      </div> -->
+      </div>
       <!-- SECCION SEGUNDA TABLA -->
 
 
@@ -131,7 +132,9 @@
 
           <template v-slot:body-cell-opciones="props">
             <td>
-
+              <q-btn class="botonEditar" style="background-color: #029127;" @click="showDetailsOrder(props.row)">
+                <q-icon style="color: white;" name="visibility"></q-icon>
+              </q-btn>
               <q-btn class="botonEditar q-mx-xs" style="background-color: #029127;" @click="modifyOrder(props.row)">
                 <q-icon style="color: white;" name="edit"></q-icon>
               </q-btn>
@@ -183,10 +186,8 @@ const pagination = ref({
   // rowsNumber: xx if getting data from a server
 })
 
-
 let ids = {
   order_id: "",
-
 }
 
 
@@ -262,9 +263,9 @@ const rowss = ref([])
 let filter = ref('')
 let selected = ref([])
 
-// function clean() {
-//   phase.value = activity.value = estado.value = ''
-// }
+function clean() {
+  // phase.value = activity.value = estado.value = ''
+}
 
 /**
  * Obtiene los pedidos de la api
@@ -332,17 +333,17 @@ function newOrder() {
 
 async function createLabor() {
 
-  console.log(workers.value['value'], 'e');
+  console.log( 'e');
   // TODO: mostrar cargando en esta parte, Michael encontro un bug aqui si la conecion esta leta creo mas de 6 ordenes con vario click solo añadiendo uno
-  laboresForm.value = !laboresForm.value;
-  await workService.addWork({
-    phase: phase.value["value"],
-    stateActivity: stateActivity.value,
-    activity: activity.value,
-    workers:workers.value['value'],
-    elements:[elements.value['value']]
+  // laboresForm.value = !laboresForm.value;
+  // await workService.addWork({
+  //   phase: phase.value["value"],
+  //   stateActivity: stateActivity.value,
+  //   activity: activity.value,
+        // workers:workers.value['value'],
+  //   elements:[elements.value['value']]
 
-  });
+  // });
   // console.log(phase.value.value);
 
 
@@ -350,17 +351,6 @@ async function createLabor() {
   getOrders();
   clean();
 
-}
-
-/**
- * Calcula el área de un rectángulo.
- *
- * @param {number} width - Ancho del rectángulo.
- * @param {number} height - Altura del rectángulo.
- * @returns {number} El área del rectángulo.
- */
-function calcularAreaRectangulo(width, height) {
-  return width * height;
 }
 
 /**
@@ -372,19 +362,19 @@ function modifyOrder(ObjectOrder) {
   isAdd.value = false
   readonly.value = true
   ids["order_id"] = ObjectOrder._id
-  estado.value = ObjectOrder.orderStatus
+  // estado.value = ObjectOrder.orderStatus
   phase.value = ObjectOrder.customer.name
   activity.value = ObjectOrder.sendAddress
 }
 
 async function savedChanges() {
   if (ids) {
-    await orderService.editOrder({
-      id: ids["order_id"],
-      customer: phase.value["value"],
-      sendAddress: activity.value,
-      orderStatus: estado.value
-    });
+    // await orderService.editOrder({
+    //   id: ids["order_id"],
+    //   customer: phase.value["value"],
+    //   sendAddress: activity.value,
+    //   orderStatus: estado.value
+    // });
     ids = {}
     clean()
   }
@@ -397,7 +387,7 @@ async function savedChanges() {
  * @param {string} id - id del pedido
  */
 async function inactivedOrder(id) {
-  await orderService.disabledOrder(id)
+  // await orderService.disabledOrder(id)
   getOrders();
 }
 /**
@@ -405,7 +395,7 @@ async function inactivedOrder(id) {
  * @param {string} id - id del pedido
  */
 async function activedOrder(id) {
-  await orderService.enabledOrder(id)
+  // await orderService.enabledOrder(id)
   getOrders();
 }
 

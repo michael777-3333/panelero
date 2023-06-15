@@ -140,6 +140,8 @@
   
 <script setup>
 import { ref } from "vue";
+import { showAlert } from '../../../modules/sweetalert.js';
+import { peopleService } from "../../../api/";
 import { useUsuarioStore, usePersonasStore } from "../../../stores/index.js";
 
 import { useQuasar } from 'quasar'

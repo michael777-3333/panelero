@@ -392,8 +392,6 @@ function showDetailsOrder(ObjectOrder) {
 }
 
 </script>
-  
-<!-- /*_*/ -->
 
 <style lang="sass" scoped>
 /*_*/

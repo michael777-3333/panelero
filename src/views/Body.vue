@@ -1,3 +1,4 @@
+<!-- Borrar -->
 <template>
   <div class="q-pa-none">
     <q-layout view="hHh Lpr fFf" container style="height: 100vh" class="shadow-2">

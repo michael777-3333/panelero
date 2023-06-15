@@ -1,18 +1,18 @@
-<template>
+<!-- <template>
     <div>
         <h1>Error 404</h1>
     </div>
-</template>
-<!-- 
+</template> -->
+
 <template>
 	<div class="error-page">
 		<div class="error-code">4<span>0</span>4</div>
-		<div class="error-desc">啊哦~ 你所访问的页面不存在</div>
+		<div class="error-desc">¡Ah, oh! La página que estás intentando acceder no existe.</div>
 		<div class="error-handle">
 			<router-link to="/">
-				<el-button type="primary" size="large">返回首页</el-button>
+				<el-button type="primary" size="large">Volver a la página de inicio</el-button>
 			</router-link>
-			<el-button class="error-btn" type="primary" size="large" @click="goBack">返回上一页</el-button>
+			<el-button class="error-btn" type="primary" size="large" @click="goBack">Volver a la página anterior</el-button>
 		</div>
 	</div>
 </template>
@@ -57,4 +57,4 @@ const goBack = () => {
 .error-btn {
 	margin-left: 100px;
 }
-</style> -->
+</style>

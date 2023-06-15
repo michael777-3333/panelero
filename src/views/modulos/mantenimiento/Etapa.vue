@@ -80,13 +80,8 @@
     
 <script setup>
 import { ref } from 'vue';
-
-import { useUsuarioStore,useInventarioStore, useEtapaStore, useLoteStore, usePersonasStore } from "../../../stores/index.js";
+import { phaseService, allotmentService } from "../../../api/";
 import { showAlert } from '../../../modules/sweetalert.js';
-
-
-const storeEtapa=useEtapaStore()
-const storeLotes=useLoteStore()
 
 
 let fullWidth = ref(false)
@@ -142,41 +137,34 @@ const columns = [
 ];
 
 async function ordenarEtapas() {
+
     try {
         let res = {}
 
-        res.lote = await storeLotes.getLote()
-        res.etapa = await storeEtapa.getEtapa()
+        res['etapa'] = await phaseService.getEtapa()
+        res['lote'] = await allotmentService.getAllotment()
 
-        if (res['etapa'].status == 200) {
-            rows.value = res['etapa'].data
-            console.log(rows.value);
-            if (res['etapa'].data.length === 0) {
-                showAlert('No se encontraron registros', 'info')
-                console.log("No se encontraron registros");
-            }
-        } else if (res['etapa'].status == 403) {
-            console.log("No existe token");
-            showAlert("No existe token", 'info')
+        rows.value = res['etapa']
+        if (res['etapa'].length === 0) {
+            showAlert('No se encontraron registros', 'info')
+            console.log("No se encontraron registros");
+        }
+
+        if (res['lote'].length === 0) {
+            showAlert('No se encontraron registros', 'info')
+            console.log("No se encontraron registros");
         } else {
-            console.log(res.status);
+            optionsCustomers.value = res['lote'].map((element) => ({
+                label: element.name,
+                value: element._id
+            }));
         }
 
-        if (res['lote'].status == 200) {
-            if (res['lote'].data.length === 0) {
-                showAlert('No se encontraron registros', 'info')
-                console.log("No se encontraron registros");
-            } else {
-                optionsLote.value = res['lote'].data.map((element) => ({
-                    label: element.name,
-                    value: element._id
-                }));
-            }
-        }
 
     } catch (error) {
-        console.log("Error al obtener las peticiones ", error);
+        console.error("Error al obtener las peticiones", error);
     }
+
 
 }
 
@@ -196,13 +184,13 @@ async function createEtapa() {
     });
   }
     else if (validarEditar.value==true) {
-        await storeEtapa.addEtapa({
+        await phaseService.addPhase({
         name: nombre.value,
         allotment:lotes.value["value"]
     })
     ordenarEtapas()
     }else if (validarEditar==false) {
-        await storeEtapa.editEtapa({
+        await phaseService.editPhase({
             id: data.value._id,
             name: nombre.value,
             allotment:lotes.value["value"]
@@ -221,9 +209,9 @@ async function createEtapa() {
  }
  async function editarEstado(props) {
     if (props.state==1) {
-        await storeEtapa.activarEtapa(props)
+        await phaseService.enabledPhase(props._id)
     }else if (props.state==0) {
-        await storeEtapa.desactivarEtapa(props)
+        await phaseService.disabledPhase(props._id)
     }
     ordenarEtapas();
  }

@@ -221,12 +221,8 @@ function editFinca(a) {
 
 async function createFinca() {
   if (name.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite el nombre",
-    });
-  }
-  else if (validarEditar.value == true) {
+    showAlert("digite el nombre")
+  } else if (validarEditar.value == true) {
     await store.addfinca(
       {
         name: name.value,
@@ -235,23 +231,20 @@ async function createFinca() {
       })
     ordenarfinca()
     alert.value = false
-    $q.notify({
-      type: "positive",
-      message: "la finca ha sido agregada correctamente",
-    });
+    showAlert("la finca ha sido agregada correctamente", 'success')
+
     validarEditar.value = true
   } else if (validarEditar.value == false) {
-    await store.editfinca(
+    await farmService.editFarm(
       {
-        id: data.value._id, name: name.value,
+        id: data.value._id,
+        name: name.value,
         name: name.value,
         // ownerFarm: ownerFarm.value,
 
       })
-    $q.notify({
-      type: "positive",
-      message: "la finca ha sido actualizado correctamente",
-    });
+    showAlert("la finca ha sido actualizado correctamente", 'success')
+
     alert.value = false
     validarEditar.value = true;
     ordenarfinca()
