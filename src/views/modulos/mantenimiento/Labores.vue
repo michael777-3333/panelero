@@ -198,6 +198,7 @@ let denseOpts = ref(true);
 let laboresForm = ref(false);
 let laboresFormr = ref(false);
 let rows = ref([]);
+let vectorLabores=ref([])
 const columns = [
   {
     name: "id",
@@ -296,7 +297,7 @@ async function getOrders() {
         label: e.name,
         value: e._id
       }))
-      console.log(optionElementos.value, 'yy');
+      // console.log(optionElementos.value, 'yy');
     }
 
     if (res['persona'].length === 0) {
@@ -332,22 +333,35 @@ function newOrder() {
 }
 
 async function createLabor() {
+vectorLabores.value.push(elements.value)
 
-  console.log( 'e');
+let arrayData = []
+
+for (let index = 0; index < vectorLabores.value.length; index++) {
+  console.log('f');
+  // console.log(vectorLabores.value[index]); 
+  for(let position= 0; position < vectorLabores.value[index].length; position++){
+    arrayData.push(vectorLabores.value[index][position].value) 
+    console.log(arrayData, ' d');
+  }
+}
+  
+// }
+
+// console.log(vectorLabores.value, ' dd');
+// console.log(vectorLabores.value["value"], ' hh');
   // TODO: mostrar cargando en esta parte, Michael encontro un bug aqui si la conecion esta leta creo mas de 6 ordenes con vario click solo añadiendo uno
-  // laboresForm.value = !laboresForm.value;
-  // await workService.addWork({
-  //   phase: phase.value["value"],
-  //   stateActivity: stateActivity.value,
-  //   activity: activity.value,
-        // workers:workers.value['value'],
-  //   elements:[elements.value['value']]
-
-  // });
+  laboresForm.value = !laboresForm.value;
+  await workService.addWork({
+  phase: phase.value["value"],
+  stateActivity: stateActivity.value,
+  activity: activity.value,
+  workers:workers.value['value'],
+  elements: {arrayData}
+  });
   // console.log(phase.value.value);
 
-
-
+// console.log(vectorLabores.value[0], 'ff');
   getOrders();
   clean();
 
