@@ -1,17 +1,11 @@
 <template>
-  <!-- DIV ROW CENTRAL -->
-  <div class="row justify-center d-flex items-center h-2">
-    <!-- DIV COLS RESPONSIVOS -->
-    <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
-
+  <div class="row justify-center items-center h-2">
     <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
-      <!-- SECCION SEGUNDA TABLA -->
       <div v-show="costosFormr" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Costos</span>
 
           <q-btn @click="costosFormr = !costosFormr" class="bg-red text-white float-right" label="X" />
-          <!-- <span><br><br></span> -->
         </q-card-section>
         <h1 label="Aqui se vera los items de pedios"></h1>
 

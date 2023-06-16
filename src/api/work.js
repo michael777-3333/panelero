@@ -32,7 +32,7 @@ const editWork = async (reqData) => {
     const { data, status} = await request(
         {
             method: 'put',
-            url: `${url.labor}${reqData.id}`,
+            url: `${url.labor}/${reqData.id}`,
             data: reqData,
             headers: {
                 'token': getToken(),

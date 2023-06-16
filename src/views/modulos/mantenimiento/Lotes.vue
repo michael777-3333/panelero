@@ -1,6 +1,6 @@
 <template>
   <div class="justify-center d-flex">
-    <div class="row">
+    <div v-show="!alert" class="row">
         <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
           <div v-if="showTable !== false" class="q-ma-xs-md q-ma-lg-sm">
@@ -34,52 +34,40 @@
             <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
           </div>
         </div>
-
-
-
-        <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
-
-
+    </div>
+    <div v-show="alert" class="row">
+      <div class="col-12 justify-center" style="display: flex">
+        <div style="width: 800px">
+        <div style="color: white; font-size: 20px; height: 8vh; background-color: #029127;" class="q-mb-md">Lotes</div>
         <div class="row justify-center">
-          <div class="col-10">
-            <q-dialog v-model="alert" persistent>
-              <q-card>
-                <q-card-section class="cardLotes">
-                  <div style="color:  white" class="text-h6">Lotes</div>
-                </q-card-section>
-
-                <q-card-section class="q-pt-none">
-                  <div class="row justify-center">
-                    <div class="col-5">
-                      <div class="buton">
-                        <q-input filled v-model="name" class="input"  label="Nombre" :dense="dense" />
-                      </div>
-                    </div>
-                    <div class="col-5">
-                      <div class="buton">
-                        <q-input filled v-model="size" class="input"  label="Tamaño" :dense="dense" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="row justify-center q-mt-lg">
-                    <div class="col-10">
-                      <div class="buton">
-                        <q-select filled v-model="granja" class="input"  label="granja" :options="optionsGranja" />
-                      </div>
-                    </div>
-                  </div>
-                </q-card-section>
-                  
-                <q-separator />
-                    
-                <q-card-actions align="center">
-                  <q-btn @click="createAllotment()" style="bottom: green; color: white;" class="q-my-md bg-green" label="Crear Lote" />
-                  <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
+          <div class="col-5">
+            <div class="buton">
+              <q-input filled v-model="name" class="input"  label="Nombre" :dense="dense" />
+            </div>
           </div>
+          <div class="col-5">
+            <div class="buton">
+              <q-input filled v-model="size" class="input"  label="Tamaño" :dense="dense" />
+            </div>
+          </div>
+        </div>
+                  
+        <div class="row justify-center q-mt-lg">
+          <div class="col-10">
+            <div class="buton">
+              <q-select filled v-model="granja" class="input"  label="granja" :options="optionsGranja" />
+            </div>
+          </div>
+        </div>
+        
+        <div class="row justify-end  q-mt-lg q-mr-xl">
+          <div class="col-10" align="end">
+            <q-btn @click="createAllotment()" style="bottom: green; color: white;" class="q-mr-xs bg-green" label="Crear Lote" />
+            <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
+          </div>
+          </div>
+        
+        </div>  
       </div>
     </div>
   </div>
@@ -87,14 +75,8 @@
   
 <script setup>
 import { ref } from "vue";
-// import axios from "axios";
-// import { useLoteStore } from "../../../stores/lotesStore.js";
-// import { useUsuarioStore } from "../../../stores/usuarioStore";
-// import { useUsuarioStore, useLoteStore , usefincaStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
 import { farmService, allotmentService} from "../../../api/";
-
-// import { storeToRefs } from "pinia";
 
 import { useQuasar } from "quasar";
 
@@ -132,7 +114,6 @@ async function ordenarLotes() {
     res.lotes = await allotmentService.getAllotment();
     res.fincas = await farmService.getFarm();
 
-    // if (res["lotes"].status == 200) {
       rows.value = res['lotes'];
       showTable.value = true;
 
@@ -201,18 +182,20 @@ async function createAllotment() {
     });
   }
   else if (validarEditar.value == true) {
-    await allotmentService.addAllotment({
+    await store.addLote({
       size: size.value, name: name.value, farm: granja.value["value"]
     });
     ordenarLotes();
     console.log(rows.value);
     alert.value = false;
-    showAlert("el lote ha sido creado correctamente", 'success')
-
+    $q.notify({
+      type: "positive",
+      message: "el lote ha sido creado correctamente",
+    });
   }
   else if (validarEditar.value == false) {
     console.log(data.value);
-    await allotmentService.editAllotment({
+    await store.editLote({
       id: data.value._id,
       name: name.value, 
       size: size.value, 
@@ -220,8 +203,10 @@ async function createAllotment() {
       createdAt: createdAt.value
     });
     ordenarLotes();
-    showAlert("el lote ha sido actualizado correctamente", 'success')
-
+    $q.notify({
+      type: "positive",
+      message: "el lote ha sido actualizado correctamente",
+    });
     alert.value = false
     validarEditar.value = true;
   }
@@ -275,39 +260,4 @@ function cerrarModal() {
 
 
 <style>
-/* .cardLotes{
-  background-color: green ;
-}
-.input{
-  border-radius: 50px;
-}
-.buton{
-  border-radius: 50px;
-  margin: 3px 3px;
-}
-.lotesCard{
-  margin-top: 30px;
-} */
-
-/* .tituloLotes {
-  background-color: #f39a31;
-  border-radius: 30px;
-
-}
-
-.tituloh1 {
-  font-size: 20px;
-}
-
-.buton {
-
-  background-color: #f8ede2;
-  border-radius: 30px;
-  margin: 3px 3px;
-
-}
-
-.dialogLotes {
-  background-color: #f39a31;
-} */
 </style>
