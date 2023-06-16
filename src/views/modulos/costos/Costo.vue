@@ -9,7 +9,7 @@
         </q-card-section>
         <h1 label="Aqui se vera los items de pedios"></h1>
 
-        <q-table title="Treats" :rows="rowss" :columns="columnss" row-key="name" selection="multiple"
+        <q-table title="Treats" :rows="rowsElemets" :columns="columnsProcesos" row-key="name" selection="multiple"
           v-model:selected="selected" :filter="filter" grid hide-header>
           <template v-slot:top-right>
             <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -66,7 +66,21 @@
                 </div>
 
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-input v-model="process" label="Proceso" :readonly="readonly" />
+                  <q-select
+                    filled
+                    v-model="process"
+                    :options="optionsProcesos"
+                    label="Labores"
+                    multiple
+                    stack-label
+                    :dense="dense"
+                    :options-dense="denseOpts"
+                    hint="Elegir inventario"
+                    use-input
+                    use-chips
+                    input-debounce="0"
+                    style="width: 250px"
+                  />
                 </div>
 
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
@@ -79,8 +93,6 @@
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
                   <q-input v-model="updatedAt" label="Fecha entrega" :readonly="readonly" />
                 </div>
-
-
               </div>
             </q-card-section>
             <q-separator />
@@ -157,7 +169,7 @@
   
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount } from "vue";
-import { costService, paymentTypeService  } from "../../../api/";
+import { costService, paymentTypeService, workService, inventoryService  } from "../../../api/";
 
 import { useCostoStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
@@ -173,7 +185,7 @@ let typeOutlay = ref()
 let updatedAt = ref()
 let optionsPago =ref([])
 let data =ref()
-
+let optionsProcesos=ref([])
 
 // let optionsDocument = ref(['CC', 'TI', 'CE', 'PS', 'DNI', 'NIT', 'PR', 'PEP', 'PPT']);
 let visibleColumns = ref([
@@ -182,6 +194,7 @@ let visibleColumns = ref([
   'tipo de pago',
   'fecha entrega',
   'total trabajo',
+  'opciones'
 ])
 const pagination = ref({
   sortBy: 'desc',
@@ -199,7 +212,8 @@ let ids = {
 }
 
 // let 
-
+let vectorTrabajadores=ref([])
+let vectorElementos=ref([])
 let isAdd = ref(true); // Estoy Añadiendo?
 let readonly = ref(false); // habilita la edicion de los inputs
 let dense = ref(!true);
@@ -227,7 +241,7 @@ const columns = [
   label: "Proceso",
   align: "center",
   field: (row)=> row.process,
-  format: (val)=> `${val}`
+  format: (val)=> `${val.activity}`
 },
 { 
     name: "tipo de pago",
@@ -252,16 +266,21 @@ const columns = [
     field: (row)=> row.totalWorth,
     format: (val)=> `${val}` 
 },
+{
+    name: "opciones",
+    align: "center",
+    label: "Opciones",
+    field: "Opciones",
+},
+  
 ];
 
-// 2
-// const columnss = ref([
-//   { name: 'calories', align: 'center', label: 'Valor', field: 'worth', sortable: true },
-//   { name: 'fat', label: 'Cantidad', field: 'quantity', sortable: true },
+const columnsProcesos=ref([
 
-// ])
+])
 
-const rowss = ref([])
+
+const rowsElemets = ref([])
 let filter = ref('')
 let selected = ref([])
 
@@ -281,10 +300,13 @@ async function getCost() {
 
     res['costo'] = await costService.getCost()
     res['tipoPago'] = await paymentTypeService.getPaymentType()
-
+    res['labores']=await workService.getWork()
+    // console.log(res['labores'], 's');
     // if (res['costo'].status == 200) {
       rows.value = res['costo']
-      console.log( rows.value);
+      console.log(res['labores'] ,'ll');
+      console.log(destructuracioDatos(), 'f');
+      console.log( rows.value, 'se');
       optionsPago.value=res['tipoPago'].map((e)=>({
         label: e.name,
         value:e._id
@@ -295,12 +317,40 @@ async function getCost() {
         console.log("No se encontraron registros");
       }
 
+      if (res['labores'].length===0) {
+        showAlert("No se encontraron registros", "info");
+        console.log("No se encontraron registros");
+      }else{
+        optionsProcesos.value=res['labores'].map((e)=>({
+          label: e.activity,
+          value: e._id
+        }))
+
+      // console.log(optionsProcesos.value);
+      }
+
   } catch (error) {
     console.log("Error al obtener las peticiones", error);
   }
 
 }
 
+
+function destructuracioDatos() {
+  for (let index = 0; index < rows.value.length; index++) {
+     console.log(rows.value[index].process.elements , 'g');
+    vectorElementos.value.push(rows.value[index].process.workers.name) 
+  }
+
+ let vetor= rows.value.value.map((e)=>({
+    label: e.name,
+    value: e._id
+  }))
+  console.log(vetor , 'vec');
+  
+
+}
+// console.log(destructuracioDatos());
 
 async function createOrder() {
   // TODO: mostrar cargando en esta parte, Michael encontro un bug aqui si la conecion esta leta creo mas de 6 ordenes con vario click solo añadiendo uno
@@ -375,7 +425,7 @@ onBeforeMount(() => {
 
 function showDetailsOrder(ObjectOrder) {
   costosFormr.value = !costosFormr.value
-  rowss.value = ObjectOrder.products
+  rowsElemets.value = ObjectOrder.products
   console.log(ObjectOrder.products);
 
 }

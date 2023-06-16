@@ -1,10 +1,8 @@
 <template>
-  <div class="justify-center d-flex">
-    <div v-show="!alert" class="row">
-        <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
+    <div v-show="!alert" class="row  justify-center items-center"  style="height: 80vh;">
+        <div class="col-10">
           <div v-if="showTable !== false" class="q-ma-xs-md q-ma-lg-sm">
-            <q-table title="Lotes" :rows="rows" :columns="columns" row-key="_id">
+            <q-table :rows="rows" :columns="columns" row-key="_id">
               <template v-slot:top="props">
                 <div class="col-6" align="left"><span style="font-size: 25px;">Lotes</span></div>
                 <div class="col-6" align="right">
@@ -35,10 +33,9 @@
           </div>
         </div>
     </div>
-    <div v-show="alert" class="row">
-      <div class="col-12 justify-center" style="display: flex">
-        <div style="width: 800px">
-        <div style="color: white; font-size: 20px; height: 8vh; background-color: #029127;" class="q-mb-md">Lotes</div>
+    <div v-show="alert" class="row justify-center items-center"  style="height: 80vh;">
+      <div class="col-10">
+        <div style="height: 6vh; background-color: #029127; color: white; display: flex; font-size: 25px" class="items-center prueba" ><p class="q-my-none q-ml-sm">Lotes</p></div>
         <div class="row justify-center">
           <div class="col-5">
             <div class="buton">
@@ -67,10 +64,8 @@
           </div>
           </div>
         
-        </div>  
-      </div>
+        </div>
     </div>
-  </div>
 </template>
   
 <script setup>
@@ -259,5 +254,9 @@ function cerrarModal() {
 </script>
 
 
-<style>
+<style scope>
+  .prueba {
+    border-radius: 4px;
+    
+  }
 </style>

@@ -13,7 +13,7 @@
           <q-btn @click="pedidosFormr = !pedidosFormr" class="bg-red text-white float-right" label="X" />
           <!-- <span><br><br></span> -->
         </q-card-section>
-        <h1 label="Aqui se vera los items de pedios"></h1>
+        <h1 label="Aqui se verá los items de pedios"></h1>
 
         <q-table title="Treats" :rows="rowss" :columns="columnss" row-key="name" selection="multiple"
           v-model:selected="selected" :filter="filter" grid hide-header>
@@ -56,7 +56,7 @@
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Pedidos</span>
 
-          <q-btn @click="pedidosForm = !pedidosForm" class="bg-red text-white float-right" label="X" />
+          <q-btn @click="clean()" class="bg-red text-white float-right" label="X" />
           <!-- <span><br><br></span> -->
         </q-card-section>
 
@@ -97,7 +97,7 @@
           <!-- </q-card-section>
           <q-card-section> -->
           <div align="right" class="q-mt-md">
-            <q-btn @click="pedidosForm = !pedidosForm" class="bg-red text-white q-mx-sm" label="Cerrar" />
+            <q-btn @click="clean()" class="bg-red text-white q-mx-sm" label="Cerrar" />
 
             <q-btn class="bg-white">
               <span v-if="isAdd == true" @click="savedChanges()">Crear Pedido</span>
@@ -138,9 +138,9 @@
                 <q-icon style="color: white;" name="edit"></q-icon>
               </q-btn>
               <q-btn class="botonEditar">
-                <span v-if="props.row.state == 1" @click="inactivedOrder(props.row._id)"><i
+                <span v-if="props.row.state == 1" @click="changeStatus(props.row._id, props.row.state)"><i
                     class="bi bi-toggle-on text-success"></i></span>
-                <span v-else><i class="bi bi-toggle-off text-danger" @click="activedOrder(props.row._id)"></i></span>
+                <span v-else><i class="bi bi-toggle-off text-danger" @click="changeStatus(props.row._id, props.row.state)"></i></span>
               </q-btn>
             </td>
 
@@ -148,6 +148,7 @@
         </q-table>
       </div>
       <!-- SECCION PRIMERA TABLA -->
+      
       <!-- ANIMACION DE CARGA -->
       <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
         <q-linear-progress dark query color="green" class="q-mt-sm" />
@@ -155,6 +156,7 @@
       </div>
       <!-- ANIMACION DE CARGA -->
     </div>
+
     <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
     <!-- DIV COLS RESPONSIVOS -->
   </div>
@@ -186,10 +188,7 @@ const pagination = ref({
 
 // const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
 // console.log(pagesNumber);
-let ids = {
-  order_id:"",
-  // customer:""
-}
+let ids = {order_id:"",}
 
 
 let isAdd = ref(true); // Estoy Añadiendo?
@@ -243,6 +242,8 @@ let filter= ref('')
 let selected= ref([])
 
 function clean() {
+  pedidosForm.value = !pedidosForm.value;
+  isAdd.value          = false
   cliente.value = direccionEnvio.value = estado.value = ''
 }
 
@@ -281,6 +282,7 @@ async function getOrders() {
 function newOrder() {
   pedidosForm.value = isAdd.value = true
   // pedidosForm.value  = true
+  isAdd.value    = true
   readonly.value = false
 }
 
@@ -302,9 +304,9 @@ function newOrder() {
  * @param {object} ObjectOrder - Info del pedido
  */
 function modifyOrder(ObjectOrder) {
-  pedidosForm.value = !pedidosForm.value
-  isAdd.value = false
-  readonly.value = true
+  pedidosForm.value    = !pedidosForm.value
+  isAdd.value          = false
+  readonly.value       = true
   ids["order_id"]      = ObjectOrder._id
   estado.value         = ObjectOrder.orderStatus
   cliente.value        = ObjectOrder.customer.name
@@ -312,42 +314,57 @@ function modifyOrder(ObjectOrder) {
 }
 
 async function savedChanges() {
-  let data = {
-    customer: cliente.value["value"],
-    sendAddress: direccionEnvio.value,
-    orderStatus: estado.value,
-  }
+  if (validations()) {
 
-  if (isAdd.value) {
-    // async function createOrder() {
+    let data = {
+      id: ids["order_id"],
+      customer: cliente.value["value"],
+      sendAddress: direccionEnvio.value,
+      orderStatus: estado.value,
+    }
+
     // TODO: mostrar cargando en esta parte, Michael encontro un bug aqui si la conecion esta leta creo mas de 6 ordenes con vario click solo añadiendo uno
-    await orderService.addOrder(data);
-  }
-  else if (ids) {
-    data['id'] = ids["order_id"];
-    await orderService.editOrder(data);
-    ids = {}
+    if (isAdd.value) {
+      await orderService.addOrder(data);
+    } else if (!isAdd.value) {
+      await orderService.editOrder(data);
+      ids["order_id"] = ''
+    }
+
+    getOrders();
+    clean()
   }
 
-  clean()
-  getOrders();
-  pedidosForm.value = !pedidosForm.value;
 }
- /**
-  * Desactiva el pedido
-  * @param {string} id - id del pedido
-  */
-async function inactivedOrder(id) {
-  await orderService.disabledOrder(id)
-  getOrders();
-}
+
 /**
- * Activa el pedido
- * @param {string} id - id del pedido
+ * Validaciones
+ *
+ * @returns {bool} true, si todo es valido.
  */
-async function activedOrder(id) {
-  await orderService.enabledOrder(id)
-  getOrders();
+function validations() {
+  if (cliente.value == undefined || cliente.value == '') {
+    showAlert('Selecione el cliente')
+  } else if (estado.value == undefined || estado.value == '') {
+    showAlert('Selecione el estado')
+  } else if (direccionEnvio.value == undefined || direccionEnvio.value.trim() == '') {
+    showAlert('Digite la direccion de envio')
+  } else { return true }
+}
+
+/**
+ * Cambia el estado.
+ *
+ * @param {string} id - id del pedido.
+ * @param {string} status - Estado del pedido (0 or 1).
+ */
+async function changeStatus(id, status) {
+  if (status && typeof (status) == 'number' && status == 1) { // Desactiva el pedido 
+    await orderService.disabledOrder(id)
+  } else if (typeof (status) == 'number' && status == 0) { //Activa el pedido
+    await orderService.enabledOrder(id)
+  }
+  getOrders()
 }
 
 // TODO: Al des-activar puede ser solo una funcion. igual con ,las demas peticiondes de funciones

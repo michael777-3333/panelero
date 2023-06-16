@@ -1,5 +1,12 @@
 import Swal from 'sweetalert2'
 
+/**
+ * Calcula el área de un rectángulo.
+ *
+ * @param {string} msg - Texto de la alerta.
+ * @param {string} icon - Tipo de alerta: error', 'success', 'warning', 'info', 'question'.
+ */
+
 function showAlert(msg, icon="warning") {
     // const { value: accept } = await Swal.fire({
     Swal.fire({

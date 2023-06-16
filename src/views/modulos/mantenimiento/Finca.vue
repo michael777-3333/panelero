@@ -22,16 +22,13 @@
             <q-card-section>
               <div class="row" style="margin-left: 23%;">
 
-                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg" >
-                  <q-input v-model="name" :options="optionsCustomers" label="Nombre"/>
-                </div>
-
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-input v-model="ownerFarm" :options="optionsStatus" label="Dueño"/>
+                  <q-input v-model="name" label="Nombre" :readonly="readonly" />
+
                 </div>
-                <!-- <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-input v-model="editar" label="editar" :readonly="readonly" />
-                </div> -->
+                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                  <q-input v-model="ownerFarm" label="Dueño" :readonly="readonly" />
+                </div>
               </div>
             </q-card-section>
             <q-separator />
@@ -41,7 +38,7 @@
 
             <q-btn class="bg-white">
               <span v-if="isAdd == true" @click="createFinca()">Crear Finca</span>
-              <span v-else @click="savedChanges()">Modificar Modificar</span>
+              <span v-else @click="savedChanges()">Guardar</span>
             </q-btn>
           </div>
         </q-card-section>
@@ -112,7 +109,7 @@
 
                 <div class="col-5">
                   <div class="buton">
-                    <q-input filled v-model="ownerFarm" class="input" label="dueño finca" :dense="dense" />
+                    <q-input filled v-model="ownerFarm" class="input" label="dueño" :dense="dense" />
 
                   </div>
                   <!-- <q-input v-model="ownerCompany" label="proveedor" :readonly="readonly" /> -->
@@ -154,19 +151,17 @@ const store = usefincaStore()
 
 let name = ref("");
 let ownerFarm = ref("");
-let editar = ref("");
-let arrayjefes = ref([])
 let validarEditar = ref(true)
 let data = ref(null)
 let alert = ref(false);
-let visibleColumns = ref(['state', 'nombre', 'dueno finca', 'opciones'])
-let _id = null;
+let visibleColumns = ref(['state', 'nombre', 'dueno ', 'opciones'])
+let id = null;
 let rows = ref([]);
 
 let isAdd = ref(true); // Estoy Añadiendo?
 let readonly = ref(false); // hablita la edicion de los inputs
 let dense = ref(!true);
-let denseOpts = ref(true);
+
 let fincaFormr = ref(false);
 let fincaForm = ref(false);
 
@@ -180,13 +175,12 @@ const columns = [
     required: false
   },
   { name: "nombre", align: "left", label: "nombre", field: "name", sortable: true, },
-  { name: "dueno finca", label: "dueño finca", field: row => row.ownerFarm, format: (val) => `${val.name}`, },
+  { name: "dueno ", label: "dueño finca", field: (row) => row.ownerFarm, format: (val) => `${val.name}`, },
   { name: "opciones", align: "center", label: "Editar", field: "Editar" },
 ];
 
 const rowss = ref([])
-let filter = ref('')
-let selected = ref([])
+
 
 function addFinca() {
   // pedidosForm.value = isAdd.value = true
@@ -212,11 +206,45 @@ async function ordenarfinca() {
 
 }
 
-function clean() {
-  name.value = ownerFarm.value = editar.value = ''
+function closeModal() { // Cierro el modal
+  function limpiarCajas() { // Vacio los formularios
+    name.value = roles.value = password.value = ''
+  }
+  id = null
+  getUsers(); // Actualizo la tabla
+  limpiarCajas()
+  modalUser.value = false // Cierro el modal
+  isAdd.value = false
 }
-function editFinca(a) {
-  console.log(a);
+function editFinca(data) {
+  // console.log(a);
+  fincaForm.value = true;
+  isAdd.value = false
+  id = data._id
+  name.value = data.name
+  ownerFarm.value = data.ownerFarm.name
+
+}
+
+async function savedChanges() {
+  let data = {
+    name: name.value,
+    ownerFarm: ownerFarm.value
+  }
+  if (validations() && isAdd.value) {
+    data['password'] = password.value
+    // fctn de la peticion para crear usuario
+    await userService.addUser({ data });
+
+  } else if (validations() && !isAdd.value && id != null) {
+    data['id'] = id.value
+    // fctn de la peticion para editar usuario
+    // console.log(roles.value);
+    await userService.editUser({ data });
+
+  }
+
+  closeModal()
 }
 
 async function createFinca() {
@@ -226,8 +254,7 @@ async function createFinca() {
     await store.addfinca(
       {
         name: name.value,
-
-
+  
       })
     ordenarfinca()
     alert.value = false
@@ -239,7 +266,7 @@ async function createFinca() {
       {
         id: data.value._id,
         name: name.value,
-        name: name.value,
+        dueno: dueno.value,
         // ownerFarm: ownerFarm.value,
 
       })
@@ -249,18 +276,9 @@ async function createFinca() {
     validarEditar.value = true;
     ordenarfinca()
   }
+ 
 }
 
-
-// function editFinca(info) {
-//   validarEditar.value = false
-//   alert.value = true;
-//   data.value = info
-//   console.log(validarEditar.value);
-//   name.value = data.value.name
-//   createdAt.value=data.value.createdAt
-
-// }
 
 function cerrarModal() {
   console.log(validarEditar.value);
@@ -269,28 +287,10 @@ function cerrarModal() {
   console.log(validarEditar.value);
 }
 
-async function editarFinca(props) {
-  // console.log("hola");
-  console.log(props);
-  if (props.state == 0) {
-    await farmService.disabledFarm(props._id);
-  } else if (props.state == 1) {
-    await farmService.enabledFarm(props._id);
-  }
-  ordenarfinca();
-}
-
-
-// function getOwner(arrayOwner) {
-
-
-// }
 onBeforeMount(() => {
-  // getDataUsers();
-  // alert("onBeforeMount")
+
   setTimeout(() => {
-    // btnState.value = false
-    // getOrders();
+
     ordenarfinca()
 
   }, 1000)

@@ -296,10 +296,9 @@
                 @click="showDetailsOrder(props.row)"
               >
               <q-icon style="color: white" name="visibility"></q-icon>
-
-
-
               </q-btn>
+
+
               <q-btn
                 class="botonEditar q-mx-xs"
                 style="background-color: #029127"
@@ -494,8 +493,13 @@ const columnsTrabajador =ref([
     name: "estadoActividad",
     align: "center",
     label: "Estado Actividad",
-    field: "stateActivity",
     sortable: true,
+    field: "stateActivity",
+    field: (rowss) => rowss,
+    format: (val) => {
+      if (val) return val
+      return ''
+    },
   },
 ])
 
@@ -693,10 +697,15 @@ onBeforeMount(() => {
   }, 1000);
 });
 
+// function getStateActivity() {
+//   re
+// }
+
 function showDetailsOrder(ObjectOrder) {
   laboresFormr.value = !laboresFormr.value;
   rowss.value = ObjectOrder.elements;
   rowsTrabajador.value= ObjectOrder.workers
+  
   // rowsTrabajador.value.push({activity: ObjectOrder.activity}, {stateActivity: ObjectOrder.stateActivity}) // console.log(rowss.value);
   // ObjectOrder.activity
   console.log(ObjectOrder.workers, ObjectOrder.elements);

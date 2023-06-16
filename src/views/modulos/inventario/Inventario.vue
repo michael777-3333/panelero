@@ -176,9 +176,11 @@ async function ordenarInventario() {
 
     res['inventario'] = await inventoryService.getInventory();
     res['bodega'] = await storeService.getStore();
-    res['marca'] = await markService.getInventory();
+    res['marca'] = await markService.getMark();
 
     rows.value = res['inventario']
+
+    console.log(rows.value);
     if (res['inventario'].length === 0) {
       showAlert('No se encontraron registros', 'info')
       console.log("No se encontraron registros");
@@ -316,8 +318,8 @@ const columns = [
     name: "categoria",
     align: "center",
     label: "categoria",
-    field: (row) => row.category,
-    format: (val) => `${val[0].name}`
+    field: (row) => row.category[0],
+    format: (val) => `${val.name}`
 
   },
   {

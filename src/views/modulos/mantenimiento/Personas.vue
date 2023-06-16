@@ -190,59 +190,48 @@ const columns = [
 
 
 async function ordenarPersona() {
-  const res = await store.getPersona()
-  if (res.status == 200) {
-    rows.value = res.data
-  } else if (res.status == 404) {
-    console.log("No existen datos");
-  } else {
-    console.log(res.status);
+  try {
+    let res = {}
+
+    res['persona'] = await peopleService.getPeople()
+
+    rows.value = res['persona']
+    if (res['persona'].length === 0) {
+      showAlert('No se encontraron registros', 'info')
+      console.log("No se encontraron registros");
+    }
+
+
+  } catch (error) {
+    console.error("Error al obtener las peticiones", error);
   }
+
 }
 ordenarPersona()
 
-async function createPersona() {
+function validations() {
   if (name.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite el nombre",
-    });
+    showAlert('Digite el nombre')
   } else if (numberIdentification.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite el numero de identificación",
-    });
-  }else if (typePeople.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite el tipo de persona",
-    });
+    showAlert("digite el numero de identificación")
+  } else if (typePeople.value == '') {
+    showAlert("digite el tipo de persona")
   } else if (typeDocument.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "seleccione el tipo de documento",
-    });
+    showAlert("seleccione el tipo de documento")
   } else if (numberPhone.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite el número de telefeno",
-    });
+    showAlert("digite el número de telefeno")
   } else if (birthDate.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite la fecha de nacimiento",
-    });
+    showAlert("digite la fecha de nacimiento")
   } else if (residenceAddress.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite la dirección",
-    });
+    showAlert("digite la dirección")
   } else if (medicalInsuranceCompany.value == '') {
-    $q.notify({
-      type: "negative",
-      message: "digite la EPS",
-    });
-  } else if (validarEditar.value == true) {
+    showAlert("digite la EPS")
+  } else { return true }
+}
+
+async function createPersona() {
+
+   if (validarEditar.value == true && validations()) {
     await store.addPersona(
       {
         name: name.value,
@@ -254,16 +243,15 @@ async function createPersona() {
         medicalInsuranceCompany: medicalInsuranceCompany.value,
         typePeople: typePeople.value
       })
-      console.log(typePeople.value);
-    ordenarPersona()
-    alert.value = false
-    $q.notify({
-      type: "positive",
-      message: "la persona ha sido agregada correctamente",
-    });
+      
+    // ordenarPersona()
+
+    // alert.value = false
+    showAlert("la persona ha sido agregada correctamente", 'success')
     validarEditar.value = true
+
   } else if (validarEditar.value == false) {
-    await store.editPersona(
+    await peopleService.getPeople(
       {
         id: data.value._id, name: name.value,
         name: name.value,
@@ -275,14 +263,13 @@ async function createPersona() {
         medicalInsuranceCompany: medicalInsuranceCompany.value,
         typePeople: typePeople.value
       })
-    $q.notify({
-      type: "positive",
-      message: "la persona ha sido actualizado correctamente",
-    });
+      
+      showAlert('la persona ha sido actualizado correctamente', 'success')
+ 
+      validarEditar.value = true;
+    }
     alert.value = false
-    validarEditar.value = true;
-    ordenarPersona()
-  }
+  ordenarPersona()
 }
 
 function personaEditar(info) {
@@ -312,9 +299,9 @@ async function editarEstado(props) {
   // console.log("hola");
   console.log(props);
   if (props.state == 1) {
-    await store.activarPersona(props);
+    await peopleService.enabledPeople(props._id);
   } else if (props.state == 0) {
-    await store.desactivarPersona(props);
+    await peopleService.disabledPeople(props._id);
   }
   ordenarPersona();
 }

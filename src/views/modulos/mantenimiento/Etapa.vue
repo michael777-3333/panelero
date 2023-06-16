@@ -70,7 +70,7 @@
 
 
                 <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn style="color: black;" @click="createEtapa()"> Crear Etapa </q-btn>
+                    <q-btn style="color: black;" @click="createEtapa()"> Editar Etapa </q-btn>
                     <q-btn flat label="OK" v-close-popup />
                 </q-card-actions>
             </q-card>
@@ -141,7 +141,7 @@ async function ordenarEtapas() {
     try {
         let res = {}
 
-        res['etapa'] = await phaseService.getEtapa()
+        res['etapa'] = await phaseService.getPhase()
         res['lote'] = await allotmentService.getAllotment()
 
         rows.value = res['etapa']

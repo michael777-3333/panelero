@@ -5,59 +5,58 @@
       <div class="col-xs-auto col-sm-1 col-md-2 col-lg-1"></div>
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
 
-              <!-- SECCION FORMULARIO -->
-      <div v-show="modalUser" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
-        <q-card-section class="bgColorEnfasis">
-          <span class="text-black text-h6">{{ labelDialog }}</span>
+        <!-- SECCION FORMULARIO -->
+        <div v-show="modalUser" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
+          <q-card-section class="bgColorEnfasis">
+            <span class="text-black text-h6">{{ labelDialog }}</span>
 
-          <q-btn @click="modalUser = !modalUser" class="bg-red text-white float-right" label="X" />
-          <!-- <span><br><br></span> -->
-        </q-card-section>
+            <q-btn @click="modalUser = !modalUser" class="bg-red text-white float-right" label="X" />
+            <!-- <span><br><br></span> -->
+          </q-card-section>
 
-        <!-- FORMULARIO -->
-        <q-card-section class="bgColorEnfasis q-pt-none">
-          <q-card class="d-flex">
-            <q-card-section>
-              <div class="row">
-                <!-- <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+          <!-- FORMULARIO -->
+          <q-card-section class="bgColorEnfasis q-pt-none">
+            <q-card class="d-flex">
+              <q-card-section>
+                <div class="row">
+                  <!-- <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
                     <q-input v-model="cliente" label="Cliente" :dense="dense" :readonly="readonly" />
                   </div> -->
-                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-select filled v-model="roles" :options="tipoUsuario" label="tipo de usuario" stack-label
-                    :dense="dense" :options-dense="denseOpts" />
-                  <!-- <q-input v-model="" label="Estado del pedido" /> -->
+                  <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                    <q-select filled v-model="roles" :options="tipoUsuario" label="tipo de usuario" stack-label
+                      :dense="dense" :options-dense="denseOpts" />
+                    <!-- <q-input v-model="" label="Estado del pedido" /> -->
+                  </div>
+
+                  <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                    <q-input v-model="email" label="Correo" :readonly="readonly" />
+                  </div>
+
+                  <div v-show="isAdd" class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                    <q-input v-model="password" label="Contraseña" :readonly="readonly" />
+                  </div>
+
+
                 </div>
-
-                <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-input v-model="email" label="Correo" :readonly="readonly" />
-                </div>
-
-                <div v-show="isAdd" class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
-                  <q-input v-model="password" label="Contraseña" :readonly="readonly" />
-                </div>
+              </q-card-section>
+              <q-separator />
 
 
-              </div>
-            </q-card-section>
-            <q-separator />
-
-
-
-          </q-card>
-          <!-- </q-card-section>
+            </q-card>
+            <!-- </q-card-section>
           <q-card-section> -->
-          <div align="right" class="q-mt-md">
-            <q-btn @click="modalUser = !modalUser" class="bg-red text-white q-mx-sm" label="Cerrar" />
+            <div align="right" class="q-mt-md">
+              <q-btn @click="modalUser = !modalUser" class="bg-red text-white q-mx-sm" label="Cerrar" />
 
-            <q-btn class="bg-white">
-              <span v-if="isAdd == true" @click="createUser()">Crear Pedido</span>
-              <span v-else @click="_modifyUser()">Modificar Pedido</span>
-            </q-btn>
-          </div>
-        </q-card-section>
-        <!-- FORMULARIO -->
-      </div>
-      <!-- SECCION FORMULARIO -->
+              <q-btn class="bg-white">
+                <span v-if="isAdd == true" @click="saveChnages()">Crear Pedido</span>
+                <span v-else @click="saveChnages()">Modificar Pedido</span>
+              </q-btn>
+            </div>
+          </q-card-section>
+          <!-- FORMULARIO -->
+        </div>
+        <!-- SECCION FORMULARIO -->
 
         <div v-if="rows.length > 0" v-show="!modalUser" class="q-ma-xs-md q-ma-lg-sm">
           <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen usuarios!"
@@ -99,8 +98,6 @@
     </div>
 
 
-
-    <!--dialog-->
   </div>
 </template>
 
@@ -211,11 +208,6 @@ async function editState(props) {
   getUsers();
 }
 
-function newUser() {
-  modalUser.value = true
-  isAdd.value = true
-}
-
 function validations() {
 
   if (roles.value == '') {
@@ -229,26 +221,12 @@ function validations() {
   else { return true }
 }
 
-
-//crear usuario en la base de datos
-async function createUser() {
-  if (validations() && isAdd.value) {
-    // fctn de la peticion para crear usuario
-    const res = await userService.addUser({
-      email: email.value,
-      password: password.value,
-      roles: roles.value,
-    });
-
-    if (res.status == 201) {
-      showAlert(res.data.msj, 'success')
-    }
-    closeModal()
-  }
+function newUser() {
+  modalUser.value = true
+  isAdd.value = true
 }
 
 function modifyUser(data) {
-  // console.log(data);
   modalUser.value = true;
   isAdd.value = false
   id = data._id
@@ -258,27 +236,27 @@ function modifyUser(data) {
   roles.value = getRol(data.roles)
 }
 
-async function _modifyUser() {
-  if (validations() && !isAdd.value && id != null) {
+async function saveChnages() {
+  let data = {
+    email: email.value,
+    roles: roles.value,
+  }
+  
+  //crear usuario en la base de datos
+  if (validations() && isAdd.value) {
+    data['password'] = password.value
+    // fctn de la peticion para crear usuario
+    await userService.addUser({ data });
+
+  } else if (validations() && !isAdd.value && id != null) {
+    data['id'] = id.value
     // fctn de la peticion para editar usuario
     // console.log(roles.value);
+    await userService.editUser({ data });
 
-    const res = await userService.editUser({
-      id: id,
-      email: email.value,
-      roles: roles.value
-    });
-
-    if (res.status == 200) {
-      showDoneMessage(res.data.msj)
-    }
-    closeModal()
   }
-}
-function cerrarModal() {
-  // validarCrear = true
+
   closeModal()
-  isAdd.value = false
 }
 
 </script>
@@ -300,16 +278,18 @@ function cerrarModal() {
 .rowPrincipal {
   background-color: rgb(16, 16, 122);
 }
-.input{
+
+.input {
   border-radius: 50px;
   /* background-color: rgba(0, 128, 0, 0.287); */
 
 }
-.card{
+
+.card {
   color: white;
   background-color: green;
 }
-.card1{
+
+.card1 {
   margin-top: 30px;
-}
-</style>
+}</style>
