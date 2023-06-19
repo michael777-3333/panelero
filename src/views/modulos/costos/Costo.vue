@@ -3,18 +3,17 @@
     <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 text-center">
       <!-- <div v-if="rows.length != 0" v-show="!costosForm && !costosFormr" transition-show="slide-up"
         transition-hide="slide-down" class="q-ma-xs-md q-ma-lg-sm animated zoomIn "> -->
-      <div v-show="costList == false">
+      <div v-show="costList == false && costForm == false">
         <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
-        card-class="bg-white text-black" table-class="text-black-8" flat bordered
+        card-class="bg-white text-black" table-class="text-black-8" flat bordered :visible-columns="visibleColumns"
         >
-        <!-- :visible-columns="visibleColumns" -->
           <template v-slot:top>
             <div class="col-6 " align="left">
               <span style="font-size: 25px;">Costos</span>
             </div>
 
             <div class="col-6" align="right">
-              <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;" @click="addOrder()" glossy label="Crear Costo" />
+              <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;" @click="showForm()" glossy label="Crear Costo" />
             </div>
 
           </template>
@@ -45,7 +44,7 @@
       </div> -->
       
         
-      
+        <!-- lista -->
       <div v-show="costList == true">
         <q-card bordered>
           <q-card-section class="bgColorEnfasis" >
@@ -58,6 +57,7 @@
                 <div class="row item-center justify-center">
                   <div class="col-8">
                     <div class="text-center q-pa-sm" v-text="item.element ? item.element.name : item.people.name"></div>
+                    <div v-text="'Tipo gasto: ' + item.typeOutlay.name" style="font-size: 12px"></div>
                     <div style="font-size: 12px;" v-text="'Valor: $' + item.worth"></div>
                   </div>
                 </div>
@@ -70,58 +70,177 @@
           </q-card-actions>
         </q-card>
       </div>
+
+        <!-- formulario -->
+      <div v-show="costForm">
+        <q-card>
+	        <q-card-section class="bgColorEnfasis" align="left">
+            <span class="text-white" style="font-size: 25px;">Costos</span>
+          </q-card-section>
+	        
+          <q-card-section>
+            <div class="row">
+              <div class="col-xs-6 col-md-6 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                <q-select
+                  filled
+                  v-model="process"
+                  :options="optionsProcess"
+                  label="Labor"
+                />
+              </div>
+
+              <div class="col-xs-6 col-md-6 justify-center  q-pa-xs-sm q-px-sm-md q-px-sm-lg">
+                <q-btn @click="openDialog()" label="Lista"/>
+              </div>
+            </div>
+          </q-card-section>
+          
+          <q-separator />
+
+          <q-card-actions align="right" class="q-mr-md">
+            <q-btn @click="costForm = !costForm" class="bg-red text-white q-mx-sm" label="Cerrar" />
+
+            <q-btn class="bg-white text-black">
+              <span>Crear Costo</span>
+            </q-btn>
+          </q-card-actions>	
+        </q-card>
+          <!-- formulario dialog -->
+        <q-dialog v-model="showDialog">
+          <q-card style="width: 700px; max-width: 80vw;">
+            <q-card-section class="bgColorEnfasis text-white">
+              <span class="text-white" style="font-size: 25px;">Lista</span>
+            </q-card-section>
+            <q-card-section>
+              <div class="row">
+                <div class="col-6">
+                  <q-select filled :disable="element !== null" v-model="people" label="Persona"  :options="optionsPeople" />
+                </div>
+                <div class="col-6">
+                  <q-select filled :disable="people !== null" v-model="element" label="Elemento"  :options="optionsElement" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+			            <q-select filled v-model="typeOutlay" label="Tipo Gasto"  :options="optionsOutlay" />
+                </div>
+                <div class="col-6">
+                  <q-input filled v-model.number="worth" type="number" label="Valor"/>
+                </div>
+              </div>
+            </q-card-section>
+            <q-separator />
+
+            <q-card-actions align="right">
+              <q-btn label="Cerrar" class="bg-red text-white" @click="showDialog = !showDialog" />
+              <q-btn label="Guardar" class="bg-white text-black q-mx-sm" @click="addElement()" />
+            </q-card-actions>
+
+            <q-separator />
+            <q-card-section>
+              <div class="row">
+                <div class="col-3" v-for="(item, index) in currentList" :key="index">
+                  <div class="row justify-center">
+                    <div class="col-8">
+                      <div class="text-center q-pa-sm" v-text="item.element ? item.element.name : item.people.name"></div>
+                      <div v-text="'Tipo gasto: ' + item.typeOutlay.name" style="font-size: 12px"></div>
+                      <div style="font-size: 12px;" v-text="'Valor: $' + item.worth"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </q-dialog>
+      </div>
     </div>
   </div>
 </template>
   
 <script setup>
 
-// import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount } from "vue";
-  // import { costService, paymentTypeService, workService, inventoryService  } from "../../../api/";
-import { costService } from '../../../api/';
+  // import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount } from "vue";
+// TODO: store paymentTypeService deberia ser outlayService !!tipo gasto es diferente a metodo pago 'payment'
+import { costService, workService, outlayService } from '../../../api/';
 import { showAlert } from '../../../modules/sweetalert.js';
 import { ref } from 'vue';
 
-// lista de elementos
+// lista
 let costList = ref(false);
-let contentList = ref([])
+let contentList = ref([]);
 
-  // let process = ref()
-// let typeOutlay = ref()
-// let optionsPago =ref([])
-// let data =ref()
-// let optionsProcesos=ref([])
+function showList(row) {
+  costList.value = !costList.value;
+  
+  contentList.value = row.list;
 
-// let visibleColumns = ref([
-//   'fecha creado',
-//   'proceso',
-//   'tipo de pago',
-//   'fecha entrega',
-//   'total trabajo',
-//   'opciones'
-// ])
-// const pagination = ref({
-//   sortBy: 'desc',
-//   descending: false,
-//   page: 1,
-//   rowsPerPage: 8
-//   // rowsNumber: xx if getting data from a server
-// })
+  console.log(contentList.value);
+}
 
-// const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
-// console.log(pagesNumber);
-// let ids = {
-//   costo_id: "",
-//   // customer:""
-// }
+// formulario
+let costForm = ref(false);
+let process = ref('');
+  // select options
+let optionsProcess = ref([]);
+// list
+let showDialog = ref(false);
+let people = ref(null);
+let element = ref(null);
+let worth = ref(0);
+let typeOutlay = ref('');
+let currentList = ref([]);
+  // select options
+let optionsPeople = ref([]);
+let optionsElement = ref([]);
+let optionsOutlay = ref([]);
 
-// let vectorTrabajadores=ref([])
-// let vectorElementos=ref([])
-// let isAdd = ref(true); // Estoy Añadiendo?
-// let readonly = ref(false); // habilita la edicion de los inputs
-// let dense = ref(!true);
-// let denseOpts = ref(true);
+function showForm() {
+  costForm.value = true
+}
+
+function openDialog() {
+  if (process.value == '') {
+    showAlert('Por favor selecciona una labor');
+  } else {
+    console.log(process.value)
+    // select options
+      // people
+    optionsPeople.value = process.value['workers'].map((element)=>({
+      label: element.name,
+      value: element._id
+    }));
+      // elements
+    optionsElement.value = process.value['elements'].map((element)=>({
+      label: element.name,
+      value: element._id
+    }));
+
+    showDialog.value = !showDialog.value;
+  }
+}
+
+// dialog
+function addElement() {
+  currentList.value.push({element: element.value, people: people.value, worth: worth.value, typeOutlay: typeOutlay.value});
+  cleanDialog();
+}
+
+function cleanDialog() {
+  element.value = '';
+  people.value = '';
+  worth.value = 0;
+  typeOutlay.value = '';
+}
+
+// tabla principal
+let visibleColumns = ref([
+  'process',
+  'totalWorth',
+  'opciones',
+]);
+
 let rows = ref([]);
+
 const columns = [
   {
     name: "_id",
@@ -141,13 +260,15 @@ const columns = [
   {
     name: "process",
     label: "Proceso",
+    align: 'left',
     field: (row)=> row.process,
     format: (val)=> `${val.activity}`
   },
 
   { 
     name: "totalWorth",
-    label: "Valor total", 
+    label: "Valor total",
+    align: 'left', 
     field: (row)=> row.totalWorth,
     format: (val)=> `${val}` 
   },
@@ -155,100 +276,45 @@ const columns = [
   {
     name: "opciones",
     label: "Opciones",
+    align: 'center',
     field: "opciones",
   },
   
 ];
 
-// const columnsProcesos=ref([
-
-// ])
-
-
-// const rowsElemets = ref([])
-// let filter = ref('')
-// let selected = ref([])
-
-// function clean() {
-//   cliente.value = direccionEnvio.value = estado.value = ''
-// }
-
-// function addOrder() {
-//   // costosForm.value = isAdd.value = true
-//   costosForm.value = true
-//   readonly.value = false
-// }
-
 async function getCost() {
   try {
-    let res = {}
+    let res = {};
 
-    res['costo'] = await costService.getCost()
-    // res['tipoPago'] = await paymentTypeService.getPaymentType()
-    // res['labores']=await workService.getWork()
-    rows.value = res['costo']
-      // console.log(res['labores'] ,'ll');
-      // console.log(destructuracioDatos(), 'f');
+    res['costo'] = await costService.getCost();
+    res['labores'] = await workService.getWork();
+    res['outlay'] = await outlayService.getOutlay();
+    // res['personal'] = await peopleService.getPeople(); 
+    rows.value = res['costo'];
     console.log(rows.value);
-      // optionsPago.value=res['tipoPago'].map((e)=>({
-      //   label: e.name,
-      //   value:e._id
-      // }))
-      // console.log(optionsPago.value);
     if (res['costo'].length === 0) {
       showAlert('No se encontraron registros', 'info')
     }
+    // select options
+      // form
+    optionsProcess.value = res['labores'].map((element)=>({
+      label: element.activity,
+      value: element._id,
+      workers: element.workers,
+      elements: element.elements
+    }));
 
-      // if (res['labores'].length===0) {
-      //   showAlert("No se encontraron registros", "info");
-      //   console.log("No se encontraron registros");
-      // }else{
-      //   optionsProcesos.value=res['labores'].map((e)=>({
-      //     label: e.activity,
-      //     value: e._id
-      //   }))
-
-      // console.log(optionsProcesos.value);
-      // }
-
+      //dialog
+    optionsOutlay.value = res['outlay'].map((element) => ({
+      label: element.name,
+      value: element._id
+    }))
   } catch (error) {
     console.log("Error al obtener las peticiones", error);
   }
-
 }
 
 document.addEventListener('DOMContentLoaded', () => { getCost(); })
-
-// function destructuracioDatos() {
-//   for (let index = 0; index < rows.value.length; index++) {
-//      console.log(rows.value[index].process.elements , 'g');
-//     vectorElementos.value.push(rows.value[index].process.workers.name) 
-//   }
-
-//  let vetor= rows.value.value.map((e)=>({
-//     label: e.name,
-//     value: e._id
-//   }))
-//   console.log(vetor , 'vec');
-  
-
-// }
-// console.log(destructuracioDatos());
-
-// async function createOrder() {
-//   // TODO: mostrar cargando en esta parte, Michael encontro un bug aqui si la conecion esta leta creo mas de 6 ordenes con vario click solo añadiendo uno
-//   costosForm.value = !costosForm.value;
-//   await costService.addCost({
-//     createdAt: createdAt.value,
-//     process: process.value['value'],
-//     totalWorth: totalWorth.value,
-//     typeOutlay: typeOutlay.value['value'],
-//     updatedAt: updatedAt.value
-//   });
-//   getCost();
-//   clean();
-
-// }
 
 // function editOrder(ObjectOrder) {
 //   // console.log(typeof(ObjectOrder));
@@ -305,15 +371,6 @@ document.addEventListener('DOMContentLoaded', () => { getCost(); })
 //   }, 1000)
 
 // });
-
-function showList(row) {
-  costList.value = !costList.value;
-  
-  contentList.value = row.list;
-
-  console.log(contentList.value);
-}
-
 </script>
 
 <!-- <style lang="sass" scoped>

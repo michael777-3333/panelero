@@ -1,10 +1,10 @@
 import { request, getToken, url } from '../utils/'
 
-const getPaymentType = async () => {
+const getOutlay = async () => {
     const { data, status } = await request(
         {
             method: 'get',
-            url: url.tipopago,
+            url: url.tipogasto,
             headers: {
                 'token': getToken()
             }
@@ -14,11 +14,11 @@ const getPaymentType = async () => {
     return []
 }
 
-const addPaymentType = async (reqData) => {
+const addOutlay = async (reqData) => {
     const { data, status} = await request(
         {
             method: 'post',
-            url: url.tipopago,
+            url: url.tipogasto,
             data: reqData,
             headers: {
                 'token': getToken(),
@@ -28,11 +28,11 @@ const addPaymentType = async (reqData) => {
     return data
 }
 
-const editPaymentType = async (reqData) => {
+const editOutlay = async (reqData) => {
     const { data, status} = await request(
         {
             method: 'put',
-            url: `${url.tipopago}${reqData.id}`,
+            url: `${url.tipogasto}${reqData.id}`,
             data: reqData,
             headers: {
                 'token': getToken(),
@@ -42,11 +42,11 @@ const editPaymentType = async (reqData) => {
     return data
 }
 
-const enabledPaymentType = async (id) => {
+const activateOutlay = async (id) => {
     const { data, status} = await request(
         {
             method: 'put',
-            url: `${url.tipopago}activar/${id}`,
+            url: `${url.tipogasto}activar/${id}`,
             headers: {
                 'token': getToken()
             }
@@ -55,11 +55,11 @@ const enabledPaymentType = async (id) => {
     return data
 }
 
-const disabledPaymentType = async (id) => {
+const desactivateOutlay = async (id) => {
     const { data, status} = await request(
         {
             method: 'put',
-            url: `${url.tipopago}desactivar/${id}`,
+            url: `${url.tipogasto}desactivar/${id}`,
             headers: {
                 'token': getToken()
             }
@@ -69,9 +69,9 @@ const disabledPaymentType = async (id) => {
 }
 
 export default {
-    getPaymentType,
-    addPaymentType,
-    editPaymentType,
-    enabledPaymentType,
-    disabledPaymentType
+    getOutlay,
+    addOutlay,
+    editOutlay,
+    activateOutlay,
+    desactivateOutlay
 }

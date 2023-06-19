@@ -11,7 +11,7 @@ const url = {
     pedido:        'pedido/',
     persona:       'persona/',
     usuario:       'usuario/',
-    tipopago:      'tipogasto/',
+    tipogasto:      'tipogasto/',
     labor:         'labor/',
 }
 export default url

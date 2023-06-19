@@ -8,7 +8,7 @@ import peopleService from "../api/persona.js";
 import phaseService from '../api/etapa.js'
 import storeService from "../api/bodega.js";
 import userService from '../api/usuario.js'
-import paymentTypeService from '../api/tipoPago.js'
+import outlayService from '../api/typeOutlay.js'
 import workService from '../api/work.js'
 
 export {
@@ -22,6 +22,6 @@ export {
     phaseService,
     storeService,
     userService,
-    paymentTypeService,
+    outlayService,
     workService,
 }
