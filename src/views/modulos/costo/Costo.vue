@@ -4,7 +4,7 @@
       <!-- <div v-if="rows.length != 0" v-show="!costosForm && !costosFormr" transition-show="slide-up"
         transition-hide="slide-down" class="q-ma-xs-md q-ma-lg-sm animated zoomIn "> -->
       <div v-show="costList == false && costForm == false">
-        <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen pedidos!"
+        <q-table :rows="rows" :columns="columns" row-key="id" no-data-label="No existen costos!"
         card-class="bg-white text-black" table-class="text-black-8" flat bordered :visible-columns="visibleColumns"
         >
           <template v-slot:top>
@@ -26,12 +26,15 @@
               </q-btn>
               <!-- <q-btn class="botonEditar" style="background-color: #029127;" @click="editOrder(props.row)">
                 <q-icon style="color: white;" name="edit"></q-icon>
-              </q-btn>
-              <q-btn class="botonEditar">
-                <span v-if="props.row.state == 1" @click="inactivedOrder(props.row._id)"><i
-                    class="bi bi-toggle-on text-success"></i></span>
-                <span v-else><i class="bi bi-toggle-off text-danger" @click="activedOrder(props.row._id)"></i></span>
               </q-btn> -->
+              <q-btn class="botonEditar q-ml-xs">
+                <span v-if="props.row.state == 1">
+                  <i class="bi bi-toggle-on text-success" @click="desactivateCost(props.row._id)"></i>
+                </span>
+                <span v-else>
+                  <i class="bi bi-toggle-off text-danger" @click="activateCost(props.row._id)"></i>
+                </span>
+              </q-btn>
             </td>
 
           </template>
@@ -100,7 +103,7 @@
           <q-card-actions align="right" class="q-mr-md">
             <q-btn @click="costForm = !costForm" class="bg-red text-white q-mx-sm" label="Cerrar" />
 
-            <q-btn class="bg-white text-black">
+            <q-btn class="bg-white text-black" @click="saveCost()">
               <span>Crear Costo</span>
             </q-btn>
           </q-card-actions>	
@@ -114,10 +117,28 @@
             <q-card-section>
               <div class="row">
                 <div class="col-6">
-                  <q-select filled :disable="element !== null" v-model="people" label="Persona"  :options="optionsPeople" />
+                  <q-select filled :disable="element !== null" v-model="people" label="Persona"  :options="optionsPeople">
+                    <template v-slot:append>
+                      <q-icon
+                        v-if="people !== null"
+                        class="cursor-pointer"
+                        name="clear"
+                        @click.stop.prevent="people = null"
+                      />
+                    </template>
+                  </q-select>
                 </div>
                 <div class="col-6">
-                  <q-select filled :disable="people !== null" v-model="element" label="Elemento"  :options="optionsElement" />
+                  <q-select filled :disable="people !== null" v-model="element" label="Elemento"  :options="optionsElement">
+                    <template v-slot:append>
+                      <q-icon
+                        v-if="element !== null"
+                        class="cursor-pointer"
+                        name="clear"
+                        @click.stop.prevent="element = null"
+                      />
+                    </template>
+                  </q-select>
                 </div>
               </div>
               <div class="row">
@@ -138,13 +159,13 @@
 
             <q-separator />
             <q-card-section>
-              <div class="row">
+              <div class="row" v-if="currentList.length > 0">
                 <div class="col-3" v-for="(item, index) in currentList" :key="index">
                   <div class="row justify-center">
                     <div class="col-8">
-                      <div class="text-center q-pa-sm" v-text="item.element ? item.element.name : item.people.name"></div>
-                      <div v-text="'Tipo gasto: ' + item.typeOutlay.name" style="font-size: 12px"></div>
-                      <div style="font-size: 12px;" v-text="'Valor: $' + item.worth"></div>
+                      <div class="text-center q-pa-sm" v-text="item.element ? item.element.label : item.people.label"></div>
+                      <div class="tex-center" v-text="'Tipo gasto: ' + item.typeOutlay.label" style="font-size: 12px"></div>
+                      <div class="text-center" style="font-size: 12px;" v-text="'Valor: $' + item.worth"></div>
                     </div>
                   </div>
                 </div>
@@ -158,8 +179,6 @@
 </template>
   
 <script setup>
-
-  // import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount } from "vue";
 // TODO: store paymentTypeService deberia ser outlayService !!tipo gasto es diferente a metodo pago 'payment'
 import { costService, workService, outlayService } from '../../../api/';
 import { showAlert } from '../../../modules/sweetalert.js';
@@ -198,11 +217,45 @@ function showForm() {
   costForm.value = true
 }
 
+// form save cost
+async function saveCost() {
+  if (process.value == '') {
+    showAlert('Por favor selecciona una Labor');
+  } else if (currentList.value.length == 0) {
+    showAlert('Por favor agrega una o varias Listas')
+  } else {
+    console.log(process.value['value'], !currentList.value[0].element)
+
+    let listTemp = []
+
+    for (let position = 0; position < currentList.value.length; position++) {
+      listTemp.push({element: !currentList.value[position].element ? null : currentList.value[position].element['value'], people: !currentList.value[position].people ? null : currentList.value[position].people['value'], worth: currentList.value[position].worth, typeOutlay: currentList.value[position].typeOutlay['value']});
+    }
+
+    console.log(listTemp);
+
+    const data = await costService.addCost({process: process.value['value'], list: listTemp});
+
+    cleanForm();
+
+    showAlert('nuevo Costo creado', 'success');
+
+    await getCost();
+
+    costForm.value = !costForm.value;
+  }
+}
+
+function cleanForm() {
+  currentList.value = [];
+  process.value = '';
+}
+
 function openDialog() {
   if (process.value == '') {
-    showAlert('Por favor selecciona una labor');
+    showAlert('Por favor selecciona una Labor');
   } else {
-    console.log(process.value)
+    // console.log(process.value);
     // select options
       // people
     optionsPeople.value = process.value['workers'].map((element)=>({
@@ -219,15 +272,27 @@ function openDialog() {
   }
 }
 
-// dialog
+// dialog form
 function addElement() {
-  currentList.value.push({element: element.value, people: people.value, worth: worth.value, typeOutlay: typeOutlay.value});
+  // TODO: problema el dialog se posiciona encima de las alert
+  if (!element.value && !people.value) {
+    showDialog.value = !showDialog;
+    showAlert('Por favor seleccione una persona o un elemento', 'error');
+  } else if (worth.value <= 0) {
+    showAlert('Ingrese un Valor mayor a 0', 'error');
+  } else if (typeOutlay == '') {
+    showAlert('Por favor seleccione un Tipo Gasto', 'error');
+  } else {
+    currentList.value.push({element: element.value, people: people.value, worth: worth.value, typeOutlay: typeOutlay.value});
+    // console.log(currentList.value);
+  }
+
   cleanDialog();
 }
 
 function cleanDialog() {
-  element.value = '';
-  people.value = '';
+  element.value = null;
+  people.value = null;
   worth.value = 0;
   typeOutlay.value = '';
 }
@@ -246,8 +311,7 @@ const columns = [
     name: "_id",
     label: "id",
     field: (row) => row._id,
-    format: (val) => `${val}`,
-    required: false
+    format: (val) => `${val}`
   },
 
   {
@@ -289,7 +353,6 @@ async function getCost() {
     res['costo'] = await costService.getCost();
     res['labores'] = await workService.getWork();
     res['outlay'] = await outlayService.getOutlay();
-    // res['personal'] = await peopleService.getPeople(); 
     rows.value = res['costo'];
     console.log(rows.value);
     if (res['costo'].length === 0) {
@@ -314,7 +377,18 @@ async function getCost() {
   }
 }
 
+async function desactivateCost(id) {
+  await costService.disabledCost(id);
+  getCost();
+}
+
+async function activateCost(id) {
+  await costService.enabledCost(id);
+  getCost();
+}
+
 document.addEventListener('DOMContentLoaded', () => { getCost(); })
+
 
 // function editOrder(ObjectOrder) {
 //   // console.log(typeof(ObjectOrder));
@@ -351,17 +425,6 @@ document.addEventListener('DOMContentLoaded', () => { getCost(); })
 //   costosForm.value = !costosForm.value;
 // }
 
-// async function inactivedOrder(id) {
-//   await pedidoStore.disabledOrder(id)
-//   getCost();
-// }
-
-// async function activedOrder(id) {
-//   await pedidoStore.enabledOrder(id)
-//   getCost();
-// }
-
-
 // onBeforeMount(() => {
 //   // getDataUsers();
 //   // alert("onBeforeMount")
@@ -372,10 +435,3 @@ document.addEventListener('DOMContentLoaded', () => { getCost(); })
 
 // });
 </script>
-
-<!-- <style lang="sass" scoped>
-.grid-style-transition
-  transition: transform .28s, background-color .28s
-.botonEditar
-  margin: 10px
-</style> -->

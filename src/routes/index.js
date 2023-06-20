@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 // import Body from "../views/Body.vue"
 import Bodega from '../views/modulos/inventario/Bodega.vue'
-import Costo from '../views/modulos/costos/costo.vue'
+import Costo from '../views/modulos/costo/Costo.vue'
 import errorFound from '../views/404.vue'
 import Etapa from '../views/modulos/mantenimiento/Etapa.vue'
 import Facturacion from '../views/modulos/facturacion/Facturacion.vue'
