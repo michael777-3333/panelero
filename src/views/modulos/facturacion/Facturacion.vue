@@ -56,7 +56,7 @@
         <q-card-section class="bgColorEnfasis">
           <span class="text-black text-h6">Pedidos</span>
 
-          <q-btn @click="clean()" class="bg-red text-white float-right" label="X" />
+          <q-btn @click="clean()" class="bg-red text-white float-right" label="X" title="Cerrar" />
           <!-- <span><br><br></span> -->
         </q-card-section>
 
@@ -73,7 +73,7 @@
                     :dense="dense" :options-dense="denseOpts" />
                   <!-- <q-input v-model="" label="Estado del pedido" /> -->
                 </div>
-                
+
                 <div class="col-xs-6 col-md-4 q-pa-xs-sm q-px-sm-md q-px-sm-lg">
                   <q-select filled v-model="estado" :options="optionsStatus" label="Estado del pedido" stack-label
                     :dense="dense" :options-dense="denseOpts" />
@@ -117,13 +117,12 @@
           :visible-columns="visibleColumns" v-model:pagination="pagination">
 
           <template v-slot:top>
-            <div class="col-6 " align="left">
-              <span style="font-size: 25px;">Pedidos</span>
+            <div class="col-6" align="left">
+              <span class="tableTitle">Pedidos</span>
             </div>
 
             <div class="col-6" align="right">
-              <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;" @click="newOrder()"
-                glossy label="Crear Pedidos" />
+              <q-btn class="botonCrear" @click="newOrder()" glossy label="Crear Pedidos" />
             </div>
 
           </template>
@@ -131,24 +130,25 @@
 
           <template v-slot:body-cell-opciones="props">
             <td>
-              <q-btn class="botonEditar" style="background-color: #029127;" @click="showDetailsOrder(props.row)">
-                <q-icon style="color: white;" name="visibility"></q-icon>
+              <q-btn class="botonEditar" @click="showDetailsOrder(props.row)">
+                <q-icon name="visibility"></q-icon>
               </q-btn>
-              <q-btn class="botonEditar q-mx-xs" style="background-color: #029127;" @click="modifyOrder(props.row)">
-                <q-icon style="color: white;" name="edit"></q-icon>
+              <q-btn class="botonEditar q-mx-xs" @click="modifyOrder(props.row)">
+                <q-icon name="edit"></q-icon>
               </q-btn>
-              <q-btn class="botonEditar">
-                <span v-if="props.row.state == 1" @click="changeStatus(props.row._id, props.row.state)"><i
-                    class="bi bi-toggle-on text-success"></i></span>
-                <span v-else><i class="bi bi-toggle-off text-danger" @click="changeStatus(props.row._id, props.row.state)"></i></span>
+              <q-btn class="" @click="changeStatus(props.row._id, props.row.state)">
+                <!-- <span > -->
+                  <i v-if="props.row.state == 1" class="bi bi-toggle-on text-positive"></i>
+                  <i v-else class="bi bi-toggle-off text-negative"></i>
+                <!-- </span> -->
               </q-btn>
             </td>
-
           </template>
+
         </q-table>
       </div>
       <!-- SECCION PRIMERA TABLA -->
-      
+
       <!-- ANIMACION DE CARGA -->
       <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
         <q-linear-progress dark query color="green" class="q-mt-sm" />
@@ -252,23 +252,15 @@ function clean() {
  */
 async function getOrders() {
   try {
-    let res = {}
 
-    res['pedido'] = await orderService.getOrder()
-    res['persona'] = await peopleService.getPeople()
+    let pedido = await orderService.getOrder()
+    let persona = await peopleService.getPeople()
+    
     showLoader.value = true
+    rows.value = pedido || [];
 
-    rows.value = res['pedido']
-    if (res['pedido'].length === 0) {
-      showAlert('No se encontraron registros', 'info')
-      console.log("No se encontraron registros");
-    }
-
-    if (res['persona'].length === 0) {
-      showAlert('No se encontraron registros', 'info')
-      console.log("No se encontraron registros");
-    } else {
-      optionsCustomers.value = res['persona'].map((element) => ({
+    if (persona.length > 0) {
+      optionsCustomers.value = persona.map((element) => ({
         label: element.name,
         value: element._id
       }));
@@ -276,11 +268,13 @@ async function getOrders() {
 
   } catch (error) {
     console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
   }
 }
 
 function newOrder() {
-  pedidosForm.value = isAdd.value = true
+  pedidosForm.value = true
+  isAdd.value = true
   // pedidosForm.value  = true
   isAdd.value    = true
   readonly.value = false

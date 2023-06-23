@@ -1,5 +1,7 @@
-import { request, getToken, savedToken, url } from '../utils/'
-import { deleteToken } from '../utils/cookies'
+import { request, getToken, setToken, removeToken, url } from '../utils/';
+import { router, redirect } from '../routes/';
+
+let token = getToken();
 
 const getUser = async () => {
     const { data, status } = await request(
@@ -7,12 +9,15 @@ const getUser = async () => {
             method: 'get',
             url: url.usuario,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    if (status == 200) return data
-    return []
+    if (status === 200) {
+        return data;
+    } else {
+        throw new Error('Failed to get user');
+    }
 }
 
 const addUser = async (reqData) => {
@@ -22,11 +27,11 @@ const addUser = async (reqData) => {
             url: `${url.autenticacion}singup`,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const editUser = async (reqData) => {
@@ -36,11 +41,11 @@ const editUser = async (reqData) => {
             url: `${url.usuario}${reqData.id}`,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const enabledUser = async (id) => {
@@ -49,11 +54,11 @@ const enabledUser = async (id) => {
             method: 'put',
             url: `${url.usuario}activar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 const disabledUser = async (id) => {
@@ -62,11 +67,11 @@ const disabledUser = async (id) => {
             method: 'put',
             url: `${url.usuario}desactivar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 const loginUser = async (reqData) => {
@@ -77,20 +82,26 @@ const loginUser = async (reqData) => {
             data: reqData,
         }
     )
-    
-    savedToken(data.token)
-    return data
+
+    if (data.token) {
+        setToken(data.token);
+        redirect();
+    }
+    return data;
 }
 
 const logoutUser = async () => {
-    deleteToken()
+    removeToken();
+    router.push('/login');
+    // redirect()
 }
 
 export default {
-    getUser,
     addUser,
+    disabledUser,
     editUser,
     enabledUser,
-    disabledUser,
-    loginUser
+    getUser,
+    loginUser,
+    logoutUser,
 }

@@ -1,17 +1,30 @@
 <template>
-  <div>
-    <img src="../assets/img/fondo.jpg" class="img-fondo">
+  <div class="img-fondo">
+    <!-- <img src="../assets/img/fondo.jpg" > -->
   </div>
-  <div class="row justify-center d-flex items-center q-mx-sm hfull">
+  <div class="row justify-center d-flex items-center q-mx-sm hfull degr">
     <div class="col-xs-auto col-sm-1 col-md-2 col-lg-3"></div>
-    <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center q-pa-md card-fondo">
-      <div>
+    <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 text-center q-pa-md card-fondo animated zoomIn">
+      <!-- <div>
         <img src="../assets/img/card.png" class="img-card">
-      </div>
-      <q-form @submit="sesion" class="q-gutter-md  justify-center">
-        <q-input filled type="email" v-model="email" label="Ingrese su direccion de correo" class="card-input q-mt-lg" />
+      </div> -->
+      <div class="ms-title">Sistema de gestion panelara</div>
+      <q-form @submit="sesion" class="q-gutter-md justify-center ">
+        <q-input rounded filled type="email" v-model="email" label="Ingrese su direccion de correo" class="card-input q-mt-lg"
+        :maxlength="20" />
 
-        <q-input filled type="password" v-model="password" label="Ingrese su contraseña" class="card-input  q-mt-lg" />
+        <!-- <q-input rounded v-model="password" filled :type="isPwd ? 'password' : 'text'" hint="Password with toggle">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input> -->
+
+        <q-input filled type="password" v-model="password" label="Ingrese su contraseña" class="card-input q-mt-lg" @keyup.enter="sesion" 
+        :maxlength="20" />
 
         <div class="q-mt-lg">
           <q-btn label="INGRESAR" type="submit" :disable="btnState" class="bg-white text-black" />
@@ -25,15 +38,11 @@
 <script setup>
 import { useQuasar, QSpinnerFacebook } from "quasar";
 import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
-import { useRouter } from "vue-router";
 import { userService } from "../api/";
-// import { useUsuarioStore } from '../stores/usuarioStore.js';
 import { showAlert } from '../modules/sweetalert.js';
 
-const router = useRouter();
 // const store = useUsuarioStore();
 const $q = useQuasar();
-import { Cookies } from 'quasar'
 
 
 // onBeforeMount(() => {
@@ -95,13 +104,15 @@ import { Cookies } from 'quasar'
 
 const email = ref('');
 email.value = 'edinson@meaw.co';
+const isPwd= ref(true)
+
 const password = ref('1q2w.');
 
 const btnState = ref(false);
 
-if (Cookies.get('token')) {
-  router.push('/body/home');
-}
+// if (Cookies.get('token')) {
+//   router.push('/body/home');
+// }
 
 async function sesion() {
   // btnState.value = true
@@ -133,13 +144,11 @@ async function sesion() {
 
       // console.log(res);
 
-      if (res.token) {
-        showAlert(res.token)
+      if (!res.token) {
+        // showAlert(res.token)
         // Cookies.set('token', res.data.token)
         // savedToken(res.data.token)
         // console.log(res.data.token);
-        router.push('/home');
-      } else {
         const { msg } = res
         showAlert(msg)
       }
@@ -154,4 +163,13 @@ async function sesion() {
 }
 </script>
 
-<style></style>
+<style>
+.ms-title {
+	width: 100%;
+	line-height: 50px;
+	text-align: center;
+	font-size: 20px;
+	color: #fff;
+	border-bottom: 1px solid #ddd;
+}
+</style>

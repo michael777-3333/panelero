@@ -163,21 +163,15 @@ function getRol(arrayRoles) {
 
 async function getUsers() {
   try {
-    let res = {}
 
-    res['usuario'] = await userService.getUser()
+    let usuario = await userService.getUser()
 
-    rows.value = res['usuario']
-    if (res['usuario'].length === 0) {
-      showAlert('No se encontraron registros', 'info')
-      console.log("No se encontraron registros");
-    }
-
+    rows.value = usuario || [];
 
   } catch (error) {
     console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
   }
-
 }
 
 getUsers();
@@ -241,7 +235,7 @@ async function saveChnages() {
     email: email.value,
     roles: roles.value,
   }
-  
+
   //crear usuario en la base de datos
   if (validations() && isAdd.value) {
     data['password'] = password.value
@@ -292,4 +286,5 @@ async function saveChnages() {
 
 .card1 {
   margin-top: 30px;
-}</style>
+}
+</style>

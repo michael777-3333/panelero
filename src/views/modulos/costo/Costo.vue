@@ -146,7 +146,7 @@
 			            <q-select filled v-model="typeOutlay" label="Tipo Gasto"  :options="optionsOutlay" />
                 </div>
                 <div class="col-6">
-                  <q-input filled v-model.number="worth" type="number" label="Valor"/>
+                  <q-input filled v-model.number="worth" type="number" label="Valor" />
                 </div>
               </div>
             </q-card-section>
@@ -253,7 +253,7 @@ function cleanForm() {
 
 function openDialog() {
   if (process.value == '') {
-    showAlert('Por favor selecciona una Labor');
+    showAlert('Por favor selecciona una labor');
   } else {
     // console.log(process.value);
     // select options
@@ -348,32 +348,33 @@ const columns = [
 
 async function getCost() {
   try {
-    let res = {};
 
-    res['costo'] = await costService.getCost();
-    res['labores'] = await workService.getWork();
-    res['outlay'] = await outlayService.getOutlay();
-    rows.value = res['costo'];
+    let costo = await costService.getCost();
+    let labores = await workService.getWork();
+    let outlay = await outlayService.getOutlay();
+
+
+    rows.value = costo || [];
     console.log(rows.value);
-    if (res['costo'].length === 0) {
-      showAlert('No se encontraron registros', 'info')
-    }
-    // select options
+    if (costo.length > 0) {
+      // select options
       // form
-    optionsProcess.value = res['labores'].map((element)=>({
-      label: element.activity,
-      value: element._id,
-      workers: element.workers,
-      elements: element.elements
-    }));
+      optionsProcess.value = labores.map((element) => ({
+        label: element.activity,
+        value: element._id,
+        workers: element.workers,
+        elements: element.elements
+      }));
 
       //dialog
-    optionsOutlay.value = res['outlay'].map((element) => ({
-      label: element.name,
-      value: element._id
-    }))
+      optionsOutlay.value = outlay.map((element) => ({
+        label: element.name,
+        value: element._id
+      }))
+    }
   } catch (error) {
-    console.log("Error al obtener las peticiones", error);
+    console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
   }
 }
 

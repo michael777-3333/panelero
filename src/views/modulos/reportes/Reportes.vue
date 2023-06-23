@@ -44,7 +44,9 @@
     async function getFarm() {
         const data = await Finca.getFarm();
         
-        console.log(data)
+        console.log(data , ' d')
+
+        
 
         if(data.length == 0) {
 

@@ -1,4 +1,6 @@
-import { request, getToken, url } from '../utils/'
+import { request, getToken, url } from '../utils/';
+
+let token = getToken();
 
 const getCost = async () => {
     const { data, status } = await request(
@@ -6,72 +8,75 @@ const getCost = async () => {
             method: 'get',
             url: url.costo,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    if (status == 200) return data
-    return []
+    if (status === 200) {
+        return data;
+    } else {
+        throw new Error('Failed to get cost');
+    }
 }
 
 const addCost = async (reqData) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'post',
             url: url.costo,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const editCost = async (reqData) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'put',
             url: `${url.costo}${reqData.id}`,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const enabledCost = async (id) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'put',
             url: `${url.costo}activar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 const disabledCost = async (id) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'put',
             url: `${url.costo}desactivar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 export default {
-    getCost,
     addCost,
+    disabledCost,
     editCost,
     enabledCost,
-    disabledCost
+    getCost,
 }

@@ -1,5 +1,16 @@
 login responsivo
 implemente sweetalert2
-agregage aninamcion de carga a al lgin
+agrege animacion de carga al login
 
 implementacion menu de navegacion no global, solo utilizado por el archivo Body.vue
+
+el menu lateral ahora cambia segun el modulo abierto, tambien cambi el fondo segun el seleccionado
+si el usuario no esta autenticado lo redorige al loguin
+cambios menores en la puiones
+
+$TODO: verfivat la petiiones de  akfuno s mosukoa
+
+
+estoy domrudo
+
+:|

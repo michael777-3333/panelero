@@ -13,7 +13,7 @@
           <!-- <span><br><br></span> -->
         </q-card-section>
 
-        <q-table title="Treats" :rows="rows" :columns="columns" row-key="name" selection="multiple"
+        <!-- <q-table title="Treats" :rows="rows" :columns="columns" row-key="name" selection="multiple"
           v-model:selected="selected" :filter="filter" grid hide-header>
           <template v-slot:top-right>
             <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -45,7 +45,7 @@
             </div>
           </template>
 
-        </q-table>
+        </q-table> -->
       </div>
        <!-- SECCION SEGUNDA TABLA -->
    
@@ -146,17 +146,10 @@
 
 <script setup>
 import { ref } from 'vue'
-// import { useMarcasStore } from '../../../stores/marcasStore.js'
-// import { useUsuarioStore } from "../../../stores/usuarioStore";
 import { markService } from "../../../api/";
-
-// import { useUsuarioStore, useMarcasStore } from "../../../stores/index.js";
-// import { storeToRefs } from "pinia";
-import { useQuasar } from 'quasar'
 import { showAlert } from '../../../modules/sweetalert.js';
 
-// const store = useMarcasStore()
-// const storeUser = useUsuarioStore()
+import { useQuasar } from 'quasar'
 const $q = useQuasar();
 // const hasItToken = $q.cookies.has('token')
 
@@ -189,19 +182,14 @@ const columns = [
 
 async function ordenarMarcas() {
   try {
-    let res = {}
 
-    res['marca'] = await markService.getMark();
+    let marca = await markService.getMark();
 
-    rows.value = res['marca']
-    if (res['marca'].length === 0) {
-      showAlert('No se encontraron registros', 'info')
-      console.log("No se encontraron registros");
-    }
-
+    rows.value = marca || [];
 
   } catch (error) {
     console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
   }
 
 }

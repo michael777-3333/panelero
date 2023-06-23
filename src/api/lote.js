@@ -1,4 +1,6 @@
-import { request, getToken, url } from '../utils/'
+import { request, getToken, url } from '../utils/';
+
+let token = getToken();
 
 const getAllotment = async () => {
     const { data, status } = await request(
@@ -6,12 +8,15 @@ const getAllotment = async () => {
             method: 'get',
             url: url.lote,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    if (status == 200) return data
-    return []
+    if (status === 200) {
+        return data;
+    } else {
+        throw new Error('Failed to get Alloment');
+    }
 }
 
 const addAllotment = async (reqData) => {
@@ -21,11 +26,11 @@ const addAllotment = async (reqData) => {
             url: url.lote,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const editAllotment = async (reqData) => {
@@ -35,11 +40,11 @@ const editAllotment = async (reqData) => {
             url: `${url.lote}${reqData.id}`,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const enabledAllotment = async (id) => {
@@ -48,11 +53,11 @@ const enabledAllotment = async (id) => {
             method: 'put',
             url: `${url.lote}activar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 const disabledAllotment = async (id) => {
@@ -61,11 +66,11 @@ const disabledAllotment = async (id) => {
             method: 'put',
             url: `${url.lote}desactivar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 export default {
