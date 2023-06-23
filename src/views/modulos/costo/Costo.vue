@@ -182,7 +182,7 @@
 // TODO: store paymentTypeService deberia ser outlayService !!tipo gasto es diferente a metodo pago 'payment'
 import { costService, workService, outlayService } from '../../../api/';
 import { showAlert } from '../../../modules/sweetalert.js';
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 
 // lista
 let costList = ref(false);
@@ -388,8 +388,12 @@ async function activateCost(id) {
   getCost();
 }
 
-document.addEventListener('DOMContentLoaded', () => { getCost(); })
-
+// document.addEventListener('DOMContentLoaded', () => { getCost(); })
+onBeforeMount(() => {
+  setTimeout(() => {
+    getCost();
+  }, 1000)
+});
 
 // function editOrder(ObjectOrder) {
 //   // console.log(typeof(ObjectOrder));
@@ -425,14 +429,4 @@ document.addEventListener('DOMContentLoaded', () => { getCost(); })
 //   getCost();
 //   costosForm.value = !costosForm.value;
 // }
-
-// onBeforeMount(() => {
-//   // getDataUsers();
-//   // alert("onBeforeMount")
-//   setTimeout(() => {
-//     // btnState.value = false
-//     getCost();
-//   }, 1000)
-
-// });
 </script>

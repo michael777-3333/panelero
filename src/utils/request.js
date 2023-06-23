@@ -3,8 +3,8 @@ import axios from 'axios';
 // const HOST = 'http://10.202.80.75:3000/'
 // const HOST = 'http://10.202.80.99:3000/'
 // const HOST = 'http://192.168.1.9:3000/'
-const HOST = 'http://localhost:3000/'
-// const HOST = 'https://proyecto-panelera.onrender.com/'
+// const HOST = 'http://localhost:3000/'
+const HOST = 'https://proyecto-panelera.onrender.com/'
 
 const service = axios.create({
     baseURL: HOST,
