@@ -1,21 +1,21 @@
 <template>
-  <div>
+  <!-- <div> -->
     <!-- <img src="../../assets/img/fondo.jpg" class="fondo"> -->
-  </div>
-  <div class="row" style="height: 800px;">
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+  <!-- </div> -->
+  <div class="row" style="height: 550px;">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 "  @click="changeMenu('/costos')" clickable >
       <q-card class="cardHome">
-        <router-link to="/home">
+        <router-link to="/costos">
           <q-img src="../../assets/img/costo.png">
             <div class="absolute-bottom text-subtitle2 text-center">
-              COSTO
+              COSTOS
             </div>
           </q-img>
         </router-link>
       </q-card>
     </div>
 
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 "  @click="changeMenu('/mantenimiento')" >
       <q-card class="cardHome">
         <router-link to="/mantenimiento/usuario">
           <q-img src="../../assets/img/mantenimiento.png">
@@ -28,7 +28,7 @@
     </div>
 
 
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 " @click="changeMenu('/facturacion/facturacion')" clickable >
       <q-card class="cardHome">
         <router-link to="/facturacion/facturacion">
           <q-img src="../../assets/img/facturacion.png">
@@ -40,7 +40,7 @@
       </q-card>
     </div>
     
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 " >
       <q-card class="cardHome">
         <router-link to="/home">
           <q-img src="../../assets/img/trasformacion.png">
@@ -52,7 +52,7 @@
       </q-card>
     </div>
 
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 " >
       <q-card class="cardHome">
         <router-link to="/home">
           <q-img src="../../assets/img/estadistica.png">
@@ -64,7 +64,7 @@
       </q-card>
     </div>
 
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 ">
+    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 "  @click="changeMenu('/inventario')" >
       <q-card class="cardHome">
         <router-link to="/inventario/inventario">
           <q-img src="../../assets/img/inventario.png">
@@ -86,6 +86,14 @@
 </template>
 
 <script setup>
+import { getMenu, menuListar } from '../../components/menu.js'
+
+
+
+function changeMenu(a) {
+  menuListar.value = getMenu(a)
+}
+
 </script>
 
 <style scoped >

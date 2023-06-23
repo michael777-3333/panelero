@@ -137,35 +137,25 @@ const columns = [
 ];
 
 async function ordenarEtapas() {
-
     try {
-        let res = {}
 
-        res['etapa'] = await phaseService.getPhase()
-        res['lote'] = await allotmentService.getAllotment()
+        let etapa = await phaseService.getPhase()
+        let lote = await allotmentService.getAllotment()
 
-        rows.value = res['etapa']
-        if (res['etapa'].length === 0) {
-            showAlert('No se encontraron registros', 'info')
-            console.log("No se encontraron registros");
-        }
+        rows.value = etapa || [];
 
-        if (res['lote'].length === 0) {
-            showAlert('No se encontraron registros', 'info')
-            console.log("No se encontraron registros");
-        } else {
-            optionsCustomers.value = res['lote'].map((element) => ({
+        if (lote.length > 0) {
+
+            optionsLote.value = lote.map((element) => ({
                 label: element.name,
                 value: element._id
             }));
         }
 
-
     } catch (error) {
-        console.error("Error al obtener las peticiones", error);
-    }
-
-
+    console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
+  }
 }
 
 ordenarEtapas()

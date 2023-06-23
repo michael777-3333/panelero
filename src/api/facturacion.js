@@ -1,4 +1,6 @@
-import { request, getToken, url } from '../utils/'
+import { request, getToken, url } from '../utils/';
+
+let token = getToken();
 
 const getBilling = async () => {
     const { data, status } = await request(
@@ -6,72 +8,75 @@ const getBilling = async () => {
             method: 'get',
             url: url.facturacion,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    if (status == 200) return data
-    return []
+    if (status === 200) {
+        return data;
+    } else {
+        throw new Error('Failed to get billing');
+    }
 }
 
 const addBilling = async (reqData) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'post',
             url: url.facturacion,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const editBilling = async (reqData) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'put',
             url: `${url.facturacion}${reqData.id}`,
             data: reqData,
             headers: {
-                'token': getToken(),
+                token,
             }
         }
     )
-    return data
+    return data;
 }
 
 const enabledBilling = async (id) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'put',
             url: `${url.facturacion}activar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 const disabledBilling = async (id) => {
-    const { data, status} = await request(
+    const { data, status } = await request(
         {
             method: 'put',
             url: `${url.facturacion}desactivar/${id}`,
             headers: {
-                'token': getToken()
+                token
             }
         }
     )
-    return data
+    return data;
 }
 
 export default {
-    getBilling,
     addBilling,
+    disabledBilling,
     editBilling,
     enabledBilling,
-    disabledBilling
+    getBilling,
 }

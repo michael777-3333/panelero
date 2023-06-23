@@ -1,77 +1,86 @@
 <template>
-    <div v-show="!alert" class="row  justify-center items-center"  style="height: 80vh;">
-        <div class="col-10">
-          <div v-if="showTable !== false" class="q-ma-xs-md q-ma-lg-sm">
-            <q-table :rows="rows" :columns="columns" row-key="_id">
-              <template v-slot:top="props">
-                <div class="col-6" align="left"><span style="font-size: 25px;">Lotes</span></div>
-                <div class="col-6" align="right">
-                  <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;" @click="abrirModal()"
-                     label="Crear Lote"
-                  />
-                </div>
-              </template>
-              
-              <template v-slot:body-cell-state="props">
-                <td>
-                  <q-checkbox v-model="props.row.state" color="green" :true-value="1" :false-value="0" @click="editarEstado(props.row)" />
-                </td>
-              </template>
-              
-              <template v-slot:body-cell-editar="props">
-                <td>
-                  <q-btn class="botonEditar" style="background-color:#029127 ;" @click="loteEditar(props.row)"   >
-                    <q-icon style="color: white;" name="edit"></q-icon>
-                  </q-btn>
-                </td>
-              </template>
-            </q-table>
-          </div>
-          <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
-            <q-linear-progress dark query color="green" class="q-mt-sm" />
-            <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
-          </div>
-        </div>
+
+  <div class="justify-center d-flex">
+    <div v-show="!alert" class="row justify-center items-center" style="height: 80vh;">
+    <div class="col-10">
+      <div v-if="showTable !== false" class="q-ma-xs-md q-ma-lg-sm">
+        <q-table :rows="rows" :columns="columns" row-key="_id">
+          <template v-slot:top="props">
+            <div class="col-6" align="left"><span style="font-size: 25px;">Lotes</span></div>
+            <div class="col-6" align="right">
+              <q-btn class="botonCrear" style="font-size: 14px; background: #ffffff6b; color: white;"
+                @click="abrirModal()" label="Crear Lote" />
+            </div>
+          </template>
+
+          <template v-slot:body-cell-state="props">
+            <td>
+              <q-checkbox v-model="props.row.state" color="green" :true-value="1" :false-value="0"
+                @click="editarEstado(props.row)" />
+            </td>
+          </template>
+
+          <template v-slot:body-cell-editar="props">
+            <td>
+              <q-btn class="botonEditar" style="background-color:#029127 ;" @click="loteEditar(props.row)">
+                <q-icon style="color: white;" name="edit"></q-icon>
+              </q-btn>
+            </td>
+          </template>
+        </q-table>
+      </div>
+      <div v-else class="q-ma-xs-md q-ma-lg-sm" style="margin-top: 5%;">
+        <q-linear-progress dark query color="green" class="q-mt-sm" />
+        <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
+      </div>
     </div>
-    <div v-show="alert" class="row justify-center items-center"  style="height: 80vh;">
+  </div>
+  <div v-show="alert" class="q-ma-xs-md q-ma-lg-sm animated zoomIn">
+    <q-card-section class="bgColorEnfasis">
+      <span class="text-black text-h6">Lotes</span>
+
+      <q-btn @click="alert = !alert" class="bg-red text-white float-right" label="X" />
+      <!-- <span><br><br></span> -->
+    </q-card-section>
+    <div class="row justify-center">
+      <div class="col-5">
+        <div class="buton">
+          <q-input filled v-model="name" class="input" label="Nombre" :dense="dense" />
+        </div>
+      </div>
+      <div class="col-5">
+        <div class="buton">
+          <q-input filled v-model="size" class="input" label="Tamaño" :dense="dense" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-center q-mt-lg">
       <div class="col-10">
-        <div style="height: 6vh; background-color: #029127; color: white; display: flex; font-size: 25px" class="items-center prueba" ><p class="q-my-none q-ml-sm">Lotes</p></div>
-        <div class="row justify-center">
-          <div class="col-5">
-            <div class="buton">
-              <q-input filled v-model="name" class="input"  label="Nombre" :dense="dense" />
-            </div>
-          </div>
-          <div class="col-5">
-            <div class="buton">
-              <q-input filled v-model="size" class="input"  label="Tamaño" :dense="dense" />
-            </div>
-          </div>
+        <div class="buton">
+          <q-select filled v-model="granja" class="input" label="granja" :options="optionsGranja" />
         </div>
-                  
-        <div class="row justify-center q-mt-lg">
-          <div class="col-10">
-            <div class="buton">
-              <q-select filled v-model="granja" class="input"  label="granja" :options="optionsGranja" />
-            </div>
-          </div>
-        </div>
-        
-        <div class="row justify-end  q-mt-lg q-mr-xl">
-          <div class="col-10" align="end">
-            <q-btn @click="createAllotment()" style="bottom: green; color: white;" class="q-mr-xs bg-green" label="Crear Lote" />
-            <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
-          </div>
-          </div>
-        
-        </div>
+      </div>
     </div>
+
+    <div class="row justify-end  q-mt-lg q-mr-xl">
+      <div class="col-10" align="end">
+        <q-btn @click="createAllotment()" style="bottom: green; color: white;" class="q-mr-xs bg-green"
+          label="Crear Lote" />
+        <q-btn class="bg-red text-white float-right" @click="cerrarModal()" label="Cerrar" />
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+
 </template>
   
 <script setup>
 import { ref } from "vue";
 import { showAlert } from '../../../modules/sweetalert.js';
-import { farmService, allotmentService} from "../../../api/";
+import { farmService, allotmentService } from "../../../api/";
 
 import { useQuasar } from "quasar";
 
@@ -82,22 +91,22 @@ const $q = useQuasar();
 // const hasItToken = $q.cookies.has('token')
 
 let alert = ref(false);
-let granja =ref("")
+let granja = ref("")
 let name = ref("");
 let rows = ref([]);
 let size = ref("");
 let validarEditar = ref(true)
 let createdAt = ref();
 let data = ref(null)
-let optionsGranja=ref([])
+let optionsGranja = ref([])
 let id = ref(null)
 
 let showTable = ref(false);
 
 function vaciarModal() {
-  size.value=''
-  name.value=''
-  granja.value=''
+  size.value = ''
+  name.value = ''
+  granja.value = ''
 
 }
 
@@ -105,17 +114,17 @@ async function ordenarLotes() {
   try {
 
     let res = {}
-    
+
     res.lotes = await allotmentService.getAllotment();
     res.fincas = await farmService.getFarm();
 
-      rows.value = res['lotes'];
-      showTable.value = true;
+    rows.value = res['lotes'];
+    showTable.value = true;
 
-      if (res['lotes'].length === 0) {
-        showAlert('No se encontraron registros', 'info')
-        console.log("No se encontraron registros");
-      }
+    if (res['lotes'].length === 0) {
+      showAlert('No se encontraron registros', 'info')
+      console.log("No se encontraron registros");
+    }
 
     // } else if (res['lotes'].status == 403) {
     //   console.log("No existe token");
@@ -125,15 +134,15 @@ async function ordenarLotes() {
     // }
 
     // if (res['farm'].status == 200) {
-      if (res['farm'].length === 0) {
-        showAlert('No se encontraron registros', 'info')
-        console.log("No se encontraron registros");
-      } else {
-        optionsGranja.value = res['farm'].map((element) => ({
-          label: element.name,
-          value: element._id
-        }));
-      }
+    if (res['farm'].length === 0) {
+      showAlert('No se encontraron registros', 'info')
+      console.log("No se encontraron registros");
+    } else {
+      optionsGranja.value = res['farm'].map((element) => ({
+        label: element.name,
+        value: element._id
+      }));
+    }
     // }
 
   } catch (error) {
@@ -165,12 +174,12 @@ async function createAllotment() {
       type: "negative",
       message: "digite la granja ",
     });
-  }else if (size.value == "") {
+  } else if (size.value == "") {
     $q.notify({
       type: "negative",
       message: "digite el tamaño ",
     });
-  }else if (createdAt.value == "") {
+  } else if (createdAt.value == "") {
     $q.notify({
       type: "negative",
       message: "digite la fecha ",
@@ -192,9 +201,9 @@ async function createAllotment() {
     console.log(data.value);
     await store.editLote({
       id: data.value._id,
-      name: name.value, 
-      size: size.value, 
-      farm: granja.value["value"], 
+      name: name.value,
+      size: size.value,
+      farm: granja.value["value"],
       createdAt: createdAt.value
     });
     ordenarLotes();
@@ -213,8 +222,8 @@ function loteEditar(info) {
   console.log("e", data.value);
   size.value = data.value.size
   name.value = data.value.name
-  granja.value= info.farm.name
-  createdAt.value=data.value.createdAt
+  granja.value = info.farm.name
+  createdAt.value = data.value.createdAt
 }
 const columns = [
   { name: "state", label: "Estado", align: "center" },
@@ -237,26 +246,26 @@ const columns = [
     name: "granja",
     align: "center",
     label: "granja",
-    field: (row)=> row.farm,
-    format: (val)=>`${val.name}`
+    field: (row) => row.farm,
+    format: (val) => `${val.name}`
   },
   { name: "editar", align: "center", label: "editar" },
 ];
 
 function abrirModal() {
-  alert.value=true
+  alert.value = true
 }
 function cerrarModal() {
-  alert.value=false
+  alert.value = false
   vaciarModal()
-  validarEditar.value=true
+  validarEditar.value = true
 }
 </script>
 
 
 <style scope>
-  .prueba {
-    border-radius: 4px;
-    
-  }
+.prueba {
+  border-radius: 4px;
+
+}
 </style>

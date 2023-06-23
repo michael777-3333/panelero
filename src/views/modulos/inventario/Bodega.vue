@@ -89,15 +89,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useBodegaStore, usefincaStore  } from "../../../stores/index.js";
 import { storeService, farmService } from "../../../api/";
-
 import { showAlert } from '../../../modules/sweetalert.js';
-
-import { useQuasar } from 'quasar'
-
-const store = useBodegaStore()
-const $q = useQuasar();
 
 let validarEditar = ref(true)
 let data = ref(null)
@@ -137,51 +130,36 @@ const columns = [
 
 async function ordenarBodega() {
     try {
-        let res = {}
+        
+        let bodega = await storeService.getStore()
+        let finca = await farmService.getFarm()
 
-        res['finca'] = await farmService.getFarm()
-        res['bodega'] = await storeService.getStore()
+        rows.value = bodega || [];
 
-        rows.value = res['bodega']
-        if (res['bodega'].length === 0) {
-            showAlert('No se encontraron registros', 'info')
-            console.log("No se encontraron registros");
-        }
+        if (finca.length > 0) {
 
-        if (res['finca'].length === 0) {
-            showAlert('No se encontraron registros', 'info')
-            console.log("No se encontraron registros");
-        } else {
-
-            optionsFinca.value = res['finca'].granjas.map((element) => ({
+            optionsFinca.value = finca.granjas.map((element) => ({
                 label: element.name,
                 value: element._id,
             }))
         }
 
     } catch (error) {
-        console.log('Error al traer los datos', error);
-    }
-
+    console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
+  }
 }
-
 ordenarBodega()
 
 // console.log(store.getBodega())
 
 async function createBodega() {
     if (name.value == '') {
-        $q.notify({
-            type: "negative",
-            message: "digite el nombre de la Bodega",
-        });
+            showAlert('digite el nombre de la Bodega');
     } else if (size.value == '') {
-        $q.notify({
-            type: "negative",
-            message: "digite el proveedor",
-        });
+            showAlert('digite el proveedor');
     } else if (validarEditar.value == true) {
-        await store.addBodega(
+        await storeService.addStore(
             {
                 name: name.value,
                 size: size.value,
@@ -189,23 +167,17 @@ async function createBodega() {
             })
         ordenarBodega()
         alert.value = false
-        $q.notify({
-            type: "positive",
-            message: "la Bodega ha sido agregada correctamente",
-        });
+            showAlert('la Bodega ha sido agregada correctamente', 'info');
         validarEditar.value = true
     } else if (validarEditar.value == false) {
-        await store.editBodega(
+        await storeService.editStore(
             {
                 id: data.value._id,
                 name: name.value,
                 size: size.value,
                 farm: farm.value
             })
-        $q.notify({
-            type: "positive",
-            message: "la Bodega ha sido actualizado correctamente",
-        });
+            showAlert('la Bodega ha sido actualizado correctamente', 'info');
         alert.value = false
         validarEditar.value = true;
         ordenarBodega()
@@ -225,9 +197,9 @@ async function editarEstado(props) {
     // console.log("hola");
     console.log(props);
     if (props.state == 1) {
-        await store.activarBodega(props);
+        await storeService.enabledStore(props._id);
     } else if (props.state == 0) {
-        await store.desactivarBodega(props);
+        await storeService.disabledStore(props._id);
     }
     ordenarBodega();
 }

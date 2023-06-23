@@ -142,12 +142,8 @@
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { usefincaStore, usePersonasStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
 import { farmService } from "../../../api/";
-
-const store = usefincaStore()
-// const storePersonas = usePersonasStore()
 
 let name = ref("");
 let ownerFarm = ref("");
@@ -190,18 +186,14 @@ function addFinca() {
 
 async function ordenarfinca() {
   try {
-    let res = {}
 
-    res['farm'] = await farmService.getFarm()
+    let farm = await farmService.getFarm()
 
-    rows.value = res['farm']
-    if (res['farma'].length === 0) {
-      showAlert('No se encontraron registros', 'info')
-      console.log("No se encontraron registros");
-    }
+    rows.value = farm || [];
 
   } catch (error) {
     console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
   }
 
 }
@@ -251,7 +243,7 @@ async function createFinca() {
   if (name.value == '') {
     showAlert("digite el nombre")
   } else if (validarEditar.value == true) {
-    await store.addfinca(
+    await farmService.addFarm(
       {
         name: name.value,
   

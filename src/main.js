@@ -35,11 +35,11 @@ const myApp = createApp(App);
 
 myApp.use(Quasar, {
   plugins: {
-    Loading,
     Cookies,
+    Loading,
+    // LocalStorage,
     Notify,
-    LocalStorage,
-    SessionStorage
+    // SessionStorage
   },
   lang: quasarLang,
   config: {

@@ -129,20 +129,9 @@
     
 <script setup>
 import { ref } from "vue";
-import { useInventarioStore, useUsuarioStore, useBodegaStore, useMarcasStore } from "../../../stores/index.js";
 import { showAlert } from '../../../modules/sweetalert.js';
 import { inventoryService, storeService, markService } from "../../../api/";
 
-import { useQuasar } from "quasar";
-
-const store = useInventarioStore();
-// const storeUser = useUsuarioStore();
-const storeBodega = useBodegaStore()
-
-const storeMarca = useMarcasStore()
-// const stateUser = storeToRefs(storeUser);
-const $q = useQuasar();
-// const hasItToken = $q.cookies.has('token')
 
 let alert = ref(false);
 let name = ref("");
@@ -172,30 +161,20 @@ function vaciarModal() {
 
 async function ordenarInventario() {
   try {
-    let res = {}
 
-    res['inventario'] = await inventoryService.getInventory();
-    res['bodega'] = await storeService.getStore();
-    res['marca'] = await markService.getMark();
+    let inventario = await inventoryService.getInventory();
+    let bodega = await storeService.getStore();
+    let marca = await markService.getMark();
 
-    rows.value = res['inventario']
+    rows.value = inventario || [];
 
-    console.log(rows.value);
-    if (res['inventario'].length === 0) {
-      showAlert('No se encontraron registros', 'info')
-      console.log("No se encontraron registros");
-    }
-
-    if (res['bodega'] && res['marca']) {
-      showAlert('No se encontraron registros', 'info')
-      console.log("No se encontraron registros");
-    } else {
-      optionesBodegas.value = res["bodega"].map((e) => ({
+    if (bodega.length > 0 && marca.length > 0) {
+      optionesBodegas.value = bodega.map((e) => ({
         label: e.name,
         value: e._id
       }))
 
-      optionesMarcas.value = res["marca"].map((i) => ({
+      optionesMarcas.value = marca.map((i) => ({
         label: i.name,
         value: i._id
       }))
@@ -203,7 +182,8 @@ async function ordenarInventario() {
 
 
   } catch (error) {
-    console.log("Error al obtener las peticiones ", error);
+    console.error("Error al obtener las peticiones", error);
+    showAlert('Error al obtener las peticiones', 'error');
   }
 
 }
@@ -211,32 +191,26 @@ async function ordenarInventario() {
 ordenarInventario();
 
 async function editarEstado(props) {
-  console.log("hola");
-  console.log(props);
+  
   if (props.state == 1) {
-    await store.activarInventario(props);
+    await inventoryService.enabledInventory(props._id);
   } else if (props.state == 0) {
-    await store.desactivarInventario(props);
+    await inventoryService.disabledInventory(props._id);
   }
   ordenarInventario();
 }
 
 async function createInventory() {
   if (quantity.value == "") {
-    $q.notify({
-      type: "negative",
-      message: "digite el tamaño",
-    });
+    showAlert('digite el tamaño');
+
   } else if (bodegas.value == "") {
-    $q.notify({
-      type: "negative",
-      message: "digite la bodega ",
-    });
+    showAlert('digite el tamaño');
+
   }
   else if (validarEditar.value == true) {
-    // console.log( bodegas.value["value"],  quantity.value, name.value, mark.value["value"], category.value, ' dd');
-    console.log( bodegas.value);
-    await store.addInventario({
+    
+    await inventoryService.addInventory({
       quantity: quantity.value,
       store: bodegas.value["value"],
       name: name.value,
@@ -246,14 +220,12 @@ async function createInventory() {
     ordenarInventario();
     console.log(rows.value);
     alert.value = false;
-    $q.notify({
-      type: "positive",
-      message: "el lote ha sido creado correctamente",
-    });
+    showAlert('el lote ha sido creado correctamente', 'info');
+
   }
   else if (validarEditar.value == false) {
-    console.log(data.value);
-    await store.editInventario({
+    
+    await inventoryService.editInventory({
       id: data.value._id,
       name: name.value,
       quantity: quantity.value,
@@ -262,10 +234,9 @@ async function createInventory() {
       // category: [{name: category.value}]
     });
     ordenarInventario();
-    $q.notify({
-      type: "positive",
-      message: "el lote ha sido actualizado correctamente",
-    });
+    showAlert('el lote ha sido actualizado correctamente', 'info');
+
+
     alert.value = false
     validarEditar.value = true;
     vaciarModal()
