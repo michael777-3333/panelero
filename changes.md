@@ -17,3 +17,5 @@ estoy domrudo
 
 agregada implementacion en netlify
 link: https://coruscating-froyo-1ef8f0.netlify.app/
+
+cambio importante en el layout principal

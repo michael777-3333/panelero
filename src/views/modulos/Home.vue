@@ -1,125 +1,38 @@
 <template>
-  <!-- <div> -->
-    <!-- <img src="../../assets/img/fondo.jpg" class="fondo"> -->
-  <!-- </div> -->
-  <div class="row" style="height: 550px;">
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 "  @click="changeMenu('/costos')" clickable >
-      <q-card class="cardHome">
-        <router-link to="/costos">
-          <q-img src="../../assets/img/costo.png">
-            <div class="absolute-bottom text-subtitle2 text-center">
-              COSTOS
-            </div>
+  <div class="row  justify-xs-center justify-md-start">
+    <div class="col-sm-4 col-xs-10 col q-pa-lg colHome"  v-for=" (object, index) in objects" :key="index"  @click="changeMenu(object.ruta)" clickable >
+      <q-card>
+        <router-link :to="object.ruta">
+          <q-img :src="object.srcImg">
+            <div class="absolute-bottom text-subtitle2 text-center" v-text="object.name"></div>
           </q-img>
         </router-link>
       </q-card>
     </div>
-
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 "  @click="changeMenu('/mantenimiento')" >
-      <q-card class="cardHome">
-        <router-link to="/mantenimiento/usuario">
-          <q-img src="../../assets/img/mantenimiento.png">
-            <div class="absolute-bottom text-subtitle2 text-center">
-              MANTENIMIENTO
-            </div>
-          </q-img>
-        </router-link>
-      </q-card>
-    </div>
-
-
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 " @click="changeMenu('/facturacion/facturacion')" clickable >
-      <q-card class="cardHome">
-        <router-link to="/facturacion/facturacion">
-          <q-img src="../../assets/img/facturacion.png">
-            <div class="absolute-bottom text-subtitle2 text-center">
-              FACTURACION
-            </div>
-          </q-img>
-        </router-link>
-      </q-card>
-    </div>
-    
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 " >
-      <q-card class="cardHome">
-        <router-link to="/home">
-          <q-img src="../../assets/img/trasformacion.png">
-            <div class="absolute-bottom text-subtitle2 text-center">
-              TRANSFORMACION
-            </div>
-          </q-img>
-        </router-link>
-      </q-card>
-    </div>
-
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 " >
-      <q-card class="cardHome">
-        <router-link to="/home">
-          <q-img src="../../assets/img/estadistica.png">
-            <div class="absolute-bottom text-subtitle2 text-center">
-              ESTADISTICAS
-            </div>
-          </q-img>
-        </router-link>
-      </q-card>
-    </div>
-
-    <div class="cardHome2 col-xs-auto col-sm-6 col-lg-4 "  @click="changeMenu('/inventario')" >
-      <q-card class="cardHome">
-        <router-link to="/inventario/inventario">
-          <q-img src="../../assets/img/inventario.png">
-            <div class="absolute-bottom text-subtitle2 text-center">
-              INVENTARIO
-            </div>
-          </q-img>
-        </router-link>
-      </q-card>
-    </div>
-
   </div>
-
-
-  <!-- <div class="q-pa-md" style="margin-top: 5%;">
-    <q-linear-progress dark query color="green" class="q-mt-sm" />
-    <q-linear-progress dark rounded indeterminate color="black" class="q-mt-sm" />
-  </div> -->
 </template>
 
 <script setup>
 import { getMenu, menuListar } from '../../components/menu.js'
+import { ref } from 'vue'
 
+const objects = ref([
+  { name: 'COSTOS', ruta: '/costo', srcImg: '/imgHome/costo.png' },
+  { name: 'MANTENIMIENTO', ruta: '/mantenimiento/usuario', srcImg: '/imgHome/mantenimiento.png' },
+  { name: 'FACTURACION', ruta: '/home', srcImg: '/imgHome/facturacion.png' },
+  { name: 'TRANSFORMACION', ruta: '/home', srcImg: '/imgHome/transformacion.png' },
+  { name: 'ESTADISTICA', ruta: '/home', srcImg: '/imgHome/estadistica.png'},
+  { name: 'INVENTARIO', ruta: '/inventario', srcImg: '/imgHome/inventario.png' },
+])
 
-
-function changeMenu(a) {
-  menuListar.value = getMenu(a)
+function changeMenu(ruta) {
+  menuListar.value = getMenu(ruta)
 }
-
 </script>
 
 <style scoped >
-.cardHome {
+.colHome {
   width: 400px;
   height: 150px;
-  margin: 10px;
 }
-
-.cardHome1 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-.cardHome2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* @media(max-width: 590px) {
-  .cardHome1 {
-    display: flex;
-    justify-content: end;
-  }
-} */
 </style>  

@@ -75,19 +75,22 @@ const disabledUser = async (id) => {
 }
 
 const loginUser = async (reqData) => {
-    const { data } = await request(
-        {
-            method: 'post',
-            url: `${url.autenticacion}singin`,
-            data: reqData,
-        }
-    )
+    try {
+        const response = await request(
+            {
+                method: 'post',
+                url: `${url.autenticacion}singin`,
+                data: reqData,
+            }    
+        )
+        
+        setToken(response.data.token)
+        
+        redirect()
 
-    if (data.token) {
-        setToken(data.token);
-        redirect();
+    } catch (error) {
+        return error.response
     }
-    return data;
 }
 
 const logoutUser = async () => {

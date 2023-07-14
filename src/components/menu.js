@@ -18,7 +18,7 @@ const menu = {
     {
       icon: 'payments',
       text: 'Costos',
-      ruta: "/costos",
+      ruta: "/costo",
     },
 
     {
@@ -28,20 +28,20 @@ const menu = {
     },
 
     {
-      icon: 'receipt_long', /**shopping_cart */
+      icon: 'receipt_long',
       text: 'Facturación',
-      ruta: "/facturacion/facturacion",
+      ruta: "/facturacion",
     },
 
     {
-      icon: 'inventory', /**request_page */
+      icon: 'inventory',
       text: 'Inventario',
-      ruta: "/inventario/bodega",
+      ruta: "/inventario",
     },
 
     { icon: 'request_page', text: 'Reportes', ruta: '/reporte' },
-    { icon: 'shopping_cart', text: 'Transformacion', ruta: '/transformacion' }
   ],
+
   maintenance: [
     {
       icon: "keyboard_backspace",
@@ -81,9 +81,10 @@ const menu = {
     {
       icon: 'gite', //agriculture
       text: 'Labores',
-      ruta: '/mantenimiento/labores',
+      ruta: '/mantenimiento/labor',
     },
   ],
+
   billing: [
     {
       icon: "keyboard_backspace",
@@ -94,7 +95,7 @@ const menu = {
     {
       icon: 'receipt_long', /**request_page */
       text: 'Facturación',
-      ruta: "/facturacion/facturacion",
+      ruta: "/facturacion",
     },
 
     {
@@ -103,6 +104,7 @@ const menu = {
       ruta: "/facturacion/pedido",
     },
   ],
+
   inventory: [
     {
       icon: "keyboard_backspace",
@@ -110,14 +112,14 @@ const menu = {
       ruta: "/home",
     },
     {
+      icon: "description",
+      text: "Inventario",
+      ruta: "/inventario",
+    },
+    {
       icon: 'storefront',
       text: 'Bodega',
       ruta: "/inventario/bodega",
-    },
-    {
-      icon: "description",
-      text: "Inventario",
-      ruta: "/inventario/inventario",
     },
   ]
 };

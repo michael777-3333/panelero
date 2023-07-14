@@ -1,6 +1,6 @@
 <template>
-  <q-header elevated :class="$q.dark.isActive ? 'bg-secondary' : 'bg-black'">
-    <q-toolbar class="header-body bgColorEnfasis">
+  <q-header  elevated :class="$q.dark.isActive ? 'bg-secondary' : 'bg-black'">
+    <q-toolbar class="bgColorEnfasis">
       <q-btn flat dense round icon="menu" aria-label="Menu" @click="cajon = !cajon" />
       <q-space />
       <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
@@ -9,7 +9,6 @@
           PanelaSoft
         </q-toolbar-title>
       </q-btn>
-      <!-- <q-toolbar-title style="font-size: 35px;">Paneleros</q-toolbar-title> -->
       <q-space />
       <q-icon name="grass" color="white" size="28px" @click="$q.dark.set(!$q.dark.isActive)" />
 
@@ -19,15 +18,12 @@
         </q-avatar>
         <q-tooltip>Account</q-tooltip>
       </q-btn>
-
-      <!-- <q-btn class="botonEditar" @click="userService.logoutUser()" label="Salir" /> -->
     </q-toolbar>
   </q-header>
 
-  <!--  -->
-  <q-drawer class="bgColorEnfasis" v-model="cajon" show-if-above bordered>
+   <q-drawer class="bgColorEnfasis" v-model="cajon">
     <q-scroll-area class="fit">
-      <q-list padding>
+      <q-list>
         <router-link v-for="(menuItem, index) in menuListar" :key="index" :to="menuItem.ruta" v-slot="{ isActive, href, navigate }" style="text-decoration: none" >
           <q-item @click="changeMenu(menuItem.ruta)" class="shadowMenu q-ma-sm rounded-borders" :class="isActive ? activeClass : inactiveClass" clickable v-ripple>
             <q-item-section>
@@ -56,8 +52,9 @@ import { userService } from '../api/';
 
 const $q = useQuasar();
 
-function changeMenu(a) {
-  menuListar.value = getMenu(a);
+function changeMenu(ruta) {
+  console.log(ruta)
+  menuListar.value = getMenu(ruta);
 }
 
 </script>
