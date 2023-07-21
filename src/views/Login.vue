@@ -37,10 +37,10 @@ import { showAlert } from '../modules/sweetalert.js';
 const $q = useQuasar();
 
 const email = ref('');
-email.value = 'edinson@meaw.co';
+
 const isPwd= ref(true);
 
-const password = ref('1q2w.');
+const password = ref('');
 
 async function sesion() {
   let isValid = true
